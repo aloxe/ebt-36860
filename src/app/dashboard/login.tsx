@@ -10,9 +10,11 @@ export function Login() {
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		// Preventing the page from reloading
 		event.preventDefault();
-		// const  [input] = e.target.children
-		console.log("click", event.target.getElementsByTagName("input")[0].value);
-		console.log("click", event.target.getElementsByTagName("input")[1].value);
+
+		const login = (event.target as HTMLInputElement).getElementsByTagName("input")[0].value
+		const password = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
+		console.log("click", login);
+		console.log("…and", password);
 		
 	}
 
