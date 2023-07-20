@@ -9,19 +9,12 @@ export default function Header() {
 					className="pointer-events-auto m-0"
 					href="/"
 				>
-					<img 
-						src="/france.png" alt="France" 
+					<img
+						src="/france.png" alt="France"
 						width={48}
 						height={48}
 						className='m-1 inline-block'
 						/>
-					<Image
-						src='/france.png'
-						alt='France'
-						width={48}
-						height={48}
-						priority
-					/>
 					Eurobilltracker ▤ 36860 ▥
 				</a>
 			</div>
