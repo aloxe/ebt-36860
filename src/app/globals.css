@@ -8,13 +8,13 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -24,4 +24,38 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+@layer components {
+  .form-row {
+        @apply block mb-3 text-left
+  }
+  .form-label {
+    @apply block text-sm font-medium text-slate-700
+  }
+  .form-input {
+    @apply mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+  }
+    .form-input:focus {
+      @apply outline-none border-sky-500 ring-1 ring-sky-500
+    }
+  
+    .form-input:disabled {
+      @apply bg-slate-50 text-slate-500 border-slate-200 shadow-none
+    }
+  
+    .form-input:invalid {
+      @apply border-pink-500 text-pink-600
+    }
+  
+    .form-input:invalid {
+      @apply border-pink-500 ring-pink-500
+    }
+    .btn {
+  @apply py-2 px-4 font-semibold rounded-lg
+  }
+
+  .btn-primary {
+    @apply bg-blue-500 text-white
+  }
 }
