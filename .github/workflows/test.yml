@@ -36,6 +36,7 @@ jobs:
           target: "domains/test.xn--4lj4bfp6d.eu.org/public_html"
           strip_components: 1
           rm: true
+          debug: true
 
       - name: Configure SSH
         run: |
