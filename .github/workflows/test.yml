@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm build
+          npm run build
 
       - name: Copy Site recursively to remote
         uses: appleboy/scp-action@master
