@@ -23,8 +23,9 @@ export function Login() {
     }
     let formBodyTxt = formBody.join("&");
 
-		// TODO: use https://stackoverflow.com/questions/65058598/nextjs-cors-issue to avoid CORS
-		const response = await fetch('https://api.eurobilltracker.com/?m=login&v=2&PHPSESSID=123456789', {
+		// NOT TODO: use https://stackoverflow.com/questions/65058598/nextjs-cors-issue to avoid CORS
+		// now using : https://reacthustle.com/blog/nextjs-send-post-request-to-external-api
+		const response = await fetch('/api/eurobilltracker/?m=login&v=2&PHPSESSID=123456789', {
 			method: 'POST',
 			// mode: 'no-cors',
 			headers: {
