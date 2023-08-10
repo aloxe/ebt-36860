@@ -25,6 +25,7 @@ function request(method:string) {
                     console.log('data:', data);
                     // todo set cookie
                     // setUser(data);
+                    localStorage.setItem('user', JSON.stringify(data));
                     return data;
                 });
             })
