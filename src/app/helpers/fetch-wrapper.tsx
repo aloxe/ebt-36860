@@ -10,6 +10,7 @@ export const fetchWrapper = {
 };
 
 function request(method:string) {
+  console.log("reaq");
     return async (url:string, body:any) => {
         const requestOptions = {
             method,
@@ -23,16 +24,18 @@ function request(method:string) {
                 // handle opaque response
                 response.json().then(function (data) {
                     console.log('data:', data);
-                    // todo set cookie
-                    // setUser(data);
                     localStorage.setItem('user', JSON.stringify(data));
-                    return data;
+                    // return data;
+                  console.log("titi");
                 });
             })
             .catch(function (err) {
                 console.log('Fetch Error :-S', err);
             });
     }
+    console.log("toto");
+    
+    return "toto";
 }
 
 function getRequestBody(body:any) {
