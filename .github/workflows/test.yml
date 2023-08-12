@@ -1,6 +1,9 @@
 name: ci-test
 
 on:
+  push:
+    branches:
+      - test
   workflow_dispatch:
     inputs:
       logLevel:
@@ -12,9 +15,7 @@ on:
           - info
           - warning
           - debug
-  push:
-    branches:
-      - test
+
 jobs:
   build:
     runs-on: ubuntu-latest

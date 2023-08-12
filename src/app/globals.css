@@ -27,6 +27,12 @@ body {
 }
 
 @layer components {
+  .dropdown:focus-within .dropdown-menu {
+    opacity: 1;
+    transform: translate(0) scale(1);
+    visibility: visible;
+  }
+
   .form-row {
         @apply block mb-3 text-left
   }
