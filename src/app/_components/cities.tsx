@@ -46,6 +46,7 @@ export function Cities() {
     if (cities) {
       const citiesWorld = cities.data;
       console.log(citiesWorld);
+      // TODO: add arrays of postcode to all cities
       const citiesFrance = citiesWorld.filter((city:city) => city.country == "France");
       console.log(citiesFrance);
       cities.rowsFrance = citiesFrance.length;
@@ -58,40 +59,50 @@ export function Cities() {
     }
   }
 
-  if (!cities) {
-    return (
-      <div className="mb-32 grid text-center md:mb-0 md:grid-cols-1 md:text-left">
-        <a
-          onClick={handleRequest}
-          href="#cities"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Load your cities{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-        </a>
-      </div>
-    )
-  } else {
+  const handleCommuneRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const communes = require('@etalab/decoupage-administratif/data/communes.json')
+    console.log("click!", communes);
+  }
 
   return (
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          <h2>Cities where you found notes</h2>
-          <div className="text-right text-stone-400 text-sm">{date} <span className="text-right  text-blue-900 text-lg">⟳</span></div>
-
+          { cities ? <h2>Cities where you found notes</h2> : 
+            <a
+              onClick={handleRequest}
+              href="#cities"
+              className="px-5 py-4"
+            >
+              <h2 className={`mb-3 text-lg font-semibold`}>
+                Load your cities{' '}
+                <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                  -&gt;
+                </span>
+              </h2>
+            </a>
+          }
+          { cities && <div className="text-right text-stone-400 text-sm">{date} <span className="text-right  text-blue-900 text-lg">⟳</span></div> }
         </div>
-        <p>
+        { cities && <p>
           <br />🌍 cities worldwide: {cities.rows}
           <br />🇫🇷 cities in France: {cities.rowsFrance}
-        </p>
+        </p> }
+        {cities &&
+          <a
+            onClick={handleCommuneRequest}
+            href="#cities"
+            className="px-5 py-4"
+          >
+            <h2 className={`mb-3 text-lg font-semibold`}>
+              Load french communes{' '}
+              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                -&gt;
+              </span>
+            </h2>
+          </a>
+        }
       </div>
-      <Cities />
     </>
   )
-  }
 }
