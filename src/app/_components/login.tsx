@@ -5,10 +5,7 @@ export function Login() {
   const [user, setUser] = useState<any>(undefined);
 
   useEffect(() => {
-    console.log("useeffect");
-    
     const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
-    console.log(storeUser);
     storeUser.username && setUser(storeUser);
   }, [])
 
@@ -49,6 +46,8 @@ export function Login() {
     const loginUser = await response?.json();
 
     if (loginUser) {
+      loginUser.email = login;
+      loginUser.date = Date.now();
       localStorage.setItem('user', JSON.stringify(loginUser));
       setUser(loginUser)
     } else {
@@ -59,6 +58,7 @@ export function Login() {
 
   const handleLogout = async () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('cities');
     setUser(undefined)
   }
 
