@@ -48,6 +48,15 @@ export function Cities() {
       console.log(citiesWorld);
       // TODO: add arrays of postcode to all cities
       const citiesFrance = citiesWorld.filter((city:city) => city.country == "France");
+      citiesFrance.map( async (city) => {
+        if (city.nrlocations > 1) {
+          var postcodesArray = await requestPostcodes(user, city);
+          city.postcodes = postcodesArray;
+          console.log(city);
+        } else {
+          city.postcodes = [city.top_zipcode];
+        }
+      })
       console.log(citiesFrance);
       cities.rowsFrance = citiesFrance.length;
       cities.date = Date.now();
@@ -62,6 +71,21 @@ export function Cities() {
   const handleCommuneRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
     console.log("click!", communes);
+  }
+
+  const requestPostcodes = async (user, city) => {
+    const responsePostcodes = await fetch(`/api/eurobilltracker/?m=myzipcodes&v=1&PHPSESSID=${user.sessionid}&city=${city.city}&country=${city.country}`)
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+    const postcodes = await responsePostcodes?.json();
+    console.log(city.city);
+    // return array of postcodes instead of array or objects
+    var postcodesArray = postcodes.data.map(function (el) {
+      return el.zipcode;
+    }) 
+    return postcodesArray;
   }
 
   return (
