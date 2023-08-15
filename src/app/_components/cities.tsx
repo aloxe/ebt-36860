@@ -1,11 +1,44 @@
 'use client'
 import { useState, useEffect } from "react";
+import { hasSamePostcode } from "../_helpers/cityutils"
+import { sansAccent, countryCodeToFlag } from "../_helpers/strings"
 
 interface city {
-  "location": string
-  "country": string
-  "top_zipcode": string
-  "nrlocations": number
+  "code"?: string;
+  "commune"?: string;
+  "city": string,
+  "country": string,
+  "top_zipcode": string,
+  "nrlocations": number,
+  "postcodes": string[],
+  "departement": string
+}
+
+interface commune {
+  "arrondissement": string
+  "code": string
+  "codesPostaux": string[]
+  "departement": string
+  "nom": string
+  "population": number
+  "rangChefLieu": number
+  "region": string
+  "siren": string
+  "type": "commune-actuelle" | "commune-déléguée" | ""
+  "typeLiaison": number
+  "zone": "metro" | "drom"
+}
+
+interface user {
+  "sessionid": string
+  "username": string
+  "my_city": string[]
+  "my_country": string
+  "my_zip": string
+  "totalbills": number
+  "totalhits": number
+  "email": string
+  "date": string
 }
 
 export function Cities() {
@@ -27,11 +60,7 @@ export function Cities() {
     event.preventDefault();
 
     const requestOptions = {
-      method: 'GET',
-      // headers: {
-      //   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      // },
-      // body: getRequestBody(params)
+      method: 'GET'
     };
 
     const response = await fetch(`/api/eurobilltracker/?m=mycities&v=1&PHPSESSID=${user.sessionid}`, requestOptions)
@@ -45,20 +74,21 @@ export function Cities() {
       
     if (cities) {
       const citiesWorld = cities.data;
-      console.log(citiesWorld);
-      // TODO: add arrays of postcode to all cities
-      const citiesFrance = citiesWorld.filter((city:city) => city.country == "France");
-      citiesFrance.map( async (city) => {
+      citiesWorld.map(async (city: city) => {
         if (city.nrlocations > 1) {
-          var postcodesArray = await requestPostcodes(user, city);
+          var postcodesArray = await getPostcodes(user, city);
           city.postcodes = postcodesArray;
-          console.log(city);
         } else {
           city.postcodes = [city.top_zipcode];
         }
-      })
-      console.log(citiesFrance);
-      cities.rowsFrance = citiesFrance.length;
+        city.departement = city.top_zipcode.substring(0,2)
+
+      });
+
+      const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
+      console.log("en France → ", citiesFrance);
+      cities.france = citiesFrance;
+      // TODO sort all countries alike
       cities.date = Date.now();
       localStorage.setItem('cities', JSON.stringify(cities));
       setCities(cities)
@@ -69,20 +99,86 @@ export function Cities() {
   }
 
   const handleCommuneRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const communes = require('@etalab/decoupage-administratif/data/communes.json')
+    const communes: commune[] = require('@etalab/decoupage-administratif/data/communes.json')
     console.log("click!", communes);
+    console.log(cities.france);
+    
+    console.log(communes[12].codesPostaux);
+    
+
+    const visitedCommunes: city[] = cities.france;
+
+    visitedCommunes.map(function (city: city) {
+      // check same name + dept
+      var foundCommune = communes.find((commune) => city.city == commune.nom 
+        && city.departement == commune.departement)
+      city.code = foundCommune ? foundCommune.code : undefined;
+    });
+
+    visitedCommunes.map(function (city: city) {
+      if (!city.code) {
+      // check same name no diacritics + dept
+        var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom) 
+          && city.departement == commune.departement)
+      city.code = foundCommune ? foundCommune.code : undefined;
+      foundCommune && console.log(city.city + " ←→ " + foundCommune.nom);
+      }
+    });
+
+    visitedCommunes.map(function (city: city) {
+      if (!city.code) {
+        // check name included + dept + postcode
+        var foundCommune = communes.find((commune) => commune.nom.includes(city.city)
+          && city.departement == commune.departement
+          && hasSamePostcode(city.postcodes, commune.codesPostaux || []))
+        city.code = foundCommune ? foundCommune.code : undefined;
+        city.commune = foundCommune ? foundCommune.nom : undefined;
+      }
+    });
+
+    visitedCommunes.map(function (city: city) {
+      if (!city.code && city.postcodes.length == 1) {
+        // check postcode if only one
+        // console.log("city=" + city.city + " " + city.postcodes[0]);
+        const samePostcode = communes.filter((commune) => city.departement == commune.departement
+          && hasSamePostcode(city.postcodes, commune.codesPostaux || []))
+        if (samePostcode.length ==1) {
+          city.code = samePostcode[0].code;
+          city.commune = samePostcode[0].nom;
+          console.log("city=" + city.city + " " + city.postcodes[0]);
+        } else {
+          console.log("city=" + city.city + " " + city.postcodes[0]);
+          console.log(samePostcode);
+          
+        }
+      }
+    });
+
+    console.log(visitedCommunes);
+
+    const visitedCommunes1 = visitedCommunes.filter(city => city.code)
+    console.log("all", visitedCommunes1);
+
+    const visitedCommunes2 = visitedCommunes.filter(city => !city.code)
+    console.log("reste", visitedCommunes2);
+
+    const visitedCommunes5 = visitedCommunes2.filter(function (city: city) {
+      return communes.some((commune) => commune.nom.includes(city.city) && city.departement == commune.departement)
+    });
+    console.log(visitedCommunes5);
+
   }
 
-  const requestPostcodes = async (user, city) => {
+  const getPostcodes = async (user: user, city: city) => {
     const responsePostcodes = await fetch(`/api/eurobilltracker/?m=myzipcodes&v=1&PHPSESSID=${user.sessionid}&city=${city.city}&country=${city.country}`)
       .catch(function (err) {
         console.log('Fetch Error :-S', err);
         return null;
       });
     const postcodes = await responsePostcodes?.json();
-    console.log(city.city);
+    // console.log(city.city);
     // return array of postcodes instead of array or objects
-    var postcodesArray = postcodes.data.map(function (el) {
+    var postcodesArray = postcodes.data.map(function (el:{zipcode: string}) {
       return el.zipcode;
     }) 
     return postcodesArray;
@@ -110,7 +206,7 @@ export function Cities() {
         </div>
         { cities && <p>
           <br />🌍 cities worldwide: {cities.rows}
-          <br />🇫🇷 cities in France: {cities.rowsFrance}
+          <br />🇫🇷 cities in France: {cities.france.length}
         </p> }
         {cities &&
           <a
