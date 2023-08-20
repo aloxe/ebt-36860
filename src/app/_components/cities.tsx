@@ -188,6 +188,45 @@ export function Cities() {
   const fetchData = async () => {
     console.log(" click EBTLocations");
     console.log(EBTLocations);
+
+    function getRequestBody(body: any) {
+      var bodyArray: String[] = [];
+      for (var property in body) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(body[property]);
+        bodyArray.push(encodedKey + "=" + encodedValue);
+      }
+      return bodyArray.join("&");
+    }
+
+    const params = {
+        "codePostal": "CODE POSTAL",
+        "codeCommune": "CODE INSEE",
+        "nomEBT": "NOM EBT",
+        "nomCommune": "NOM COMMUNE",
+        "ref": "REF"
+    };
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: getRequestBody(params)
+      
+    };
+    const requestDetail = getRequestBody(params)
+
+    const response = await fetch(`/api/staticdata/?${requestDetail}`, requestOptions)
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+
+    console.log("response=", response);
+      
+    const dataresult = await response?.json();
+    console.log("data= ", dataresult);
   }
 
   return (
