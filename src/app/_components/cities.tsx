@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { hasSamePostcode } from "../_helpers/cityutils"
 import { sansAccent, countryCodeToFlag } from "../_helpers/strings"
+import EBTLocations from "../_data/ebtlocation.json"
 
 interface city {
   "code"?: string;
@@ -184,8 +185,26 @@ export function Cities() {
     return postcodesArray;
   }
 
+  const fetchData = async () => {
+    console.log(" click EBTLocations");
+    console.log(EBTLocations);
+  }
+
   return (
     <>
+      <a
+        onClick={fetchData}
+        href="#cities"
+        className="px-5 py-4"
+      >
+        <h2 className={`mb-3 text-lg font-semibold`}>
+          fetch data{' '}
+          <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+            -&gt;
+          </span>
+        </h2>
+      </a>
+
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
           { cities ? <h2>Cities where you found notes</h2> : 
