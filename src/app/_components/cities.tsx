@@ -1,8 +1,9 @@
 'use client'
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { hasSamePostcode, removeDuplicateCommunes } from "../_helpers/cityutils"
 import { sansAccent, countryCodeToFlag } from "../_helpers/strings"
 import EBTLocations from "../_data/ebtlocation.json"
+import { Spinner } from '../_components/spinner';
 
 interface city {
   "code"?: string;
@@ -73,8 +74,7 @@ export function Cities() {
       });
 
     const cities = await response?.json();
-    console.log(cities);
-      
+
     if (cities) {
       const citiesWorld = cities.data;
       citiesWorld.map(async (city: city) => {
@@ -106,7 +106,7 @@ export function Cities() {
 
     visitedCities.map(function (city: city) {
       // check same name + dept
-      var foundCommune = communes.find((commune) => city.city == commune.nom 
+      var foundCommune = communes.find((commune) => city.city == commune.nom
         && city.departement == commune.departement)
       city.code = foundCommune ? foundCommune.code : undefined;
     });
@@ -114,7 +114,7 @@ export function Cities() {
     visitedCities.map(function (city: city) {
       if (!city.code) {
       // check same name no diacritics + dept
-        var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom) 
+        var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
           && city.departement == commune.departement)
       city.code = foundCommune ? foundCommune.code : undefined;
       foundCommune && console.log(city.city + " ←→ " + foundCommune.nom);
@@ -160,12 +160,14 @@ export function Cities() {
     const visitedKnown = visitedCities.filter(city => city.code)
     const visitedCommunes = removeDuplicateCommunes(visitedKnown);
     const visitedUnknown = visitedCities.filter(city => !city.code)
+
     const visited = {
       visitedCities,
       visitedKnown,
       visitedCommunes,
       visitedUnknown
     }
+    visited.date = Date.now()
     console.log(visited);
     setVisited(visited);
   }
@@ -181,7 +183,7 @@ export function Cities() {
     // return array of postcodes instead of array or objects
     var postcodesArray = postcodes.data.map(function (el:{zipcode: string}) {
       return el.zipcode;
-    }) 
+    })
     return postcodesArray;
   }
 
@@ -213,7 +215,7 @@ export function Cities() {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
       },
       body: getRequestBody(params)
-      
+
     };
     const requestDetail = getRequestBody(params)
 
@@ -224,7 +226,7 @@ export function Cities() {
       });
 
     console.log("response=", response);
-      
+
     const dataresult = await response?.json();
     console.log("data= ", dataresult);
   }
@@ -243,10 +245,9 @@ export function Cities() {
           </span>
         </h2>
       </a>
-
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          { cities ? <h2>Locations where you found notes</h2> : 
+          { cities ? <h2>Locations where you found notes</h2> :
             <a
               onClick={handleRequest}
               href="#cities"
@@ -262,13 +263,19 @@ export function Cities() {
           }
           { cities && <div className="text-right text-stone-400 text-sm">{date} <span className="text-right  text-blue-900 text-lg">⟳</span></div> }
         </div>
-        { cities && <p>
-          <br />🌍 worldwide: {cities.rows} locations
-          <br />🇫🇷 in France: {cities.france.length} locations ({visited && `${visited.visitedKnown.length} identified in ${visited.visitedCommunes.length} french communes`})
-          <br />{visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
-          <br />{visited && <b> {visited.visitedCommunes.length} communes in 🇫🇷 France</b>}
-        </p> }
-        {cities &&
+        <Suspense fallback={<Spinner />}>
+            { cities && <p>
+            <br />🌍 worldwide: {cities.rows} locations
+            <br />🇫🇷 in France: {cities.france.length} locations {visited && `${visited.visitedKnown.length} identified in ${visited.visitedCommunes.length} french communes`}
+            <br />{visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
+          </p> }
+        </Suspense>
+        <Suspense fallback={<Spinner />}>
+        {cities && !visited && <Spinner />}
+          {visited && <h2> {visited.visitedCommunes.length} communes in 🇫🇷 France</h2>}
+        </Suspense>
+        {cities && !cities.date && <Spinner />}
+        {cities && !visited &&
           <a
             onClick={countFrenchCommunes}
             href="#cities"
