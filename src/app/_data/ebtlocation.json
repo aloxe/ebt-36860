@@ -1,6 +1,4 @@
 {
-    "user": "0",
-    "nombre": 51,
     "lieux": [
         {
             "codePostal": "75000",
@@ -110,7 +108,7 @@
         {
             "codePostal": "73440",
             "codeCommune": "73257",
-            "nomEBT": "Les M\u00e9nuires",
+            "nomEBT": "Les Ménuires",
             "nomCommune": "Les Belleville",
             "ref": "107367585"
         },
@@ -118,7 +116,7 @@
             "codePostal": "49270",
             "codeCommune": "49069",
             "nomEBT": "La Varenne",
-            "nomCommune": "Or\u00e9e d'Anjou",
+            "nomCommune": "Orée d'Anjou",
             "ref": "100354072"
         },
         {
@@ -132,7 +130,7 @@
             "codePostal": "67720",
             "codeCommune": "67205",
             "nomEBT": "Hoerdt",
-            "nomCommune": "H\u0153rdt",
+            "nomCommune": "Hœrdt",
             "ref": "156483955"
         },
         {
@@ -153,7 +151,7 @@
             "codePostal": "17190",
             "codeCommune": "17337",
             "nomEBT": "Boyardville",
-            "nomCommune": "Saint-Georges-d'Ol\u00e9ron",
+            "nomCommune": "Saint-Georges-d'Oléron",
             "ref": "178718868"
         },
         {
@@ -173,22 +171,22 @@
         {
             "codePostal": "29360",
             "codeCommune": "29031",
-            "nomEBT": "Do\u00eblan",
-            "nomCommune": "Clohars-Carno\u00ebt",
+            "nomEBT": "Doëlan",
+            "nomCommune": "Clohars-Carnoët",
             "ref": "141540954"
         },
         {
             "codePostal": "29760",
             "codeCommune": "29158",
-            "nomEBT": "Saint-Gu\u00e9nol\u00e9",
+            "nomEBT": "Saint-Guénolé",
             "nomCommune": "Penmarch",
             "ref": "141534678"
         },
         {
             "codePostal": "44350",
             "codeCommune": "44069",
-            "nomEBT": "Saill\u00e9",
-            "nomCommune": "Gu\u00e9rande",
+            "nomEBT": "Saillé",
+            "nomCommune": "Guérande",
             "ref": "141459018"
         },
         {
@@ -208,7 +206,7 @@
         {
             "codePostal": "02320",
             "codeCommune": "02018",
-            "nomEBT": "Anizy-le-Ch\u00e2teau",
+            "nomEBT": "Anizy-le-Château",
             "nomCommune": "Anizy-le-Grand",
             "ref": "105385990"
         },
@@ -264,14 +262,14 @@
         {
             "codePostal": "07310",
             "codeCommune": "07267",
-            "nomEBT": "Saint-Martial (Ard\u00e8che)",
+            "nomEBT": "Saint-Martial (Ardèche)",
             "nomCommune": "Saint-Martial",
             "ref": "98624684"
         },
         {
             "codePostal": "34400",
             "codeCommune": "34272",
-            "nomEBT": "Saint-Just (H\u00e9rault)",
+            "nomEBT": "Saint-Just (Hérault)",
             "nomCommune": "Saint-Just",
             "ref": "99678124"
         },
@@ -285,7 +283,7 @@
         {
             "codePostal": "26740",
             "codeCommune": "26176",
-            "nomEBT": "Marsanne (Dr\u00f4me)",
+            "nomEBT": "Marsanne (Drôme)",
             "nomCommune": "Marsanne",
             "ref": "103466181"
         },
@@ -299,7 +297,7 @@
         {
             "codePostal": "69124",
             "codeCommune": "69299",
-            "nomEBT": "Colombier-Saugnieu (A\u00e9roport Lyon-Saint Exup\u00e9ry)",
+            "nomEBT": "Colombier-Saugnieu (Aéroport Lyon-Saint Exupéry)",
             "nomCommune": "Colombier-Saugnieu",
             "ref": "146230163"
         },
@@ -313,29 +311,29 @@
         {
             "codePostal": "38080",
             "codeCommune": "38193",
-            "nomEBT": "L\u2019isle-d\u2019abeau",
+            "nomEBT": "L’isle-d’abeau",
             "nomCommune": "L'Isle-d'Abeau",
             "ref": "150628759"
         },
         {
             "codePostal": "34800",
             "codeCommune": "34079",
-            "nomEBT": "Clermont-l\u2019h\u00e9rault",
-            "nomCommune": "Clermont-l'H\u00e9rault",
+            "nomEBT": "Clermont-l’hérault",
+            "nomCommune": "Clermont-l'Hérault",
             "ref": "163208136"
         },
         {
             "codePostal": "12150",
             "codeCommune": "12270",
-            "nomEBT": "S\u00e9v\u00e9rac-le-Ch\u00e2teau",
-            "nomCommune": "S\u00e9v\u00e9rac d'Aveyron",
+            "nomEBT": "Sévérac-le-Château",
+            "nomCommune": "Sévérac d'Aveyron",
             "ref": "163584351"
         },
         {
             "codePostal": "07530",
             "codeCommune": "07011",
             "nomEBT": "Antraigues-sur-Volane",
-            "nomCommune": "Vall\u00e9es-d'Antraigues-Asperjoc",
+            "nomCommune": "Vallées-d'Antraigues-Asperjoc",
             "ref": "166806688"
         },
         {
@@ -358,7 +356,28 @@
             "nomEBT": "Pringy",
             "nomCommune": "Annecy",
             "ref": "60275846"
+        },
+        {
+            "codePostal": "CODE POSTAL",
+            "codeCommune": "CODE INSEE",
+            "nomEBT": "NOM EBT",
+            "nomCommune": "NOM COMMUNE",
+            "ref": "REF"
+        },
+        {
+            "codePostal": "CODE POSTAL",
+            "codeCommune": "CODE INSEE",
+            "nomEBT": "NOM EBT",
+            "nomCommune": "NOM COMMUNE",
+            "ref": "REF"
+        },
+        {
+            "codePostal": "CODE POSTAL",
+            "codeCommune": "CODE INSEE",
+            "nomEBT": "NOM EBT",
+            "nomCommune": "NOM COMMUNE",
+            "ref": "REF"
         }
     ],
-    "type": "names"
+    "date": "last_updated=2023-08-22T07:16:32.952Z"
 }

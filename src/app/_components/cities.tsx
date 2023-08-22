@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
-import { hasSamePostcode } from "../_helpers/cityutils"
+import { hasSamePostcode, removeDuplicateCommunes } from "../_helpers/cityutils"
 import { sansAccent, countryCodeToFlag } from "../_helpers/strings"
 import EBTLocations from "../_data/ebtlocation.json"
 
@@ -12,7 +12,8 @@ interface city {
   "top_zipcode": string,
   "nrlocations": number,
   "postcodes": string[],
-  "departement": string
+  "departement": string,
+  "samePostcode"?: commune[]
 }
 
 interface commune {
@@ -43,8 +44,9 @@ interface user {
 }
 
 export function Cities() {
-  const [cities, setCities] = useState<any>(undefined);
   const [user, setUser] = useState<any>(undefined);
+  const [cities, setCities] = useState<any>(undefined);
+  const [visited, setVisited] = useState<any>(undefined);
 
   useEffect(() => {
     const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
@@ -82,12 +84,11 @@ export function Cities() {
         } else {
           city.postcodes = [city.top_zipcode];
         }
+        // useerful french division
         city.departement = city.top_zipcode.substring(0,2)
-
       });
 
       const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
-      console.log("en France → ", citiesFrance);
       cities.france = citiesFrance;
       // TODO sort all countries alike
       cities.date = Date.now();
@@ -95,28 +96,22 @@ export function Cities() {
       setCities(cities)
     } else {
       // TODO manage error
-      console.log("no cities");
+      console.log("error, no cities");
     }
   }
 
-  const handleCommuneRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const countFrenchCommunes = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     const communes: commune[] = require('@etalab/decoupage-administratif/data/communes.json')
-    console.log("click!", communes);
-    console.log(cities.france);
-    
-    console.log(communes[12].codesPostaux);
-    
+    const visitedCities: city[] = cities.france;
 
-    const visitedCommunes: city[] = cities.france;
-
-    visitedCommunes.map(function (city: city) {
+    visitedCities.map(function (city: city) {
       // check same name + dept
       var foundCommune = communes.find((commune) => city.city == commune.nom 
         && city.departement == commune.departement)
       city.code = foundCommune ? foundCommune.code : undefined;
     });
 
-    visitedCommunes.map(function (city: city) {
+    visitedCities.map(function (city: city) {
       if (!city.code) {
       // check same name no diacritics + dept
         var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom) 
@@ -126,7 +121,7 @@ export function Cities() {
       }
     });
 
-    visitedCommunes.map(function (city: city) {
+    visitedCities.map(function (city: city) {
       if (!city.code) {
         // check name included + dept + postcode
         var foundCommune = communes.find((commune) => commune.nom.includes(city.city)
@@ -137,8 +132,8 @@ export function Cities() {
       }
     });
 
-    visitedCommunes.map(function (city: city) {
-      if (!city.code && city.postcodes.length == 1) {
+    visitedCities.map(function (city: city) {
+      if (!city.code && city.postcodes?.length == 1) {
         // check postcode if only one
         // console.log("city=" + city.city + " " + city.postcodes[0]);
         const samePostcode = communes.filter((commune) => city.departement == commune.departement
@@ -146,28 +141,33 @@ export function Cities() {
         if (samePostcode.length ==1) {
           city.code = samePostcode[0].code;
           city.commune = samePostcode[0].nom;
-          console.log("city=" + city.city + " " + city.postcodes[0]);
-        } else {
-          console.log("city=" + city.city + " " + city.postcodes[0]);
-          console.log(samePostcode);
-          
+          console.log("found city => " + city.city + " " + city.postcodes[0]);
         }
       }
     });
 
-    console.log(visitedCommunes);
-
-    const visitedCommunes1 = visitedCommunes.filter(city => city.code)
-    console.log("all", visitedCommunes1);
-
-    const visitedCommunes2 = visitedCommunes.filter(city => !city.code)
-    console.log("reste", visitedCommunes2);
-
-    const visitedCommunes5 = visitedCommunes2.filter(function (city: city) {
-      return communes.some((commune) => commune.nom.includes(city.city) && city.departement == commune.departement)
+    visitedCities.map(function (city: city) {
+      if (!city.code) {
+        // check name + dept + postcode in EBT locations
+        var foundCommune = EBTLocations.lieux.find((lieu) => lieu.nomEBT == city.city
+          && hasSamePostcode(city.postcodes, [lieu.codePostal]))
+        city.code = foundCommune ? foundCommune.codeCommune : undefined;
+        city.commune = foundCommune ? foundCommune.nomCommune : undefined;
+        console.log("aussi " + city.city + " est à " + foundCommune?.nomCommune);
+      }
     });
-    console.log(visitedCommunes5);
 
+    const visitedKnown = visitedCities.filter(city => city.code)
+    const visitedCommunes = removeDuplicateCommunes(visitedKnown);
+    const visitedUnknown = visitedCities.filter(city => !city.code)
+    const visited = {
+      visitedCities,
+      visitedKnown,
+      visitedCommunes,
+      visitedUnknown
+    }
+    console.log(visited);
+    setVisited(visited);
   }
 
   const getPostcodes = async (user: user, city: city) => {
@@ -237,7 +237,7 @@ export function Cities() {
         className="px-5 py-4"
       >
         <h2 className={`mb-3 text-lg font-semibold`}>
-          fetch data{' '}
+          fetch and write ebt location{' '}
           <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
             -&gt;
           </span>
@@ -246,7 +246,7 @@ export function Cities() {
 
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          { cities ? <h2>Cities where you found notes</h2> : 
+          { cities ? <h2>Locations where you found notes</h2> : 
             <a
               onClick={handleRequest}
               href="#cities"
@@ -263,17 +263,19 @@ export function Cities() {
           { cities && <div className="text-right text-stone-400 text-sm">{date} <span className="text-right  text-blue-900 text-lg">⟳</span></div> }
         </div>
         { cities && <p>
-          <br />🌍 cities worldwide: {cities.rows}
-          <br />🇫🇷 cities in France: {cities.france.length}
+          <br />🌍 worldwide: {cities.rows} locations
+          <br />🇫🇷 in France: {cities.france.length} locations ({visited && `${visited.visitedKnown.length} identified in ${visited.visitedCommunes.length} french communes`})
+          <br />{visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
+          <br />{visited && <b> {visited.visitedCommunes.length} communes in 🇫🇷 France</b>}
         </p> }
         {cities &&
           <a
-            onClick={handleCommuneRequest}
+            onClick={countFrenchCommunes}
             href="#cities"
             className="px-5 py-4"
           >
             <h2 className={`mb-3 text-lg font-semibold`}>
-              Load french communes{' '}
+              Count french communes{' '}
               <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
                 -&gt;
               </span>
