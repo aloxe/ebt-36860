@@ -1,9 +1,8 @@
 'use client'
-import { Suspense, useState, useEffect } from "react";
-import { hasSamePostcode, removeDuplicateCommunes } from "../_helpers/cityutils"
-import { sansAccent, countryCodeToFlag } from "../_helpers/strings"
+import { useState, useEffect, useCallback } from "react";
+import { matchCommunes } from "../_helpers/cityutils"
 import EBTLocations from "../_data/ebtlocation.json"
-import { Spinner } from '../_components/spinner';
+import Spinner from "../_components/spinner";
 
 interface city {
   "code"?: string;
@@ -14,22 +13,7 @@ interface city {
   "nrlocations": number,
   "postcodes": string[],
   "departement": string,
-  "samePostcode"?: commune[]
-}
-
-interface commune {
-  "arrondissement": string
-  "code": string
-  "codesPostaux": string[]
-  "departement": string
-  "nom": string
-  "population": number
-  "rangChefLieu": number
-  "region": string
-  "siren": string
-  "type": "commune-actuelle" | "commune-déléguée" | ""
-  "typeLiaison": number
-  "zone": "metro" | "drom"
+  "samePostcode"?: string[]
 }
 
 interface user {
@@ -49,13 +33,30 @@ export function Cities() {
   const [cities, setCities] = useState<any>(undefined);
   const [visited, setVisited] = useState<any>(undefined);
 
+  const countFrenchCommunes = useCallback( async () => {
+    let visitedlocations = [].concat(cities.france);
+    console.log(visitedlocations);
+    const communes = require('@etalab/decoupage-administratif/data/communes.json')
+    const EBTLocations = require("@/app/_data/ebtlocation.json")
+    const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
+    console.log("we have visited", visited);
+    
+    setVisited(visited);
+  }, [cities]);
+
   useEffect(() => {
+    console.log(" === use effect === ");
+
     const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
     storeUser.username && setUser(storeUser);
 
     const storeCities = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('cities') || "{}");
     storeCities.length && setCities(storeCities);
-  }, [])
+
+    if (cities?.france && !visited) {
+      countFrenchCommunes();
+    }
+  }, [cities, visited, countFrenchCommunes])
 
   var d = new Date(cities?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -98,78 +99,6 @@ export function Cities() {
       // TODO manage error
       console.log("error, no cities");
     }
-  }
-
-  const countFrenchCommunes = async (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const communes: commune[] = require('@etalab/decoupage-administratif/data/communes.json')
-    const visitedCities: city[] = cities.france;
-
-    visitedCities.map(function (city: city) {
-      // check same name + dept
-      var foundCommune = communes.find((commune) => city.city == commune.nom
-        && city.departement == commune.departement)
-      city.code = foundCommune ? foundCommune.code : undefined;
-    });
-
-    visitedCities.map(function (city: city) {
-      if (!city.code) {
-      // check same name no diacritics + dept
-        var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
-          && city.departement == commune.departement)
-      city.code = foundCommune ? foundCommune.code : undefined;
-      foundCommune && console.log(city.city + " ←→ " + foundCommune.nom);
-      }
-    });
-
-    visitedCities.map(function (city: city) {
-      if (!city.code) {
-        // check name included + dept + postcode
-        var foundCommune = communes.find((commune) => commune.nom.includes(city.city)
-          && city.departement == commune.departement
-          && hasSamePostcode(city.postcodes, commune.codesPostaux || []))
-        city.code = foundCommune ? foundCommune.code : undefined;
-        city.commune = foundCommune ? foundCommune.nom : undefined;
-      }
-    });
-
-    visitedCities.map(function (city: city) {
-      if (!city.code && city.postcodes?.length == 1) {
-        // check postcode if only one
-        // console.log("city=" + city.city + " " + city.postcodes[0]);
-        const samePostcode = communes.filter((commune) => city.departement == commune.departement
-          && hasSamePostcode(city.postcodes, commune.codesPostaux || []))
-        if (samePostcode.length ==1) {
-          city.code = samePostcode[0].code;
-          city.commune = samePostcode[0].nom;
-          console.log("found city => " + city.city + " " + city.postcodes[0]);
-        }
-      }
-    });
-
-    visitedCities.map(function (city: city) {
-      if (!city.code) {
-        // check name + dept + postcode in EBT locations
-        var foundCommune = EBTLocations.lieux.find((lieu) => lieu.nomEBT == city.city
-          && hasSamePostcode(city.postcodes, [lieu.codePostal]))
-        city.code = foundCommune ? foundCommune.codeCommune : undefined;
-        city.commune = foundCommune ? foundCommune.nomCommune : undefined;
-        console.log("aussi " + city.city + " est à " + foundCommune?.nomCommune);
-      }
-    });
-
-    const visitedKnown = visitedCities.filter(city => city.code)
-    const visitedCommunes = removeDuplicateCommunes(visitedKnown);
-    const visitedUnknown = visitedCities.filter(city => !city.code)
-
-    const visited = {
-      visitedCities,
-      visitedKnown,
-      visitedCommunes,
-      visitedUnknown
-    }
-    visited.date = Date.now()
-    console.log(visited);
-    setVisited(visited);
   }
 
   const getPostcodes = async (user: user, city: city) => {
@@ -263,19 +192,15 @@ export function Cities() {
           }
           { cities && <div className="text-right text-stone-400 text-sm">{date} <span className="text-right  text-blue-900 text-lg">⟳</span></div> }
         </div>
-        <Suspense fallback={<Spinner />}>
             { cities && <p>
             <br />🌍 worldwide: {cities.rows} locations
             <br />🇫🇷 in France: {cities.france.length} locations {visited && `${visited.visitedKnown.length} identified in ${visited.visitedCommunes.length} french communes`}
             <br />{visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
           </p> }
-        </Suspense>
-        <Suspense fallback={<Spinner />}>
         {cities && !visited && <Spinner />}
-          {visited && <h2> {visited.visitedCommunes.length} communes in 🇫🇷 France</h2>}
-        </Suspense>
+        {visited && <h2> {visited.visitedCommunes.length} communes in 🇫🇷 France</h2>}
         {cities && !cities.date && <Spinner />}
-        {cities && !visited &&
+        {cities?.rien && !visited &&
           <a
             onClick={countFrenchCommunes}
             href="#cities"

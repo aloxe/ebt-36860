@@ -1,9 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+// import { Inter } from 'next/font/google'
 import Header from './_components/header';
+import { AuthProvider } from './_hooks/authprovider';
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Eurobilltracker ▤ 36860 ▥',
@@ -20,12 +21,14 @@ export default function RootLayout({
       <head>
         <link href="/favicon.ico" rel="icon"></link>
       </head>
-      <body className={inter.className}>
-        <Header />
-        <main className="flex min-h-screen flex-col p-8 mt-12">
-          {children}
-        </main>
-      </body>
+      <AuthProvider>
+        <body className="plop">
+          <Header />
+          <main className="flex min-h-screen flex-col p-8 mt-12">
+            {children}
+          </main>
+        </body>
+        </AuthProvider>
     </html>
   )
 }

@@ -1,4 +1,5 @@
 export function sansAccent(str) {
+  if (!str) return null;
   str = str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
   str = str.replace("œ", "oe");
   str = str.replace("æ", "ae");
