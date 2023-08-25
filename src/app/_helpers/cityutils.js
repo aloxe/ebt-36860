@@ -1,5 +1,5 @@
-
 import { sansAccent } from "../_helpers/strings"
+import { getPostcodes } from "../_helpers/ebtutils"
 
 export const hasSamePostcode = (cp1, cp2) => cp1.filter(cp => cp2.includes(cp)).length > 0;
 
@@ -14,26 +14,24 @@ export const removeDuplicateCommunes = (cities) => {
 
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
-  // const communes = require('@etalab/decoupage-administratif/data/communes.json')
-  // const EBTLocations = require("@/app/_data/ebtlocation.json")
   console.log("matchCommunes with ", visitedCities, communes, EBTLocations);
 
   visitedCities.map(function (city) {
     // check same name + dept
+    // console.log(city.city + " " + city.departement);
     var foundCommune = communes.find((commune) => city.city == commune.nom
       && city.departement == commune.departement)
     city.code = foundCommune ? foundCommune.code : undefined;
-    // foundCommune && console.log(city.city);
+    // foundCommune && console.log("★★★ " + city.city);
   });
 
-  console.log("now visitedCities", visitedCities);
   visitedCities.map(function (city) {
     if (!city.code) {
       // check same name no diacritics + dept
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
         && city.departement == commune.departement)
       city.code = foundCommune ? foundCommune.code : undefined;
-      foundCommune && console.log(city.city + " ←→ " + foundCommune.nom);
+      // foundCommune && console.log(city.city + " ←→ " + foundCommune.nom);
     }
   });
 
@@ -45,20 +43,19 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
       city.code = foundCommune ? foundCommune.code : undefined;
       city.commune = foundCommune ? foundCommune.nom : undefined;
-      foundCommune && console.log(city.city + " is in → " + foundCommune.nom);
+      // foundCommune && console.log(city.city + " is in → " + foundCommune.nom);
     }
   });
 
   visitedCities.map(function (city) {
     if (!city.code && city.postcodes?.length == 1) {
       // check postcode if only one
-      // console.log("city=" + city.city + " " + city.postcodes[0]);
       const samePostcode = communes.filter((commune) => city.departement == commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
       if (samePostcode.length == 1) {
         city.code = samePostcode[0].code;
         city.commune = samePostcode[0].nom;
-        console.log(city.postcodes[0] + "is only => " + city.city + " (" + city.nom + ")");
+        // console.log(city.postcodes[0] + " is only => " + city.city + " (" + city.commune + ")");
       }
     }
   });
@@ -70,7 +67,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         && hasSamePostcode(city.postcodes || [], [lieu.codePostal]))
       city.code = foundCommune ? foundCommune.codeCommune : undefined;
       city.commune = foundCommune ? foundCommune.nomCommune : undefined;
-      console.log("EBT: " + city.city + " is in " + foundCommune?.nomCommune);
+      // console.log("EBT: " + city.city + " is in " + foundCommune?.nomCommune);
     }
   });
 
@@ -87,4 +84,23 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
   }
   console.log(visited);
 return visited;
+}
+
+// export function addPostcodes(citiesArray: Array<city>): Promise<any> {
+//   return Promise.all(
+//   citiesArray.map(async (city: city) => {
+export function addPostcodes(user, citiesArray) {
+  return Promise.all(
+  citiesArray.map(async (city) => {
+    if (city.nrlocations > 1) {
+    var postcodesArray = await getPostcodes(user, city);
+    city.postcodes = postcodesArray;
+    } else {
+    city.postcodes = [city.top_zipcode];
+    }
+  // useerful french division
+    if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
+    return city
+  })
+);
 }

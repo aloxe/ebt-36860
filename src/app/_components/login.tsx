@@ -37,7 +37,8 @@ export function Login() {
       body: getRequestBody(params)
     };
 
-    const response   = await fetch('/api/eurobilltracker/?m=login&v=2&PHPSESSID=123456789', requestOptions)
+    // &PHPSESSID=123456789
+    const response   = await fetch('/api/eurobilltracker/?m=login&v=2', requestOptions)
       .catch(function (err) {
         console.log('Fetch Error :-S', err);
         return null;
@@ -50,9 +51,6 @@ export function Login() {
       loginUser.date = Date.now();
       localStorage.setItem('user', JSON.stringify(loginUser));
       setUser(loginUser)
-    } else {
-      // TODO manage error
-      console.log("not a user");
     }
   }
 

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from "react";
-import { matchCommunes } from "../_helpers/cityutils"
+import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
+import { getCities, refreshUser } from "../_helpers/ebtutils"
 import EBTLocations from "../_data/ebtlocation.json"
 import Spinner from "../_components/spinner";
 
@@ -30,6 +31,7 @@ interface user {
 
 export function Cities() {
   const [user, setUser] = useState<any>(undefined);
+  const [request, setRequest] = useState<any>(undefined);
   const [cities, setCities] = useState<any>(undefined);
   const [visited, setVisited] = useState<any>(undefined);
 
@@ -40,7 +42,6 @@ export function Cities() {
     const EBTLocations = require("@/app/_data/ebtlocation.json")
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     console.log("we have visited", visited);
-    
     setVisited(visited);
   }, [cities]);
 
@@ -62,59 +63,20 @@ export function Cities() {
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   const handleRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    console.log("handle request");
+    
     event.preventDefault();
-
-    const requestOptions = {
-      method: 'GET'
-    };
-
-    const response = await fetch(`/api/eurobilltracker/?m=mycities&v=1&PHPSESSID=${user.sessionid}`, requestOptions)
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-
-    const cities = await response?.json();
-
-    if (cities) {
-      const citiesWorld = cities.data;
-      citiesWorld.map(async (city: city) => {
-        if (city.nrlocations > 1) {
-          var postcodesArray = await getPostcodes(user, city);
-          city.postcodes = postcodesArray;
-        } else {
-          city.postcodes = [city.top_zipcode];
-        }
-        // useerful french division
-        city.departement = city.top_zipcode.substring(0,2)
-      });
-
-      const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
-      cities.france = citiesFrance;
-      // TODO sort all countries alike
-      cities.date = Date.now();
-      localStorage.setItem('cities', JSON.stringify(cities));
-      setCities(cities)
-    } else {
-      // TODO manage error
-      console.log("error, no cities");
-    }
+    setRequest(true);
+    const cities = await getCities(user);
+    const citiesWorld = await addPostcodes(user, cities.data);
+    const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
+    cities.france = citiesFrance;
+    // TODO sort all countries alike
+    cities.date = Date.now();
+    setCities(cities)
+    localStorage.setItem('cities', JSON.stringify(cities));
   }
 
-  const getPostcodes = async (user: user, city: city) => {
-    const responsePostcodes = await fetch(`/api/eurobilltracker/?m=myzipcodes&v=1&PHPSESSID=${user.sessionid}&city=${city.city}&country=${city.country}`)
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-    const postcodes = await responsePostcodes?.json();
-    // console.log(city.city);
-    // return array of postcodes instead of array or objects
-    var postcodesArray = postcodes.data.map(function (el:{zipcode: string}) {
-      return el.zipcode;
-    })
-    return postcodesArray;
-  }
 
   const fetchData = async () => {
     console.log(" click EBTLocations");
@@ -176,28 +138,33 @@ export function Cities() {
       </a>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          { cities ? <h2>Locations where you found notes</h2> :
-            <a
-              onClick={handleRequest}
-              href="#cities"
-              className="px-5 py-4"
-            >
-              <h2 className={`mb-3 text-lg font-semibold`}>
-                Load your cities{' '}
-                <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                  -&gt;
-                </span>
-              </h2>
-            </a>
-          }
-          { cities && <div className="text-right text-stone-400 text-sm">{date} <span className="text-right  text-blue-900 text-lg">⟳</span></div> }
+          {!request && !cities && <a
+            onClick={handleRequest}
+            href="#cities"
+            className="px-5 py-4"
+          >
+            <h2 className={`mb-3 text-lg font-semibold`}>
+              Load your cities{' '}
+              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+                -&gt;
+              </span>
+            </h2>
+          </a>}
+          { request && !cities && <><br/><br/><Spinner /></> }
+          { cities && <h2>Locations where you found notes</h2>}
+
+          { cities && <div className="text-right text-stone-400 text-sm">{date} 
+            <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleRequest}> ⟳ </span></div> }
         </div>
-            { cities && <p>
-            <br />🌍 worldwide: {cities.rows} locations
-            <br />🇫🇷 in France: {cities.france.length} locations {visited && `${visited.visitedKnown.length} identified in ${visited.visitedCommunes.length} french communes`}
-            <br />{visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
-          </p> }
-        {cities && !visited && <Spinner />}
+            { cities && <>
+            <br />🌍 : {cities.rows} locations worldwide
+            <br />🇫🇷 : {cities.france.length} locations in France 
+            {!visited && <><br/><br/><Spinner /></>}
+            {visited && <br/>}
+            {visited && `${visited.visitedKnown.length}  identified in ${visited.visitedCommunes.length} french communes`}
+            {visited && <><br/><br/></> }
+            {visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
+          </> }
         {visited && <h2> {visited.visitedCommunes.length} communes in 🇫🇷 France</h2>}
         {cities && !cities.date && <Spinner />}
         {cities?.rien && !visited &&
