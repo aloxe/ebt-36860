@@ -26,16 +26,23 @@ export function Profile() {
 
     const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+    const citySave = user.my_city;
     user.my_city = undefined;
     setRequestRefresh(true);
     var login = user.email
     const loginUser = await refreshUser(user);
-    loginUser.date = Date.now();
-    loginUser.email = login;
-    console.log(loginUser);
-    setUser(loginUser);
-    setRequestRefresh(false);
-    localStorage.setItem('user', JSON.stringify(loginUser));
+    if (loginUser) {
+      loginUser.date = Date.now();
+      loginUser.email = login;
+      console.log(loginUser);
+      setUser(loginUser);
+      setRequestRefresh(false);
+      localStorage.setItem('user', JSON.stringify(loginUser));
+    } else {
+      console.log('Fetch relogin Error :-S');
+      user.my_city = citySave;
+      setRequestRefresh(false);
+    }
   }
 
   return (

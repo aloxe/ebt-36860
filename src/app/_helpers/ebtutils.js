@@ -33,17 +33,15 @@
       credentials: 'include',
     };
 
-    // const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1&PHPSESSID=${user.sessionid}`, requestOptions)
-    const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1`, requestOptions)
+    // cookie set doesn't worrk (samee domain)
+    // const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1`, requestOptions)
+    const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1&PHPSESSID=${user.sessionid}`, requestOptions)
       .catch(function (err) {
         console.log('Fetch relogin Error :-S', err);
         return null;
       });
 
     const loginUser = await response?.json();
-
-    if (loginUser) {
-      loginUser.date = Date.now();
-    }
-    return loginUser;
+    if (loginUser) return loginUser
+    else return null
   }

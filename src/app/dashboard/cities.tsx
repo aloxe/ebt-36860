@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from "react";
+import { useAuth } from "../_hooks/authprovider"
 import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
 import { getCities, refreshUser } from "../_helpers/ebtutils"
 import EBTLocations from "../_data/ebtlocation.json"
@@ -30,7 +31,7 @@ interface user {
 }
 
 export function Cities() {
-  const [user, setUser] = useState<any>(undefined);
+  const { user, setUser } = useAuth();
   const [request, setRequest] = useState<any>(undefined);
   const [cities, setCities] = useState<any>(undefined);
   const [visited, setVisited] = useState<any>(undefined);

@@ -1,8 +1,9 @@
 'use client'
 import { useState, useEffect } from "react";
+import { useAuth } from "../_hooks/authprovider"
 
 export function Login() {
-  const [user, setUser] = useState<any>(undefined);
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
     const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
