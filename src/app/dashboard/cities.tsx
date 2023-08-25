@@ -5,6 +5,7 @@ import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
 import { getCities, refreshUser } from "../_helpers/ebtutils"
 import EBTLocations from "../_data/ebtlocation.json"
 import Spinner from "../_components/spinner";
+import { Unknowns } from "./unknowns";
 
 interface city {
   "code"?: string;
@@ -180,9 +181,11 @@ export function Cities() {
                 -&gt;
               </span>
             </h2>
+            {visited?.visitedUnknown?.length}
           </a>
         }
       </div>
+      {visited?.visitedUnknown?.length > 0 && <Unknowns />}
     </>
   )
 }
