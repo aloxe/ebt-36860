@@ -2,7 +2,6 @@
 import { useAuth } from "../_hooks/authprovider";
 import { Cities } from './cities';
 import { Profile } from './profile';
-import { Unknowns } from "./unknowns";
 
 interface user {
   "sessionid": string
@@ -17,10 +16,7 @@ interface user {
 }
 
 export default function Dashboard() {
-  const { user, setUser } = useAuth();
-
-  var d = new Date(user?.date);
-  const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  const { user } = useAuth();
 
   // TODO find a better way to have long hydration
   // TODO find a way to update page when user logs in

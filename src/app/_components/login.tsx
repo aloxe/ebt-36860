@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../_hooks/authprovider"
 
 export function Login() {

@@ -14,8 +14,6 @@ export const removeDuplicateCommunes = (cities) => {
 
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
-  console.log("matchCommunes with ", visitedCities, communes, EBTLocations);
-
   visitedCities.map(function (city) {
     // check same name + dept
     // console.log(city.city + " " + city.departement);
@@ -82,13 +80,9 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     visitedUnknown,
     date: Date.now()
   }
-  console.log(visited);
 return visited;
 }
 
-// export function addPostcodes(citiesArray: Array<city>): Promise<any> {
-//   return Promise.all(
-//   citiesArray.map(async (city: city) => {
 export function addPostcodes(user, citiesArray) {
   return Promise.all(
   citiesArray.map(async (city) => {
