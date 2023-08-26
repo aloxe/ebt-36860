@@ -1,14 +1,12 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useAuth } from "../_hooks/authprovider"
 
 export function Login() {
-  const [user, setUser] = useState<any>(undefined);
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
-    console.log("useeffect");
-    
     const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
-    console.log(storeUser);
     storeUser.username && setUser(storeUser);
   }, [])
 
@@ -40,7 +38,8 @@ export function Login() {
       body: getRequestBody(params)
     };
 
-    const response   = await fetch('/api/eurobilltracker/?m=login&v=2&PHPSESSID=123456789', requestOptions)
+    // &PHPSESSID=123456789
+    const response   = await fetch('/api/eurobilltracker/?m=login&v=2', requestOptions)
       .catch(function (err) {
         console.log('Fetch Error :-S', err);
         return null;
@@ -49,16 +48,16 @@ export function Login() {
     const loginUser = await response?.json();
 
     if (loginUser) {
+      loginUser.email = login;
+      loginUser.date = Date.now();
       localStorage.setItem('user', JSON.stringify(loginUser));
       setUser(loginUser)
-    } else {
-      // TODO manage error
-      console.log("not a user");
     }
   }
 
   const handleLogout = async () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('cities');
     setUser(undefined)
   }
 
