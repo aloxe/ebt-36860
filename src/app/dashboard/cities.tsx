@@ -8,6 +8,7 @@ import Spinner from "../_components/spinner";
 interface city {
   "code"?: string;
   "commune"?: string;
+  "possible"?: any[];
   "city": string,
   "country": string,
   "top_zipcode": string,
@@ -28,7 +29,7 @@ export function Cities() {
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
     const EBTLocations = require("@/app/_data/ebtlocation.json")
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
-    // console.log("we have visited", visited);
+    console.log("we have visited", visited);
     setVisited(visited);
   }, [cities]);
 

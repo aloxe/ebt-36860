@@ -36,12 +36,18 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
   visitedCities.map(function (city) {
     if (!city.code) {
       // check name included + dept + postcode
-      var foundCommune = communes.find((commune) => commune.nom.includes(city.city)
+      var possibleCommunes = communes.filter((commune) => commune.nom.includes(city.city)
         && city.departement == commune.departement
-        && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
-      city.code = foundCommune ? foundCommune.code : undefined;
-      city.commune = foundCommune ? foundCommune.nom : undefined;
-      // foundCommune && console.log(city.city + " is in → " + foundCommune.nom);
+        && hasSamePostcode(city.postcodes || [], commune.codesPostaux || [])
+        )
+      if (possibleCommunes?.length == 1) {
+        city.code = possibleCommunes[0].code;
+        city.commune = possibleCommunes[0].nom;
+        // console.log("found " + city.city + " in " + possibleCommunes[0].nom);
+      } else if (possibleCommunes?.length > 1) {
+        city.possible = possibleCommunes;
+        // console.log(city.city + " found ", possibleCommunes);
+      }
     }
   });
 
