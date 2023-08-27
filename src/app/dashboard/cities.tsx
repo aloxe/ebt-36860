@@ -2,10 +2,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../_hooks/authprovider"
 import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
-import { getCities, refreshUser } from "../_helpers/ebtutils"
-import EBTLocations from "../_data/ebtlocation.json"
+import { getCities } from "../_helpers/ebtutils"
 import Spinner from "../_components/spinner";
-import { Unknowns } from "./unknowns";
 
 interface city {
   "code"?: string;
