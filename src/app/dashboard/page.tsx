@@ -2,6 +2,7 @@
 import { useAuth } from "../_hooks/authprovider";
 import { Cities } from './cities';
 import { Profile } from './profile';
+import { Unknowns } from "./unknowns";
 
 interface user {
   "sessionid": string
@@ -16,7 +17,7 @@ interface user {
 }
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, visited } = useAuth();
 
   // TODO find a better way to have long hydration
   // TODO find a way to update page when user logs in
@@ -31,6 +32,7 @@ export default function Dashboard() {
       </div>
       {user?.username && <Profile />}
       {user?.username && <Cities />}
+      {visited?.visitedUnknown && <Unknowns />}
       </>
     )
 }

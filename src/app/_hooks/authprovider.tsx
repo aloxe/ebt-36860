@@ -17,14 +17,22 @@ export const AuthContext = createContext<any>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<user | undefined>(undefined);
+  const [visited, setVisited] = useState<any>(undefined);
+  // const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
+  // storeUser.username && setUser(storeUser);
+  // console.log(storeUser);
+
 
   useEffect(() => {
-    const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
-    storeUser.username && setUser(storeUser);
+    console.log("-o-o-o use effect -o-o-o");
+    
+    // const storeVisited = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('visited') || "{}");
+    
+    // storeVisited.visitedUnknown && setUser(storeVisited);
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, visited, setVisited }}>
       { children }
     </AuthContext.Provider>
   )

@@ -22,25 +22,24 @@ export function Cities() {
   const { user, setUser } = useAuth();
   const [request, setRequest] = useState<any>(undefined);
   const [cities, setCities] = useState<any>(undefined);
-  const [visited, setVisited] = useState<any>(undefined);
+  const { visited, setVisited } = useAuth();
 
   const countFrenchCommunes = useCallback( async () => {
     const visitedlocations = [].concat(cities.france);
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
     const EBTLocations = require("@/app/_data/ebtlocation.json")
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
-    console.log("we have visited", visited);
+    localStorage.setItem('visited', JSON.stringify(visited));
     setVisited(visited);
-  }, [cities]);
+    console.log("we have visited", visited);
+  }, [cities, setVisited]);
 
   useEffect(() => {
     console.log(" === use effect === ");
 
-    const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
-    storeUser.username && setUser(storeUser);
-
     const storeCities = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('cities') || "{}");
     storeCities.length && setCities(storeCities);
+
 
     if (cities?.france && !visited) {
       countFrenchCommunes();
@@ -53,6 +52,7 @@ export function Cities() {
   const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setRequest(true);
+    setCities(undefined);
     const cities = await getCities(user);
     const citiesWorld = await addPostcodes(user, cities.data);
     const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
@@ -61,6 +61,7 @@ export function Cities() {
     cities.date = Date.now();
     setCities(cities)
     localStorage.setItem('cities', JSON.stringify(cities));
+    setRequest(false);
   }
 
   return (
