@@ -39,7 +39,7 @@ export function Cities() {
 
     const storeCities = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('cities') || "{}");
     storeCities.length && setCities(storeCities);
-
+    
 
     if (cities?.france && !visited) {
       countFrenchCommunes();

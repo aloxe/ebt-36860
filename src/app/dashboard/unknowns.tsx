@@ -102,7 +102,21 @@ export function Unknowns() {
       console.log("setRequestUnknown");
   }
 
-  const dropdownCommune = (possibleCommunes:commune[]) => (<Dropdown label={"chooze"} array={possibleCommunes} />)
+  function handleDropdownChoice(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    const newname = event.currentTarget.childNodes[0].nodeValue
+    const row = event?.currentTarget?.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0];
+    if (row) row.nodeValue = newname;
+  }
+
+  const dropdownCommunes = (possibleCommunes:commune[]) => {
+    const array = possibleCommunes.map((item:any) => {
+      item.label = item.nom,
+      item.url = item.code,
+      item.action = handleDropdownChoice
+    })
+    return (<Dropdown label={"chooze"} array={possibleCommunes} />)
+  }
 
 
   return (
@@ -141,15 +155,18 @@ export function Unknowns() {
           { visited?.date && <div className="text-right text-stone-400 text-sm">{date}
             <span className="text-right  text-blue-900 text-lg  cursor-pointer"> ⟳ </span></div> }
         </div>
-            {requestUnknown && visited?.visitedUnknown.map((city:city) => {
-              return <>
-              <h3>{city.city}</h3>
-              {city.possible && dropdownCommune(city.possible)}
-              {/* {city?.possible ? 
-              city.possible.map( (commune:commune) => { return <>{commune.code}, {commune.nom}</>})
-              : <div>népô</div>} */}
-              </>
-            })}
+        <div className="">
+          {requestUnknown && visited?.visitedUnknown.map((city:city, index:number) => {
+            return <div key={city.city} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
+            <h3 className="p-5">{city.city} is in </h3>
+            {city.possible && <div className="mt-4 text-center">{dropdownCommunes(city.possible)}</div>}
+            <button className="h-[40px] max-w-min mx-auto px-4 mt-4 border-2 border-indigo-500 rounded-full">Save</button>
+            {/* {city?.possible ? 
+            city.possible.map( (commune:commune) => { return <>{commune.code}, {commune.nom}</>})
+            : <div>népô</div>} */}
+            </div>
+          })}
+        </div>
       </div>
     </>
   )

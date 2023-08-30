@@ -412,7 +412,21 @@
             "nomEBT": "NOM EBT",
             "nomCommune": "NOM COMMUNE",
             "ref": "REF"
+        },
+        {
+            "codePostal": "CODE POSTAL",
+            "codeCommune": "CODE INSEE",
+            "nomEBT": "NOM EBT",
+            "nomCommune": "NOM COMMUNE",
+            "ref": "REF"
+        },
+        {
+            "codePostal": "CODE POSTAL",
+            "codeCommune": "CODE INSEE",
+            "nomEBT": "NOM EBT",
+            "nomCommune": "NOM COMMUNE",
+            "ref": "REF"
         }
     ],
-    "date": "last_updated=2023-08-24T19:45:47.203Z"
+    "date": "last_updated=2023-08-29T20:44:04.323Z"
 }
