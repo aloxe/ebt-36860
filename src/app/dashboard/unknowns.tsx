@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
 import EBTLocations from "../_data/ebtlocation.json"
 import Spinner from "../_components/spinner";
@@ -42,6 +42,11 @@ interface user {
 export function Unknowns() {
   const [requestUnknown, setRequestUnknown] = useState<boolean>(false);
   const { visited, setVisited } = useAuth();
+
+  const departement = useRef(null);
+  const location = useRef(null);
+  const code = useRef(null);
+  const commune = useRef(null);
 
     var d = new Date(visited?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -105,8 +110,21 @@ export function Unknowns() {
   function handleDropdownChoice(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
     const newname = event.currentTarget.childNodes[0].nodeValue
-    const row = event?.currentTarget?.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0];
-    if (row) row.nodeValue = newname;
+    const newcode = event.currentTarget.id 
+    
+    // add name on dropdown button
+    const DropDownRowSpan = event?.currentTarget?.parentNode?.parentNode?.parentNode?.children[0]?.children[0]?.children[0];
+    if (DropDownRowSpan) DropDownRowSpan.nodeValue = newname;
+    
+    // add name and code in form input values
+    const codeEl = event?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[3];
+    const communeEl = event?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[4];
+// const communeEl = (event.target as HTMLInputElement).getElementsByTagName("input")[2]
+console.log(communeEl, codeEl);
+
+    if (communeEl) communeEl.setAttribute("value", newname || "")
+    if (codeEl) codeEl.setAttribute("value", newcode)
+    // if (codeEl) codeEl.nodeValue = newcode + "toto"
   }
 
   const dropdownCommunes = (possibleCommunes:commune[]) => {
@@ -118,6 +136,21 @@ export function Unknowns() {
     return (<Dropdown label={"chooze"} array={possibleCommunes} />)
   }
 
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const location = (event.target as HTMLInputElement).getElementsByTagName("input")[0].value
+    const departement = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
+    const code = (event.target as HTMLInputElement).getElementsByTagName("input")[2].value
+    const commune = (event.target as HTMLInputElement).getElementsByTagName("input")[3].value
+    console.log("SAVE");
+    console.log(location);
+    console.log(departement);
+    console.log(code);
+    console.log(commune);
+        const newname = event.currentTarget.childNodes[0].nodeValue
+    console.log(event.currentTarget.childNodes[0].childNodes[5].childNodes[0].childNodes[0].childNodes[0].childNodes[0].innerText);
+    
+  }
 
   return (
     <>
@@ -156,15 +189,21 @@ export function Unknowns() {
             <span className="text-right  text-blue-900 text-lg  cursor-pointer"> ⟳ </span></div> }
         </div>
         <div className="">
-          {requestUnknown && visited?.visitedUnknown.map((city:city, index:number) => {
-            return <div key={city.city} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
-            <h3 className="p-5">{city.city} is in </h3>
-            {city.possible && <div className="mt-4 text-center">{dropdownCommunes(city.possible)}</div>}
-            <button className="h-[40px] max-w-min mx-auto px-4 mt-4 border-2 border-indigo-500 rounded-full">Save</button>
-            {/* {city?.possible ? 
-            city.possible.map( (commune:commune) => { return <>{commune.code}, {commune.nom}</>})
-            : <div>népô</div>} */}
-            </div>
+          {requestUnknown && visited?.visitedUnknown.map((city:city) => {
+            return <form key={city.departement+" "+city.city} onSubmit={handleSubmit}>
+              <div className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
+                <h3 className="p-5">{city.city} is in </h3>
+                <input type="hidden" value={city.city} name="location" />
+                <input type="hidden" value={city.departement} name="departement" />
+                <input type="hidden" value="" name="code" />
+                <input type="hidden" value="" name="commune" />
+                {city.possible && <div className="mt-4 text-center">{dropdownCommunes(city.possible)}</div>}
+                <button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4 mt-4">Save</button>
+                {/* {city?.possible ? 
+                city.possible.map( (commune:commune) => { return <>{commune.code}, {commune.nom}</>})
+                : <div>népô</div>} */}
+              </div>
+            </form>
           })}
         </div>
       </div>
