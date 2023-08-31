@@ -43,11 +43,6 @@ export function Unknowns() {
   const [requestUnknown, setRequestUnknown] = useState<boolean>(false);
   const { visited, setVisited } = useAuth();
 
-  const departement = useRef(null);
-  const location = useRef(null);
-  const code = useRef(null);
-  const commune = useRef(null);
-
     var d = new Date(visited?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
@@ -112,19 +107,18 @@ export function Unknowns() {
     const newname = event.currentTarget.childNodes[0].nodeValue
     const newcode = event.currentTarget.id 
     
+
     // add name on dropdown button
-    const DropDownRowSpan = event?.currentTarget?.parentNode?.parentNode?.parentNode?.children[0]?.children[0]?.children[0];
+    const DropDownRowSpan = event?.currentTarget.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0]?.childNodes[0]
+    // writte name instead of chooze
     if (DropDownRowSpan) DropDownRowSpan.nodeValue = newname;
     
     // add name and code in form input values
     const codeEl = event?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[3];
     const communeEl = event?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[4];
-// const communeEl = (event.target as HTMLInputElement).getElementsByTagName("input")[2]
-console.log(communeEl, codeEl);
 
     if (communeEl) communeEl.setAttribute("value", newname || "")
     if (codeEl) codeEl.setAttribute("value", newcode)
-    // if (codeEl) codeEl.nodeValue = newcode + "toto"
   }
 
   const dropdownCommunes = (possibleCommunes:commune[]) => {
@@ -143,13 +137,14 @@ console.log(communeEl, codeEl);
     const code = (event.target as HTMLInputElement).getElementsByTagName("input")[2].value
     const commune = (event.target as HTMLInputElement).getElementsByTagName("input")[3].value
     console.log("SAVE");
-    console.log(location);
-    console.log(departement);
+    console.log(departement + " " +location + "is in: ");
     console.log(code);
     console.log(commune);
-        const newname = event.currentTarget.childNodes[0].nodeValue
-    console.log(event.currentTarget.childNodes[0].childNodes[5].childNodes[0].childNodes[0].childNodes[0].childNodes[0].innerText);
-    
+      console.log(visited);
+      // if no commune or no code : error code
+      // update visitedCities
+      // update EBTlocations
+      // refresh visited → unknown will disapear
   }
 
   return (
@@ -190,8 +185,8 @@ console.log(communeEl, codeEl);
         </div>
         <div className="">
           {requestUnknown && visited?.visitedUnknown.map((city:city) => {
-            return <form key={city.departement+" "+city.city} onSubmit={handleSubmit}>
-              <div className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
+            return <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
+              {/* <div > */}
                 <h3 className="p-5">{city.city} is in </h3>
                 <input type="hidden" value={city.city} name="location" />
                 <input type="hidden" value={city.departement} name="departement" />
@@ -202,7 +197,7 @@ console.log(communeEl, codeEl);
                 {/* {city?.possible ? 
                 city.possible.map( (commune:commune) => { return <>{commune.code}, {commune.nom}</>})
                 : <div>népô</div>} */}
-              </div>
+              {/* </div> */}
             </form>
           })}
         </div>
