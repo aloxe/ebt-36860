@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
-import { matchCommunes, addPostcodes, splitVisited, refreshVisited } from "../_helpers/cityutils"
-import EBTLocations from "../_data/ebtlocation.json"
+import EBTLocations from "../_data/ebtlocation-test.json"
 import Spinner from "../_components/spinner";
 import { useAuth } from "../_hooks/authprovider";
 import { Dropdown } from "../_components/dropdown";
@@ -41,7 +40,7 @@ interface user {
 
 export function Unknowns() {
   const [requestUnknown, setRequestUnknown] = useState<boolean>(false);
-  const { visited, setVisited } = useAuth();
+  const { visited, user } = useAuth();
 
     var d = new Date(visited?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -50,9 +49,7 @@ export function Unknowns() {
     console.log(" === use effect === => ", visited);
   }, [])
 
-  const fetchData = async () => {
-    console.log(" click EBTLocations");
-    console.log(EBTLocations);
+  const saveEBTlocation = async (newLocation:any) => {
 
     function getRequestBody(body: any) {
       var bodyArray: String[] = [];
@@ -64,24 +61,15 @@ export function Unknowns() {
       return bodyArray.join("&");
     }
 
-    const params = {
-        "codePostal": "CODE POSTAL",
-        "codeCommune": "CODE INSEE",
-        "nomEBT": "NOM EBT",
-        "nomCommune": "NOM COMMUNE",
-        "ref": "REF"
-    };
-
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      },
-      body: getRequestBody(params)
-
+      }
     };
-    const requestDetail = getRequestBody(params)
+    const requestDetail = getRequestBody(newLocation)
 
+    // api bellow is rewritting to EBTlocations
     const response = await fetch(`/api/staticdata/?${requestDetail}`, requestOptions)
       .catch(function (err) {
         console.log('Fetch Error :-S', err);
@@ -151,7 +139,7 @@ export function Unknowns() {
         error.innerHTML = "commune missing, can't save";
         return
       }
-      visited.visitedCities.map(function (city:city) {
+      visited.visitedCities.map(async function (city:city) {
         if (city.city == location && city.departement == departement) {
           if (city.commune) {
             error.innerHTML = "commune already " + city.commune;
@@ -160,31 +148,25 @@ export function Unknowns() {
             city.code = code
             city.commune = commune
             delete city.possible
+
+            const newEBTlocation:any = {
+              "codePostal": city.top_zipcode,
+              "codeCommune": city.code,
+              "nomEBT": city.city,
+              "nomCommune": city.commune,
+              "ref": user.name
+            };
+            // TODO make asyn
+            const response = await saveEBTlocation(newEBTlocation)
+            error.className = "message"
+            error.innerHTML = "commune " + city.commune + " enregistrée";
           }
         }
       });
-//      refreshVisited(visited.visitedCities)
-      // update visitedCities
-      // update EBTlocations
-      // refresh visited → unknown will disapear
   }
 
   return (
     <>
-      <a
-        onClick={fetchData}
-        href="#cities"
-        className="px-5 py-4"
-      >
-        <h2 className={`mb-3 text-lg font-semibold`}>
-          fetch and write ebt location{' '}
-          <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-            -&gt;
-          </span>
-        </h2>
-      </a>
-
-
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
           { <a

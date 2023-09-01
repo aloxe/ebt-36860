@@ -67,16 +67,16 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     }
   });
 
-  // visitedCities.map(function (city) {
-  //   if (!city.code) {
-  //     // check name + dept + postcode in EBT locations
-  //     var foundCommune = EBTLocations.lieux.find((lieu) => lieu.nomEBT == city.city
-  //       && hasSamePostcode(city.postcodes || [], [lieu.codePostal]))
-  //     city.code = foundCommune ? foundCommune.codeCommune : undefined;
-  //     city.commune = foundCommune ? foundCommune.nomCommune : undefined;
-  //     // console.log("EBT: " + city.city + " is in " + foundCommune?.nomCommune);
-  //   }
-  // });
+  visitedCities.map(function (city) {
+    if (!city.code) {
+      // check name + dept + postcode in EBT locations
+      var foundCommune = EBTLocations.lieux.find((lieu) => lieu.nomEBT == city.city
+        && hasSamePostcode(city.postcodes || [], [lieu.codePostal]))
+      city.code = foundCommune ? foundCommune.codeCommune : undefined;
+      city.commune = foundCommune ? foundCommune.nomCommune : undefined;
+      // console.log("EBT: " + city.city + " is in " + foundCommune?.nomCommune);
+    }
+  });
 
  return splitVisited(visitedCities)
 }

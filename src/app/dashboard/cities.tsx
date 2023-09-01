@@ -27,7 +27,7 @@ export function Cities() {
   const countFrenchCommunes = useCallback( async () => {
     const visitedlocations = [].concat(cities.france);
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
-    const EBTLocations = require("@/app/_data/ebtlocation.json")
+    const EBTLocations = require("@/app/_data/ebtlocation-test.json")
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     localStorage.setItem('visited', JSON.stringify(visited));
     setVisited(visited);
@@ -54,6 +54,17 @@ export function Cities() {
     setRequest(true);
     setCities(undefined);
     const cities = await getCities(user);
+    console.log(user, "get cities = ", cities);
+    if (!cities) {
+      // TODO manage better error message
+      console.log("error couldn't get cities, please relog in" );
+      // TODO refactor login logout in auth
+      localStorage.removeItem('user');
+      localStorage.removeItem('cities');
+      localStorage.removeItem('visited');
+      setUser(undefined)
+      return
+    }
     const citiesWorld = await addPostcodes(user, cities.data);
     const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
     cities.france = citiesFrance;
