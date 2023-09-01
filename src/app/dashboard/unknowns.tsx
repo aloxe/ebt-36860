@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
-import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
+import { matchCommunes, addPostcodes, splitVisited, refreshVisited } from "../_helpers/cityutils"
 import EBTLocations from "../_data/ebtlocation.json"
 import Spinner from "../_components/spinner";
 import { useAuth } from "../_hooks/authprovider";
@@ -106,7 +106,6 @@ export function Unknowns() {
     event.preventDefault();
     const newname = event.currentTarget.childNodes[0].nodeValue
     const newcode = event.currentTarget.id 
-    
 
     // add name on dropdown button
     const DropDownRowSpan = event?.currentTarget.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0]?.childNodes[0]
@@ -119,10 +118,15 @@ export function Unknowns() {
 
     if (communeEl) communeEl.setAttribute("value", newname || "")
     if (codeEl) codeEl.setAttribute("value", newcode)
+
+    const saveButton = event.currentTarget.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[6]
+    saveButton?.removeAttribute('disabled')
+    const error = event.currentTarget.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[2]
+    if (error) error.innerHTML = ""
   }
 
   const dropdownCommunes = (possibleCommunes:commune[]) => {
-    const array = possibleCommunes.map((item:any) => {
+    possibleCommunes.map((item:any) => {
       item.label = item.nom,
       item.url = item.code,
       item.action = handleDropdownChoice
@@ -136,12 +140,30 @@ export function Unknowns() {
     const departement = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
     const code = (event.target as HTMLInputElement).getElementsByTagName("input")[2].value
     const commune = (event.target as HTMLInputElement).getElementsByTagName("input")[3].value
+    const error = (event.target as HTMLInputElement).getElementsByTagName("span")[1]
     console.log("SAVE");
     console.log(departement + " " +location + "is in: ");
     console.log(code);
     console.log(commune);
       console.log(visited);
       // if no commune or no code : error code
+      if (!commune || !code) {
+        error.innerHTML = "commune missing, can't save";
+        return
+      }
+      visited.visitedCities.map(function (city:city) {
+        if (city.city == location && city.departement == departement) {
+          if (city.commune) {
+            error.innerHTML = "commune already " + city.commune;
+            return
+          } else {
+            city.code = code
+            city.commune = commune
+            delete city.possible
+          }
+        }
+      });
+//      refreshVisited(visited.visitedCities)
       // update visitedCities
       // update EBTlocations
       // refresh visited → unknown will disapear
@@ -185,19 +207,19 @@ export function Unknowns() {
         </div>
         <div className="">
           {requestUnknown && visited?.visitedUnknown.map((city:city) => {
-            return <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
-              {/* <div > */}
-                <h3 className="p-5">{city.city} is in </h3>
+            const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
+            return city.possible && <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
+                <div className="leading-7 p-5">{city.city} is in 
+                  <br /><a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">find on 🗺 OSMap</a>
+                </div>
                 <input type="hidden" value={city.city} name="location" />
                 <input type="hidden" value={city.departement} name="departement" />
                 <input type="hidden" value="" name="code" />
                 <input type="hidden" value="" name="commune" />
-                {city.possible && <div className="mt-4 text-center">{dropdownCommunes(city.possible)}</div>}
-                <button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4 mt-4">Save</button>
-                {/* {city?.possible ? 
-                city.possible.map( (commune:commune) => { return <>{commune.code}, {commune.nom}</>})
-                : <div>népô</div>} */}
-              {/* </div> */}
+                <div className="mt-4 text-center leading-7">{dropdownCommunes(city.possible || [])}
+                <br/><span className="error float-left"></span>
+                  </div>
+                <button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4 mt-4" disabled>Save</button>
             </form>
           })}
         </div>

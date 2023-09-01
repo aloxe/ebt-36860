@@ -97,6 +97,7 @@ export function addPostcodes(user, citiesArray) {
   );
 }
 
+// TODO keep only visitedCities and useMemo for others
 export const splitVisited = (visitedCities) =>  {
   const visitedKnown = visitedCities.filter(city => city.code)
   return {
@@ -107,3 +108,7 @@ export const splitVisited = (visitedCities) =>  {
     date: Date.now()
   };
 }
+
+export const refreshVisited = (visited) =>  {
+  visited = splitVisited(visited.visitedCities)
+};
