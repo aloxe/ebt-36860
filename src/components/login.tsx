@@ -1,14 +1,18 @@
 'use client'
 import { useEffect } from "react";
-import { useAuth } from "../_hooks/authprovider"
+import { useAuth } from "@/hooks/authprovider"
 
 export function Login() {
   const { user, setUser } = useAuth();
 
   useEffect(() => {
-    const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
-    storeUser.username && setUser(storeUser);
-  }, [])
+    console.log(" === use effect login === ", user);
+
+    if (!user) {
+      const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
+      storeUser.username && setUser(storeUser);
+    }
+  }, [user, setUser])
 
   function getRequestBody(body: any) {
     var bodyArray: String[] = [];

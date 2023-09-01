@@ -1,9 +1,8 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
-import EBTLocations from "../_data/ebtlocation-test.json"
-import Spinner from "../_components/spinner";
-import { useAuth } from "../_hooks/authprovider";
-import { Dropdown } from "../_components/dropdown";
+import Spinner from "@/components/spinner";
+import { useAuth } from "@/hooks/authprovider";
+import { Dropdown } from "@/components/dropdown";
 
 
 interface commune {
@@ -24,18 +23,6 @@ interface city {
   "departement": string,
   "samePostcode"?: string[]
   "possible"?: commune[];
-}
-
-interface user {
-  "sessionid": string
-  "username": string
-  "my_city": string[]
-  "my_country": string
-  "my_zip": string
-  "totalbills": number
-  "totalhits": number
-  "email": string
-  "date": string
 }
 
 export function Unknowns() {

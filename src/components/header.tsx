@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Login } from './login';
 
 export default function Header() {
@@ -8,7 +9,7 @@ export default function Header() {
           className="pointer-events-auto m-0"
           href="/"
         >
-          <img
+          <Image
             src="/france.png" alt="France"
             width={48}
             height={48}

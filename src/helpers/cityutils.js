@@ -1,5 +1,5 @@
-import { sansAccent } from "../_helpers/strings"
-import { getPostcodes } from "../_helpers/ebtutils"
+import { sansAccent } from "@/helpers/strings"
+import { getPostcodes } from "@/helpers/ebtutils"
 
 export const hasSamePostcode = (cp1, cp2) => cp1.filter(cp => cp2.includes(cp)).length > 0;
 

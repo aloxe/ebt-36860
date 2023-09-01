@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect, useCallback } from "react";
-import { useAuth } from "../_hooks/authprovider"
-import { matchCommunes, addPostcodes } from "../_helpers/cityutils"
-import { getCities } from "../_helpers/ebtutils"
-import Spinner from "../_components/spinner";
+import { useAuth } from "@/hooks/authprovider"
+import { matchCommunes, addPostcodes } from "@/helpers/cityutils"
+import { getCities } from "@/helpers/ebtutils"
+import Spinner from "@/components/spinner";
 
 interface city {
   "code"?: string;
@@ -27,7 +27,7 @@ export function Cities() {
   const countFrenchCommunes = useCallback( async () => {
     const visitedlocations = [].concat(cities.france);
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
-    const EBTLocations = require("@/app/_data/ebtlocation-test.json")
+    const EBTLocations = require("@/data/ebtlocation-test.json")
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     localStorage.setItem('visited', JSON.stringify(visited));
     setVisited(visited);
@@ -35,7 +35,6 @@ export function Cities() {
   }, [cities, setVisited]);
 
   useEffect(() => {
-    console.log(" === use effect === ");
 
     const storeCities = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('cities') || "{}");
     storeCities.length && setCities(storeCities);

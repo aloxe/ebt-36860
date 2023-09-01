@@ -1,20 +1,8 @@
 'use client'
 import { useState } from "react";
-import { useAuth } from "../_hooks/authprovider"
-import { refreshUser } from "../_helpers/ebtutils";
-import Spinner from "../_components/spinner";
-
-interface user {
-  "sessionid": string
-  "username": string
-  "my_city": string[]
-  "my_country": string
-  "my_zip": string
-  "totalbills": number
-  "totalhits": number
-  "email": string
-  "date": string
-}
+import { useAuth } from "@/hooks/authprovider"
+import { refreshUser } from "@/helpers/ebtutils";
+import Spinner from "@/components/spinner";
 
 export function Profile() {
   const { user, setUser } = useAuth();
@@ -22,7 +10,6 @@ export function Profile() {
 
   var d = new Date(user?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-
 
     const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
