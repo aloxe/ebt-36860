@@ -17,22 +17,33 @@ export const AuthContext = createContext<any>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<user | undefined>(undefined);
+  const [cities, setCities] = useState<any>(undefined);
   const [visited, setVisited] = useState<any>(undefined);
 
   useEffect(() => {
-    console.log("-o-o-o use effect -o-o-o" , user, visited);
     if (!user) {
       const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
       storeUser.username && setUser(storeUser);
     }
-      if (!visited) {
+    if (!cities) {
+      const storeCities = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('cities') || "{}");
+      storeCities.data && setCities(storeCities);
+    }
+    if (!visited) {
       const storeVisited = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('visited') || "{}");
       storeVisited.date && setVisited(storeVisited);
     }
-  }, [user, visited])
+  }, [user, cities, visited])
+
+    const logout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('cities');
+    localStorage.removeItem('visited');
+    setUser(undefined)
+  }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, visited, setVisited }}>
+    <AuthContext.Provider value={{ user, setUser, cities, setCities, visited, setVisited, logout }}>
       { children }
     </AuthContext.Provider>
   )

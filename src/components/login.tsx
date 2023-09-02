@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/authprovider"
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 
 export function Login() {
-  const { user, setUser } = useAuth();
+  const { user, setUser, logout } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,10 +32,8 @@ export function Login() {
     }
   }
 
-  const handleLogout = async () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('cities');
-    setUser(undefined)
+  const handleLogout = () => {
+    logout()
   }
 
   if (user) {
