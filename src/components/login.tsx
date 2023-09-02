@@ -1,56 +1,29 @@
 'use client'
-import { useEffect } from "react";
 import { useAuth } from "@/hooks/authprovider"
+import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 
 export function Login() {
   const { user, setUser } = useAuth();
-
-  useEffect(() => {
-    console.log(" === use effect login === ", user);
-
-    if (!user) {
-      const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
-      storeUser.username && setUser(storeUser);
-    }
-  }, [user, setUser])
-
-  function getRequestBody(body: any) {
-    var bodyArray: String[] = [];
-    for (var property in body) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(body[property]);
-      bodyArray.push(encodedKey + "=" + encodedValue);
-    }
-    return bodyArray.join("&");
-  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const login = (event.target as HTMLInputElement).getElementsByTagName("input")[0].value
     const password = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
-    const params = {
-      'my_email': login,
-      'my_password': password
-    };
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      },
-      body: getRequestBody(params)
-    };
-
-    // &PHPSESSID=123456789
-    const response   = await fetch('/api/eurobilltracker/?m=login&v=2', requestOptions)
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-
-    const loginUser = await response?.json();
-
+    const loginUser = await EBTlogin(login, password);
+    if (!loginUser) {
+      //TODO error message
+      console.log("login error ");
+      return
+    }
+    const searchUser = await EBTsearch(loginUser, loginUser.username, 1)
+    if (searchUser.users.length = 1) {
+      loginUser.id = searchUser.users[0].id
+      loginUser.active = searchUser.users[0].active
+    } else {
+      // TODO error message for users without id?
+      loginUser.id = loginUser.username
+    }
     if (loginUser) {
       loginUser.email = login;
       loginUser.date = Date.now();

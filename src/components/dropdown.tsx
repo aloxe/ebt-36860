@@ -1,7 +1,5 @@
 
 export function Dropdown({label, array}:{label:string, array:any[]}) {
-  console.log("array", array);
-  
     return (
       <div className="h-3">
         <div className="flexrelative inline-block text-left dropdown">

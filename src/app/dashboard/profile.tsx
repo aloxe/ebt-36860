@@ -21,7 +21,6 @@ export function Profile() {
     if (loginUser) {
       loginUser.date = Date.now();
       loginUser.email = login;
-      console.log(loginUser);
       setUser(loginUser);
       setRequestRefresh(false);
       localStorage.setItem('user', JSON.stringify(loginUser));
@@ -36,7 +35,7 @@ export function Profile() {
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
       <div className="flex justify-between">
         <h2>Profile</h2>
-        {user?.username && <div className="text-right text-stone-400 text-sm">{date} 
+        {user?.my_city && <div className="text-right text-stone-400 text-sm">{date} 
           <span className="text-right text-blue-900 text-lg cursor-pointer" onClick={handleRefreshUser}> ⟳ </span>
       </div>}
       </div>
