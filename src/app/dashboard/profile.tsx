@@ -18,7 +18,7 @@ interface user {
 
 export function Profile() {
   const { user, setUser } = useAuth();
-  const [requestRefresh, setRequestRefresh] = useState<any>(undefined);
+  const [requestRefresh, setRequestRefresh] = useState<boolean>(false);
 
   var d = new Date(user?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })

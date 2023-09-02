@@ -356,63 +356,7 @@
             "nomEBT": "Pringy",
             "nomCommune": "Annecy",
             "ref": "60275846"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
-        },
-        {
-            "codePostal": "CODE POSTAL",
-            "codeCommune": "CODE INSEE",
-            "nomEBT": "NOM EBT",
-            "nomCommune": "NOM COMMUNE",
-            "ref": "REF"
         }
     ],
-    "date": "last_updated=2023-08-24T19:45:47.203Z"
+    "date": "last_updated=2023-09-01T19:08:54.758Z"
 }
