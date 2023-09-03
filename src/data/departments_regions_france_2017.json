@@ -1,0 +1,927 @@
+[
+  {
+    "departmentCode" : "01",
+    "x" : "46.19",
+    "y" : "5.21",
+    "departmentName" : "Ain",
+    "prefecture" : "Bourg-en-Bresse",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "02",
+    "x" : "49.56",
+    "y" : "3.62",
+    "departmentName" : "Aisne",
+    "prefecture" : "Laon",
+    "regionCode" : "32",
+    "regionName" : "Hauts-de-France"
+  },
+  {
+    "departmentCode" : "03",
+    "x" : "46.55",
+    "y" : "3.33",
+    "departmentName" : "Allier",
+    "prefecture" : "Moulins",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "04",
+    "x" : "44.08",
+    "y" : "6.20",
+    "departmentName" : "Alpes-de-Haute-Provence",
+    "prefecture" : "Digne-les-Bains",
+    "regionCode" : "93",
+    "regionName" : "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    "departmentCode" : "05",
+    "x" : "44.56",
+    "y" : "6.06",
+    "departmentName" : "Hautes-Alpes",
+    "prefecture" : "Gap",
+    "regionCode" : "93",
+    "regionName" : "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    "departmentCode" : "06",
+    "x" : "43.72",
+    "y" : "7.16",
+    "departmentName" : "Alpes-Maritimes",
+    "prefecture" : "Nice",
+    "regionCode" : "93",
+    "regionName" : "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    "departmentCode" : "07",
+    "x" : "44.72",
+    "y" : "4.54",
+    "departmentName" : "Ardèche",
+    "prefecture" : "Privas",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "08",
+    "x" : "49.69",
+    "y" : "4.9411",
+    "departmentName" : "Ardennes",
+    "prefecture" : "Charleville-Mézières",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "09",
+    "x" : "4.06",
+    "y" : "1.60",
+    "departmentName" : "Ariège",
+    "prefecture" : "Foix",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "10",
+    "x" : "48.28",
+    "y" : "4.07",
+    "departmentName" : "Aube",
+    "prefecture" : "Troyes",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "11",
+    "x" : "43.201",
+    "y" : "3.363",
+    "departmentName" : "Aude",
+    "prefecture" : "Carcassonne",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "12",
+    "x" : "44.36",
+    "y" : "2.566",
+    "departmentName" : "Aveyron",
+    "prefecture" : "Rodez",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "13",
+    "x" : "43.40",
+    "y" : "5.40",
+    "departmentName" : "Bouches-du-Rhône",
+    "prefecture" : "Marseille",
+    "regionCode" : "93",
+    "regionName" : "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    "departmentCode" : "14",
+    "x" : "49.16",
+    "y" : "-0.40",
+    "departmentName" : "Calvados",
+    "prefecture" : "Caen",
+    "regionCode" : "28",
+    "regionName" : "Normandie"
+  },
+  {
+    "departmentCode" : "15",
+    "x" : "44.92",
+    "y" : "2.45",
+    "departmentName" : "Cantal",
+    "prefecture" : "Aurillac",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "16",
+    "x" : "45.74",
+    "y" : "0.17",
+    "departmentName" : "Charente",
+    "prefecture" : "Angoulême",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "17",
+    "x" : "46.14",
+    "y" : "-1.08",
+    "departmentName" : "Charente-Maritime",
+    "prefecture" : "La Rochelle",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "18",
+    "x" : "47.08",
+    "y" : "2.39",
+    "departmentName" : "Cher",
+    "prefecture" : "Bourges",
+    "regionCode" : "24",
+    "regionName" : "Centre-Val de Loire"
+  },
+  {
+    "departmentCode" : "19",
+    "x" : "45.25",
+    "y" : "1.65",
+    "departmentName" : "Corrèze",
+    "prefecture" : "Tulle",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "2a",
+    "x" : "41.91",
+    "y" : "8.77",
+    "departmentName" : "Corse-du-Sud",
+    "prefecture" : "Ajaccio",
+    "regionCode" : "94",
+    "regionName" : "Corse"
+  },
+  {
+    "departmentCode" : "2b",
+    "x" : "42.65",
+    "y" : "9.42",
+    "departmentName" : "Haute-Corse",
+    "prefecture" : "Bastia",
+    "regionCode" : "94",
+    "regionName" : "Corse"
+  },
+  {
+    "departmentCode" : "21",
+    "x" : "47.31",
+    "y" : "5.03",
+    "departmentName" : "Côte-d'or",
+    "prefecture" : "Dijon",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "22",
+    "x" : "48.51",
+    "y" : "-2.77",
+    "departmentName" : "Côtes-d'armor",
+    "prefecture" : "Saint-Brieuc",
+    "regionCode" : "53",
+    "regionName" : "Bretagne"
+  },
+  {
+    "departmentCode" : "23",
+    "x" : "46.16",
+    "y" : "1.87",
+    "departmentName" : "Creuse",
+    "prefecture" : "Guéret",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "24",
+    "x" : "45.17",
+    "y" : "0.72",
+    "departmentName" : "Dordogne",
+    "prefecture" : "Périgueux",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "25",
+    "x" : "47.23",
+    "y" : "6.00",
+    "departmentName" : "Doubs",
+    "prefecture" : "Besançon",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "26",
+    "x" : "44.86",
+    "y" : "4.86",
+    "departmentName" : "Drôme",
+    "prefecture" : "Valence",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "27",
+    "x" : "49.01",
+    "y" : "1.15",
+    "departmentName" : "Eure",
+    "prefecture" : "Évreux",
+    "regionCode" : "28",
+    "regionName" : "Normandie"
+  },
+  {
+    "departmentCode" : "28",
+    "x" : "48.44",
+    "y" : "1.46",
+    "departmentName" : "Eure-et-Loir",
+    "prefecture" : "Chartres",
+    "regionCode" : "24",
+    "regionName" : "Centre-Val de Loire"
+  },
+  {
+    "departmentCode" : "29",
+    "x" : "48.45",
+    "y" : "-4.42",
+    "departmentName" : "Finistère",
+    "prefecture" : "Quimper",
+    "regionCode" : "53",
+    "regionName" : "Bretagne"
+  },
+  {
+    "departmentCode" : "30",
+    "departmentName" : "Gard",
+    "prefecture" : "Nîmes",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "31",
+    "x" : "43.59",
+    "y" : "1.39",
+    "departmentName" : "Haute-Garonne",
+    "prefecture" : "Toulouse",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "32",
+    "x" : "43.64",
+    "y" : "0.57",
+    "departmentName" : "Gers",
+    "prefecture" : "Auch",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "33",
+    "x" : "44.94",
+    "y" : "-0.59",
+    "departmentName" : "Gironde",
+    "prefecture" : "Bordeaux",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "34",
+    "x" : "43.60",
+    "y" : "3.69",
+    "departmentName" : "Hérault",
+    "prefecture" : "Montpellier",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "35",
+    "x" : "48.10",
+    "y" : "-1.66",
+    "departmentName" : "Ille-et-Vilaine",
+    "prefecture" : "Rennes",
+    "regionCode" : "53",
+    "regionName" : "Bretagne"
+  },
+  {
+    "departmentCode" : "36",
+    "x" : "48.05",
+    "y" : "1.33",
+    "departmentName" : "Indre",
+    "prefecture" : "Châteauroux",
+    "regionCode" : "24",
+    "regionName" : "Centre-Val de Loire"
+  },
+  {
+    "departmentCode" : "37",
+    "x" : "47.37",
+    "y" : "0.70",
+    "departmentName" : "Indre-et-Loire",
+    "prefecture" : "Tours",
+    "regionCode" : "24",
+    "regionName" : "Centre-Val de Loire"
+  },
+  {
+    "departmentCode" : "38",
+    "x" : "45.16",
+    "y" : "6.72",
+    "departmentName" : "Isère",
+    "prefecture" : "Grenoble",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "39",
+    "x" : "46.67",
+    "y" : "5.55",
+    "departmentName" : "Jura",
+    "prefecture" : "Lons-le-Saunier",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "40",
+    "x" : "43.89",
+    "y" : "-0.53",
+    "departmentName" : "Landes",
+    "prefecture" : "Mont-de-Marsan",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "41",
+    "x" : "47.58",
+    "y" : "1.32",
+    "departmentName" : "Loir-et-Cher",
+    "prefecture" : "Blois",
+    "regionCode" : "24",
+    "regionName" : "Centre-Val de Loire"
+  },
+  {
+    "departmentCode" : "42",
+    "x" : "45.44",
+    "y" : "4.38",
+    "departmentName" : "Loire",
+    "prefecture" : "Saint-Étienne",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "43",
+    "x" : "45.03",
+    "y" : "3.88",
+    "departmentName" : "Haute-Loire",
+    "prefecture" : "Le Puy-en-Velay",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "44",
+    "x" : "47.2065",
+    "y" : "-1.5436",
+    "departmentName" : "Loire-Atlantique",
+    "prefecture" : "Nantes",
+    "regionCode" : "52",
+    "regionName" : "Pays de la Loire"
+  },
+  {
+    "departmentCode" : "45",
+    "x" : "47.90",
+    "y" : "1.88",
+    "departmentName" : "Loiret",
+    "prefecture" : "Orléans",
+    "regionCode" : "24",
+    "regionName" : "Centre-Val de Loire"
+  },
+  {
+    "departmentCode" : "46",
+    "x" : "44.44",
+    "y" : "1.43",
+    "departmentName" : "Lot",
+    "prefecture" : "Cahors",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "47",
+    "x" : "44.19",
+    "y" : "0.61",
+    "departmentName" : "Lot-et-Garonne",
+    "prefecture" : "Agen",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "48",
+    "x" : "44.52",
+    "y" : "3.49",
+    "departmentName" : "Lozère",
+    "prefecture" : "Mende",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "49",
+    "x" : "47.47",
+    "y" : "0.56",
+    "departmentName" : "Maine-et-Loire",
+    "prefecture" : "Angers",
+    "regionCode" : "52",
+    "regionName" : "Pays de la Loire"
+  },
+  {
+    "departmentCode" : "50",
+    "x" : "49.10",
+    "y" : "-0.11",
+    "departmentName" : "Manche",
+    "prefecture" : "Saint-Lô",
+    "regionCode" : "28",
+    "regionName" : "Normandie"
+  },
+  {
+    "departmentCode" : "51",
+    "x" : "48.96",
+    "y" : "4.33",
+    "departmentName" : "Marne",
+    "prefecture" : "Châlons-en-Champagne",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "52",
+    "x" : "48.10",
+    "y" : "5.14",
+    "departmentName" : "Haute-Marne",
+    "prefecture" : "Chaumont",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "53",
+    "x" : "48.06",
+    "y" : "-0.77",
+    "departmentName" : "Mayenne",
+    "prefecture" : "Laval",
+    "regionCode" : "52",
+    "regionName" : "Pays de la Loire"
+  },
+  {
+    "departmentCode" : "54",
+    "x" : "48.68",
+    "y" : "6.17",
+    "departmentName" : "Meurthe-et-Moselle",
+    "prefecture" : "Nancy",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "55",
+    "x" : "48.77",
+    "y" : "5.16",
+    "departmentName" : "Meuse",
+    "prefecture" : "Bar-le-Duc",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "56",
+    "x" : "47.64",
+    "y" : "-2.757",
+    "departmentName" : "Morbihan",
+    "prefecture" : "Vannes",
+    "regionCode" : "53",
+    "regionName" : "Bretagne"
+  },
+  {
+    "departmentCode" : "57",
+    "x" : "49.11",
+    "y" : "6.17",
+    "departmentName" : "Moselle",
+    "prefecture" : "Metz",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "58",
+    "x" : "46.99",
+    "y" : "3.15",
+    "departmentName" : "Nièvre",
+    "prefecture" : "Nevers",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "59",
+    "x" : "50.618",
+    "y" : "3.032",
+    "departmentName" : "Nord",
+    "prefecture" : "Lille",
+    "regionCode" : "32",
+    "regionName" : "Hauts-de-France"
+  },
+  {
+    "departmentCode" : "60",
+    "x" : "49.43",
+    "y" : "3.09",
+    "departmentName" : "Oise",
+    "prefecture" : "Beauvais",
+    "regionCode" : "32",
+    "regionName" : "Hauts-de-France"
+  },
+  {
+    "departmentCode" : "61",
+    "x" : "48.43",
+    "y" : "0.08",
+    "departmentName" : "Orne",
+    "prefecture" : "Alençon",
+    "regionCode" : "28",
+    "regionName" : "Normandie"
+  },
+  {
+    "departmentCode" : "62",
+    "x" : "50.28",
+    "y" : "2.77",
+    "departmentName" : "Pas-de-Calais",
+    "prefecture" : "Arras",
+    "regionCode" : "32",
+    "regionName" : "Hauts-de-France"
+  },
+  {
+    "departmentCode" : "63",
+    "x" : "45.76",
+    "y" : "3.10",
+    "departmentName" : "Puy-de-Dôme",
+    "prefecture" : "Clermont-Ferrand",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "64",
+    "x" : "43.30",
+    "y" : "-0.38",
+    "departmentName" : "Pyrénées-Atlantiques",
+    "prefecture" : "Pau",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "65",
+    "x" : "43.22",
+    "y" : "0.07",
+    "departmentName" : "Hautes-Pyrénées",
+    "prefecture" : "Tarbes",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "66",
+    "x" : "42.69",
+    "y" : "2.79",
+    "departmentName" : "Pyrénées-Orientales",
+    "prefecture" : "Perpignan",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "67",
+    "x" : "48.57",
+    "y" : "7.75",
+    "departmentName" : "Bas-Rhin",
+    "prefecture" : "Strasbourg",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "68",
+    "x" : "48.06",
+    "y" : "7.39",
+    "departmentName" : "Haut-Rhin",
+    "prefecture" : "Colmar",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "69",
+    "x" : "45.74",
+    "y" : "4.83",
+    "departmentName" : "Rhône",
+    "prefecture" : "Lyon",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "70",
+    "x" : "47.61",
+    "y" : "6.16",
+    "departmentName" : "Haute-Saône",
+    "prefecture" : "Vesoul",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "71",
+    "x" : "46.28",
+    "y" : "4.81",
+    "departmentName" : "Saône-et-Loire",
+    "prefecture" : "Mâcon",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "72",
+    "x" : "48.01",
+    "y" : "0.20",
+    "departmentName" : "Sarthe",
+    "prefecture" : "Le Mans",
+    "regionCode" : "52",
+    "regionName" : "Pays de la Loire"
+  },
+  {
+    "departmentCode" : "73",
+    "x" : "45.56",
+    "y" : "5.93",
+    "departmentName" : "Savoie",
+    "prefecture" : "Chambéry",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "74",
+    "x" : "45.89",
+    "y" : "6.13",
+    "departmentName" : "Haute-Savoie",
+    "prefecture" : "Annecy",
+    "regionCode" : "84",
+    "regionName" : "Auvergne-Rhône-Alpes"
+  },
+  {
+    "departmentCode" : "75",
+    "x" : "48.85",
+    "y" : "2.34",
+    "departmentName" : "Paris",
+    "prefecture" : "Paris",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "76",
+    "x" : "49.43",
+    "y" : "1.071",
+    "departmentName" : "Seine-Maritime",
+    "prefecture" : "Rouen",
+    "regionCode" : "28",
+    "regionName" : "Normandie"
+  },
+  {
+    "departmentCode" : "77",
+    "x" : "48.79",
+    "y" : "3.01",
+    "departmentName" : "Seine-et-Marne",
+    "prefecture" : "Melun",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "78",
+    "x" : "48.77",
+    "y" : "2.02",
+    "departmentName" : "Yvelines",
+    "prefecture" : "Versailles",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "79",
+    "x" : "46.32",
+    "y" : "-0.46",
+    "departmentName" : "Deux-Sèvres",
+    "prefecture" : "Niort",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "80",
+    "x" : "49.89",
+    "y" : "2.29",
+    "departmentName" : "Somme",
+    "prefecture" : "Amiens",
+    "regionCode" : "32",
+    "regionName" : "Hauts-de-France"
+  },
+  {
+    "departmentCode" : "81",
+    "x" : "43.92",
+    "y" : "2.15",
+    "departmentName" : "Tarn",
+    "prefecture" : "Albi",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "82",
+    "x" : "44.01",
+    "y" : "1.36",
+    "departmentName" : "Tarn-et-Garonne",
+    "prefecture" : "Montauban",
+    "regionCode" : "76",
+    "regionName" : "Occitanie"
+  },
+  {
+    "departmentCode" : "83",
+    "x" : "43.13",
+    "y" : "5.95",
+    "departmentName" : "Var",
+    "prefecture" : "Toulon",
+    "regionCode" : "93",
+    "regionName" : "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    "departmentCode" : "84",
+    "x" : "44.05",
+    "y" : "5.03",
+    "departmentName" : "Vaucluse",
+    "prefecture" : "Avignon",
+    "regionCode" : "93",
+    "regionName" : "Provence-Alpes-Côte d'Azur"
+  },
+  {
+    "departmentCode" : "85",
+    "x" : "46.66",
+    "y" : "1.42",
+    "departmentName" : "Vendée",
+    "prefecture" : "La Roche-sur-Yon",
+    "regionCode" : "52",
+    "regionName" : "Pays de la Loire"
+  },
+  {
+    "departmentCode" : "86",
+    "x" : "46.58",
+    "y" : "0.34",
+    "departmentName" : "Vienne",
+    "prefecture" : "Poitiers",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "87",
+    "x" : "45.83",
+    "y" : "1.26",
+    "departmentName" : "Haute-Vienne",
+    "prefecture" : "Limoges",
+    "regionCode" : "75",
+    "regionName" : "Nouvelle-Aquitaine"
+  },
+  {
+    "departmentCode" : "88",
+    "x" : "46.17",
+    "y" : "6.44",
+    "departmentName" : "Vosges",
+    "prefecture" : "Épinal",
+    "regionCode" : "44",
+    "regionName" : "Grand Est"
+  },
+  {
+    "departmentCode" : "89",
+    "x" : "47.79",
+    "y" : "3.57",
+    "departmentName" : "Yonne",
+    "prefecture" : "Auxerres",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "90",
+    "x" : "4782",
+    "y" : "6.86",
+    "departmentName" : "Territoire de Belfort",
+    "prefecture" : "Belfort",
+    "regionCode" : "27",
+    "regionName" : "Bourgogne-Franche-Comté"
+  },
+  {
+    "departmentCode" : "91",
+    "x" : "48.53",
+    "y" : "2.21",
+    "departmentName" : "Essonne",
+    "prefecture" : "Evry",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "92",
+    "x" : "48.88",
+    "y" : "2.18",
+    "departmentName" : "Hauts-de-Seine",
+    "prefecture" : "Nanterre",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "93",
+    "x" : "48.90",
+    "y" : "2.43",
+    "departmentName" : "Seine-Saint-Denis",
+    "prefecture" : "Bobigny",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "94",
+    "x" : "48.77",
+    "y" : "2.45",
+    "departmentName" : "Val-de-Marne",
+    "prefecture" : "Créteil",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "95",
+    "x" : "49.7",
+    "y" : "2.21",
+    "departmentName" : "Val-d'oise",
+    "prefecture" : "Cergy",
+    "regionCode" : "11",
+    "regionName" : "Île-de-France"
+  },
+  {
+    "departmentCode" : "971",
+    "x" : "16.23",
+    "y" : "-61.53",
+    "departmentName" : "Guadeloupe",
+    "prefecture" : "Basse-Terre",
+    "regionCode" : "01",
+    "regionName" : "Guadeloupe"
+  },
+  {
+    "departmentCode" : "972",
+    "x" : "14.64",
+    "y" : "-60.99",
+    "departmentName" : "Martinique",
+    "prefecture" : "Fort-de-France",
+    "regionCode" : "02",
+    "regionName" : "Martinique"
+  },
+  {
+    "departmentCode" : "973",
+    "x" : "4.390",
+    "y" : "-53.0",
+    "departmentName" : "Guyane",
+    "prefecture" : "Cayenne",
+    "regionCode" : "03",
+    "regionName" : "Guyane"
+  },
+  {
+    "departmentCode" : "974",
+    "x" : "-21.13",
+    "y" : "55.55",
+    "departmentName" : "La Réunion",
+    "prefecture" : "Saint-Denis",
+    "regionCode" : "04",
+    "regionName" : "La Réunion"
+  },
+  {
+    "departmentCode" : "976",
+    "x" : "-12.78",
+    "y" : "45.20",
+    "departmentName" : "Mayotte",
+    "prefecture" : "Mamoudzou",
+    "regionCode" : "06",
+    "regionName" : "Mayotte"
+  },
+  {
+    "departmentCode" : "987",
+    "x" : "-17.665",
+    "y" : "-149.491",
+    "departmentName" : "Polynésie Française",
+    "prefecture" : "Papeete",
+    "regionCode" : null,
+    "regionName" : null
+  },
+  {
+    "departmentCode" : "988",
+    "x" : "-22.106",
+    "y" : "166.432",
+    "departmentName" : "Nouvelle Calédonie",
+    "prefecture" : "Noumea",
+    "regionCode" : null,
+    "regionName" : null
+  }
+]

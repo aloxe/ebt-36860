@@ -41,9 +41,10 @@ export function Profile() {
       </div>
       {!user?.my_city && requestRefresh && <><br/><br/><Spinner /></> }
       {user?.my_city && <div>
+        👤 :
         {user.id !== user.username
-        ? <div>👤 :  <a href={`https://fr.eurobilltracker.com/profile/?user=${user.id}`} target="_blank">{user.username} (🔗)</a></div>
-        : <div>👤 :  {user.username}</div>}
+        ? <a href={`https://fr.eurobilltracker.com/profile/?user=${user.id}`} target="_blank">{user.username} (🔗)</a>
+        : <>{user.username}</>}
         <br />📧 : {user.email}
         <br />🏠 : {user.my_city}, {user.my_country}
         <br />💶 : {user.totalbills}

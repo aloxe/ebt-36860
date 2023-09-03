@@ -32,7 +32,7 @@ export default function Dashboard() {
       </div>
       {user?.username && <Profile />}
       {user?.username && <Cities />}
-      {visited?.visitedUnknown && <Unknowns />}
+      {visited?.unknown > 0 && <Unknowns />}
       </>
     )
 }

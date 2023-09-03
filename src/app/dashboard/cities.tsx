@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/hooks/authprovider"
-import { matchCommunes, addPostcodes } from "@/helpers/cityutils"
+import { matchCommunes, addPostcodes, matchPrefectures } from "@/helpers/cityutils"
 import { getCities } from "@/helpers/ebtutils"
 import Spinner from "@/components/spinner";
 
@@ -15,7 +15,8 @@ interface city {
   "nrlocations": number,
   "postcodes": string[],
   "departement": string,
-  "samePostcode"?: string[]
+  "samePostcode"?: string[],
+  "pref"?: ""
 }
 
 export function Cities() {
@@ -34,11 +35,22 @@ export function Cities() {
     setVisited(visited);
   }, [cities, setVisited]);
 
+    const countFrenchPrefectures = useCallback( async (visited:any) => {
+    const visitedlocations = visited.visitedCities
+    const regions = require("@/data/departments_regions_france_2017.json")
+    const newVisited = await matchPrefectures(visitedlocations, regions)
+    localStorage.setItem('visited', JSON.stringify(newVisited));
+    setVisited(newVisited);
+  }, [setVisited]);
+
   useEffect(() => {
     if (cities?.france > 0 && !visited) {
       countFrenchCommunes();
     }
-  }, [cities, visited, countFrenchCommunes])
+    if (visited && !visited.prefectures) {
+      countFrenchPrefectures(visited);
+    }
+  }, [cities, visited, countFrenchCommunes, countFrenchPrefectures])
 
   var d = new Date(cities?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -77,34 +89,33 @@ export function Cities() {
             className="px-5 py-4"
           >
             <h2 className={`mb-3 text-lg font-semibold`}>
-              Load your cities{' '}
+              Load your locations from EBT{' '}
               <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
                 -&gt;
               </span>
             </h2>
           </a>}
-          { request && !cities && <><br/><br/><Spinner /></> }
-          { cities && <h2>Locations where you found notes</h2>}
-
+          { ((request && !cities) || cities) && <h2>Locations where you found notes</h2>}
           { cities && <div className="text-right text-stone-400 text-sm">{date} 
             <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span></div> }
         </div>
+            { request && !cities && <><br/><br/><Spinner /> loading locations from eurobilltracker</> }
             { cities && <>
-            <br />🌍 : {cities.rows} locations worldwide
+            🌍 : {cities.rows} locations worldwide
             {cities?.france > 0 && !visited && <div>🇫🇷 : {cities.france} locations in France</div>}
             {cities?.france == 0 && <div>🇫🇷 : You didn&apos;t reccord euro bank notes in France</div>}
             {/* {TODO: why don't you start to collect? } */}
-            {cities?.france > 0 && !visited && <><br/><br/><Spinner /></>}
-            {visited && <h2>Your french statistics</h2>}
+            {cities && !visited && <><br/><br/><Spinner /> finding french communes</>}
+            {visited && <h2 className="mt-2">Your french statistics</h2>}
             {visited && <>
-            <br/>📍 : {cities.france} locations in France
-            <br/>🏘️ : <b>{visited.visitedCommunes.length} french communes</b>
-            {/* <br/>🇫🇷 : {visited.visitedCommunes.length} départements */}
-            {/* <br/>🏛️ : {visited.visitedCommunes.length} préfectures */}
-            <><br/><br/></>
+            📍 : {cities.france} locations in France
+            <br/>🏘️ : <b>{visited.communes} french communes</b>
+            <br/>🇫🇷 : {visited.departements} départements
+            {visited && !visited.prefectures && <><br/><br/><Spinner /> finding french préfectures</>}
+            {visited?.prefectures && <><br/>🏛️ : {visited.prefectures} préfectures</>}
             </>
             }
-            {visited && visited.visitedUnknown.length > 0 && `you have ${visited.visitedUnknown.length} unidentified locations`}
+            {visited && visited.unknown > 0 && <><br/><br/>you have {visited.unknown} unidentified locations</>}
           </> }
       </div>
     </>

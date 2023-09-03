@@ -1,6 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from "react";
-import Spinner from "@/components/spinner";
+import { useMemo } from "react";
 import { useAuth } from "@/hooks/authprovider";
 import { Dropdown } from "@/components/dropdown";
 
@@ -31,8 +30,10 @@ export function Unknowns() {
     var d = new Date(visited?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
+  const visitedUnknown = useMemo(() => visited.visitedCities.filter((city: city) => !city.code),
+[visited.visitedCities]);
 
-  const saveEBTlocation = async (newLocation:any) => {
+const saveEBTlocation = async (newLocation:any) => {
 
     // TODO factorise this one
     function getRequestBody(body: any) {
@@ -145,12 +146,12 @@ export function Unknowns() {
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          { visited?.visitedUnknown && <h2>Locations you visited without identified commune</h2>}
+          { visited?.unknown > 0 && <h2>Locations you visited without identified commune</h2>}
           { visited?.date && <div className="text-right text-stone-400 text-sm">{date}
           </div>}
         </div>
         <div className="">
-          {visited?.visitedUnknown.map((city:city) => {
+          {visitedUnknown.map((city:city) => {
             const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
             return city.possible && <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
                 <div className="leading-7 p-5">{city.city} is in 

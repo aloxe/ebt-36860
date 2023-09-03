@@ -12,15 +12,33 @@ export const removeDuplicateCommunes = (cities) => {
   return newcities;
 }
 
+export const removeDuplicateDepartements = (cities) => {
+  var newcities = cities.filter((city, index, self) =>
+    index === self.findIndex((c) => (
+      c.departement === city.departement
+    ))
+  );
+  return newcities;
+}
+
+export const removeDuplicatePrefectures = (cities) => {
+  var newcities = cities.filter((city, index, self) =>
+    !!city.pref &&
+    index === self.findIndex((c) => (
+      c.pref === city.pref
+    ))
+  );
+  return newcities;
+}
+
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
   visitedCities.map(function (city) {
     // check same name + dept
-    // console.log(city.city + " " + city.departement);
     var foundCommune = communes.find((commune) => city.city == commune.nom
       && city.departement == commune.departement)
     city.code = foundCommune ? foundCommune.code : undefined;
-    // foundCommune && console.log("★★★ " + city.city);
+    city.commune = foundCommune ? foundCommune.nom : undefined;
   });
 
   visitedCities.map(function (city) {
@@ -29,24 +47,22 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
         && city.departement == commune.departement)
       city.code = foundCommune ? foundCommune.code : undefined;
-      // foundCommune && console.log(city.city + " ←→ " + foundCommune.nom);
+      city.commune = foundCommune ? foundCommune.nom : undefined;
     }
   });
 
   visitedCities.map(function (city) {
     if (!city.code) {
-      // check name included + dept + postcode
+      // check name included + postcode
       var possibleCommunes = communes.filter((commune) => commune.nom.includes(city.city)
-        && city.departement == commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || [])
         )
       if (possibleCommunes?.length == 1) {
         city.code = possibleCommunes[0].code;
         city.commune = possibleCommunes[0].nom;
-        // console.log("found " + city.city + " in " + possibleCommunes[0].nom);
+        city.departement = possibleCommunes[0].departement;
       } else if (possibleCommunes?.length > 1) {
         city.possible = possibleCommunes;
-        // console.log(city.city + " found ", possibleCommunes);
       }
     }
   });
@@ -59,10 +75,9 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       if (samePostcode.length == 1) {
         city.code = samePostcode[0].code;
         city.commune = samePostcode[0].nom;
-        // console.log(city.postcodes[0] + " is only => " + city.city + " (" + city.commune + ")");
+        city.departement = samePostcode[0].departement;
       } else if (samePostcode?.length > 1 && !city.possible) {
         city.possible = samePostcode;
-        // console.log(city.city + " found ", possibleCommunes);
       }
     }
   });
@@ -74,11 +89,22 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         && hasSamePostcode(city.postcodes || [], [lieu.codePostal]))
       city.code = foundCommune ? foundCommune.codeCommune : undefined;
       city.commune = foundCommune ? foundCommune.nomCommune : undefined;
-      // console.log("EBT: " + city.city + " is in " + foundCommune?.nomCommune);
+      city.departement = foundCommune ? foundCommune.codeCommune.substring(0,2) : undefined;
     }
   });
 
- return splitVisited(visitedCities)
+ return refreshVisited(visitedCities)
+}
+
+export const matchPrefectures = async (visitedCities, departements) => {
+  visitedCities.map(function (city) {
+    var foundPref = departements.find((dep) => city.commune == dep.prefecture)
+    city.pref = foundPref ? foundPref.departmentCode : undefined;
+  });
+    const visitedPrefectures = removeDuplicatePrefectures(visitedCities);
+   const visited =  refreshVisited(visitedCities);
+   visited.prefectures = visitedPrefectures.length;
+   return visited;
 }
 
 export function addPostcodes(user, citiesArray) {
@@ -90,25 +116,24 @@ export function addPostcodes(user, citiesArray) {
     } else {
     city.postcodes = [city.top_zipcode];
     }
-  // useerful french division
+  // useful french division
     if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     return city
   })
   );
 }
 
-// TODO keep only visitedCities and useMemo for others
-export const splitVisited = (visitedCities) =>  {
+export const refreshVisited = (visitedCities) =>  {
   const visitedKnown = visitedCities.filter(city => city.code)
+  const visitedCommunes = removeDuplicateCommunes(visitedKnown);
+  const visitedDepartements = removeDuplicateDepartements(visitedCities);
+  const visitedUnknown = visitedCities.filter(city => !city.code);
   return {
     visitedCities,
-    visitedKnown: visitedCities.filter(city => city.code),
-    visitedCommunes: removeDuplicateCommunes(visitedKnown),
-    visitedUnknown: visitedCities.filter(city => !city.code),
+    communes: visitedCommunes.length,
+    departements: visitedDepartements.length,
+    unknown: visitedUnknown.length,
     date: Date.now()
   };
 }
 
-export const refreshVisited = (visited) =>  {
-  visited = splitVisited(visited.visitedCities)
-};
