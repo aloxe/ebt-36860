@@ -10,8 +10,8 @@ export async function POST(request) {
 }
 
 function saveData(newLocation) {
-  let data = require('../../_data/ebtlocation-test.json');
+  let data = require('@/data/ebtlocation-test.json');
   data.lieux.push(newLocation)
   data.date = "last_updated=" + new Date().toISOString();
-  fs.writeFileSync('src/app/_data/ebtlocation-test.json', JSON.stringify(data, null, 4));
+  fs.writeFileSync('src/data/ebtlocation-test.json', JSON.stringify(data, null, 4));
 }

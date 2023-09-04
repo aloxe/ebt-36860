@@ -1,0 +1,40 @@
+{
+    "lieux": [
+        {
+            "codePostal": "75000",
+            "codeCommune": "75101",
+            "nomEBT": "Paris",
+            "nomCommune": "Paris 1er Arrondissement",
+            "ref": "0"
+        },
+        {
+            "codePostal": "16300",
+            "codeCommune": "16360",
+            "nomEBT": "Barbezieux",
+            "nomCommune": "Salles-de-Barbezieux",
+            "ref": "undefined"
+        },
+        {
+            "codePostal": "25340",
+            "codeCommune": "25246",
+            "nomEBT": "Clerval",
+            "nomCommune": "Fontaine-lès-Clerval",
+            "ref": "undefined"
+        },
+        {
+            "codePostal": "17240",
+            "codeCommune": "17084",
+            "nomEBT": "Port-Maubert",
+            "nomCommune": "Champagnolles",
+            "ref": "undefined"
+        },
+        {
+            "codePostal": "17150",
+            "codeCommune": "17052",
+            "nomEBT": "Port-Vitrezay",
+            "nomCommune": "Boisredon",
+            "ref": "undefined"
+        }
+    ],
+    "date": "last_updated=2023-09-02T20:56:19.673Z"
+}

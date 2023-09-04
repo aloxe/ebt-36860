@@ -1,5 +1,5 @@
 'use client'
-import { useAuth } from "../_hooks/authprovider";
+import { useAuth } from "../../hooks/authprovider";
 import { Cities } from './cities';
 import { Profile } from './profile';
 import { Unknowns } from "./unknowns";
@@ -32,7 +32,7 @@ export default function Dashboard() {
       </div>
       {user?.username && <Profile />}
       {user?.username && <Cities />}
-      {visited?.visitedUnknown && <Unknowns />}
+      {visited?.unknown > 0 && <Unknowns />}
       </>
     )
 }

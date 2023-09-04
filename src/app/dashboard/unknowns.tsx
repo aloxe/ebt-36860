@@ -1,9 +1,7 @@
 'use client'
-import { useState, useEffect, useRef } from "react";
-import EBTLocations from "../_data/ebtlocation-test.json"
-import Spinner from "../_components/spinner";
-import { useAuth } from "../_hooks/authprovider";
-import { Dropdown } from "../_components/dropdown";
+import { useMemo } from "react";
+import { useAuth } from "@/hooks/authprovider";
+import { Dropdown } from "@/components/dropdown";
 
 
 interface commune {
@@ -26,31 +24,18 @@ interface city {
   "possible"?: commune[];
 }
 
-interface user {
-  "sessionid": string
-  "username": string
-  "my_city": string[]
-  "my_country": string
-  "my_zip": string
-  "totalbills": number
-  "totalhits": number
-  "email": string
-  "date": string
-}
-
 export function Unknowns() {
-  const [requestUnknown, setRequestUnknown] = useState<boolean>(false);
   const { visited, user } = useAuth();
 
     var d = new Date(visited?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
-  useEffect(() => {
-    console.log(" === use effect === => ", visited);
-  }, [])
+  const visitedUnknown = useMemo(() => visited.visitedCities.filter((city: city) => !city.code),
+[visited.visitedCities]);
 
-  const saveEBTlocation = async (newLocation:any) => {
+const saveEBTlocation = async (newLocation:any) => {
 
+    // TODO factorise this one
     function getRequestBody(body: any) {
       var bodyArray: String[] = [];
       for (var property in body) {
@@ -76,18 +61,8 @@ export function Unknowns() {
         return null;
       });
 
-    console.log("response=", response);
-
     const dataresult = await response?.json();
-    console.log("data= ", dataresult);
-  }
-
-
-    const handleRequestUnknown = async (event: React.MouseEvent<HTMLAnchorElement>) => {
-      event.preventDefault();
-      // const unknown = visited.visitedUnknown;
-      setRequestUnknown(true);
-      console.log("setRequestUnknown");
+    return dataresult;
   }
 
   function handleDropdownChoice(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -119,7 +94,7 @@ export function Unknowns() {
       item.url = item.code,
       item.action = handleDropdownChoice
     })
-    return (<Dropdown label={"chooze"} array={possibleCommunes} />)
+    return (<Dropdown label={"choose"} array={possibleCommunes} />)
   }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -128,21 +103,19 @@ export function Unknowns() {
     const departement = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
     const code = (event.target as HTMLInputElement).getElementsByTagName("input")[2].value
     const commune = (event.target as HTMLInputElement).getElementsByTagName("input")[3].value
-    const error = (event.target as HTMLInputElement).getElementsByTagName("span")[1]
-    console.log("SAVE");
-    console.log(departement + " " +location + "is in: ");
-    console.log(code);
-    console.log(commune);
-      console.log(visited);
+    const feedback = (event.target as HTMLInputElement).getElementsByTagName("span")[1]
+
       // if no commune or no code : error code
       if (!commune || !code) {
-        error.innerHTML = "commune missing, can't save";
+        feedback.className = "error"
+        feedback.innerHTML = "commune missing, can't save";
         return
       }
       visited.visitedCities.map(async function (city:city) {
         if (city.city == location && city.departement == departement) {
           if (city.commune) {
-            error.innerHTML = "commune already " + city.commune;
+            feedback.className = "error"
+            feedback.innerHTML = "commune already " + city.commune;
             return
           } else {
             city.code = code
@@ -158,8 +131,12 @@ export function Unknowns() {
             };
             // TODO make asyn
             const response = await saveEBTlocation(newEBTlocation)
-            error.className = "message"
-            error.innerHTML = "commune " + city.commune + " enregistrée";
+            if (!response) {
+              feedback.className = "error"
+              feedback.innerHTML = "network error, didn't save";
+            }
+            feedback.className = "message"
+            feedback.innerHTML = city.commune + " enregistrée";
           }
         }
       });
@@ -169,26 +146,12 @@ export function Unknowns() {
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          { <a
-            onClick={handleRequestUnknown}
-            href="#cities"
-            className="px-5 py-4"
-          >
-          {!requestUnknown && <h2 className={`mb-3 text-lg font-semibold`}>
-            List unknown locations{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>}
-          </a>}
-          { requestUnknown && !visited.visitedUnknown && <><br/><br/><Spinner /></> }
-          { requestUnknown && visited?.visitedUnknown && <h2>Locations where you found notes</h2>}
-
+          { visited?.unknown > 0 && <h2>Locations you visited without identified commune</h2>}
           { visited?.date && <div className="text-right text-stone-400 text-sm">{date}
-            <span className="text-right  text-blue-900 text-lg  cursor-pointer"> ⟳ </span></div> }
+          </div>}
         </div>
         <div className="">
-          {requestUnknown && visited?.visitedUnknown.map((city:city) => {
+          {visitedUnknown.map((city:city) => {
             const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
             return city.possible && <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
                 <div className="leading-7 p-5">{city.city} is in 

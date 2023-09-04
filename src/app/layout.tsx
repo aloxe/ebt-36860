@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import Header from './_components/header';
-import { AuthProvider } from './_hooks/authprovider';
+import Header from '../components/header';
+import { AuthProvider } from '../hooks/authprovider';
 
 export const metadata: Metadata = {
   title: 'Eurobilltracker ▤ 36860 ▥',
@@ -19,7 +19,7 @@ export default function RootLayout({
         <link href="/favicon.ico" rel="icon"></link>
       </head>
       <AuthProvider>
-        <body className="plop">
+        <body>
           <Header />
           <main className="flex min-h-screen flex-col p-8 mt-12">
             {children}
