@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/authprovider";
 import { Cities } from './cities';
 import { Profile } from './profile';
 import { Unknowns } from "./unknowns";
+import { UserMap } from "./usermap";
 
 interface user {
   "sessionid": string
@@ -33,6 +34,7 @@ export default function Dashboard() {
       {user?.username && <Profile />}
       {user?.username && <Cities />}
       {visited?.unknown > 0 && <Unknowns />}
+      {user?.username && <UserMap />}
       </>
     )
 }

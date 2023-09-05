@@ -16,6 +16,7 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "json-loader": "^0.5.7",
     "leaflet": "^1.9.4",
     "next": "13.4.10",
     "postcss": "8.4.26",
