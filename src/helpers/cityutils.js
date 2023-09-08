@@ -21,6 +21,15 @@ export const removeDuplicateDepartements = (cities) => {
   return newcities;
 }
 
+export const removeDuplicateRegions = (depRegions) => {
+  var newdepRegions = depRegions.filter((dept, index, self) =>
+    index === self.findIndex((d) => (
+      d.regionCode === dept.regionCode
+    ))
+  );
+  return newdepRegions;
+}
+
 export const removeDuplicatePrefectures = (cities) => {
   var newcities = cities.filter((city, index, self) =>
     !!city.pref &&
@@ -92,19 +101,21 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       city.departement = foundCommune ? foundCommune.codeCommune.substring(0,2) : undefined;
     }
   });
+  console.log("matchCommunes", visitedCities);
 
  return refreshVisited(visitedCities)
 }
 
 export const matchPrefectures = async (visitedCities, departements) => {
   visitedCities.map(function (city) {
-    var foundPref = departements.find((dep) => city.commune == dep.prefecture)
+  let foundPref = departements.find((dep) => city.commune == dep.prefecture)
     city.pref = foundPref ? foundPref.departmentCode : undefined;
   });
-    const visitedPrefectures = removeDuplicatePrefectures(visitedCities);
-   const visited =  refreshVisited(visitedCities);
-   visited.prefectures = visitedPrefectures.length;
-   return visited;
+  const visitedPrefectures = removeDuplicatePrefectures(visitedCities);
+  const visited =  refreshVisited(visitedCities);
+  visited.prefectures = visitedPrefectures.length;
+  console.log("matchPrefectures", visited);
+  return visited;
 }
 
 export function addPostcodes(user, citiesArray) {
@@ -126,12 +137,17 @@ export function addPostcodes(user, citiesArray) {
 export const refreshVisited = (visitedCities) =>  {
   const visitedKnown = visitedCities.filter(city => city.code)
   const visitedCommunes = removeDuplicateCommunes(visitedKnown);
+  const communes = visitedCommunes.map(el => el.departement)
   const visitedDepartements = removeDuplicateDepartements(visitedCities);
+  const departements = visitedDepartements.map(el => el.departement)
   const visitedUnknown = visitedCities.filter(city => !city.code);
+
+  var result = visitedDepartements.map(el => el.departement);
+console.log(result);
   return {
     visitedCities,
-    communes: visitedCommunes.length,
-    departements: visitedDepartements.length,
+    communes,
+    departements,
     unknown: visitedUnknown.length,
     date: Date.now()
   };

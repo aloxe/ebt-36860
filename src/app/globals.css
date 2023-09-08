@@ -40,6 +40,10 @@ h2 {
     visibility: visible;
   }
 
+  .z-1001 {
+    z-index: 1001;
+  }
+
   .form-row {
     @apply block mb-3 text-left
   }

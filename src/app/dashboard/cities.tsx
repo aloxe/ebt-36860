@@ -109,8 +109,8 @@ export function Cities() {
             {visited && <h2 className="mt-2">Your french statistics</h2>}
             {visited && <>
             📍 : {cities.france} locations in France
-            <br/>🏘️ : <b>{visited.communes} french communes</b>
-            <br/>🇫🇷 : {visited.departements} départements
+            <br/>🏘️ : <b>{visited.communes.length} french communes</b>
+            <br/>🇫🇷 : {visited.departements.length} départements
             {visited && !visited.prefectures && <><br/><br/><Spinner /> finding french préfectures</>}
             {visited?.prefectures && <><br/>🏛️ : {visited.prefectures} préfectures</>}
             </>
