@@ -4,6 +4,13 @@ import 'leaflet/dist/leaflet.css';
 import './map.css';
 import { useEffect, useState, useCallback } from 'react';
 import { removeDuplicateRegions } from '@/helpers/cityutils';
+import { GeoJSON as GeoJsonTypes } from 'geojson';
+
+type MyMapComponent = {
+  departements: any;
+}
+
+type Feature = GeoJsonTypes.Feature
 
 // TILES :
 const OSM ={ 
@@ -19,7 +26,6 @@ const OpenStreetMap_France ={
 }
 
 const regionsDept = require('@/data/departments_regions_france_2017.json')
-const regionsDeptFiltered = removeDuplicateRegions(regionsDept);
 const regionCodes:string[] = removeDuplicateRegions(regionsDept).map(item => item.regionCode);
 
 
@@ -33,8 +39,7 @@ const fetchData = async (codeRegion:string) => {
 
 
 
-export function MyMapComponent(props) {
-  const { departements } = props;
+export function MyMapComponent({ departements }: MyMapComponent) {
   const [ dataCommunes, setDataCommunes ] = useState([]);
 
   const handlefetchData = useCallback( async () => {
@@ -59,14 +64,32 @@ export function MyMapComponent(props) {
     }
   }, [dataCommunes, handlefetchData])
 
-  const geoDataDepartements = require("@/data/departements.geojson");
+  const deptLayer = {
+    data: require("@/data/departements.geojson"),
+    style
+  }
 
-    const style = feature => {
+  deptLayer.style = (feature: Feature) => {
     return {
       fillColor: departements?.includes(feature.properties.code) ? 'pink' : 'transparent', 
       dashArray: "3",
-      fillOpacity: 0.5,
+      fillOpacity: 0.4,
       color: 'black', 
+      weight: 1,
+      opacity: 1
+    };
+  };
+
+  const communesLayer = {
+    data: dataCommunes
+  }
+
+  communesLayer.style = (feature: Feature) => {
+    return {
+      fillColor: 'indigo', 
+      dashArray: "3",
+      fillOpacity: 0.6,
+      color: 'indigo', 
       weight: 1,
       opacity: 1
     };
@@ -84,8 +107,8 @@ export function MyMapComponent(props) {
         maxZoom={OpenStreetMap_France.maxZoom}
       />
       {/* { GeoData() } */}
-      <GeoJSON key="dada" data={geoDataDepartements} style={style} />
-      {dataCommunes.length > 1 && <GeoJSON key="saints" data={dataCommunes} />}
+      <GeoJSON key="dada" data={deptLayer.data} style={deptLayer.style} />
+      {dataCommunes.length > 1 && <GeoJSON key="saints" data={communesLayer.data} style={communesLayer.style} />}
       {/* {dataCommunes &&
         regionCodes.map((regionCode) => {
           console.log(regionCode);
