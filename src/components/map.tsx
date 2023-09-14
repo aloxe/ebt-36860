@@ -1,16 +1,21 @@
 'use client'
-import { useMap, TileLayer, MapContainer, GeoJSON, FeatureGroup } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css';
-import './map.css';
+import { TileLayer, MapContainer, GeoJSON } from 'react-leaflet'
 import { useEffect, useState, useCallback } from 'react';
 import { removeDuplicateRegions } from '@/helpers/cityutils';
-import { GeoJSON as GeoJsonTypes } from 'geojson';
+// import { GeoJSON as GeoJsonTypes } from 'geojson';
+import 'leaflet/dist/leaflet.css';
+import './map.css';
 
 type MyMapComponent = {
   departements: any;
+  showDep: boolean;
+  showCom: boolean;
 }
 
+// @ts-ignore
 type Feature = GeoJsonTypes.Feature
+// @ts-ignore
+type FeatureCollection = GeoJsonTypes.FeatureCollection
 
 // TILES :
 const OSM ={ 
@@ -26,6 +31,7 @@ const OpenStreetMap_France ={
 }
 
 const regionsDept = require('@/data/departments_regions_france_2017.json')
+// @ts-ignore
 const regionCodes:string[] = removeDuplicateRegions(regionsDept).map(item => item.regionCode);
 
 
@@ -37,21 +43,21 @@ const fetchData = async (codeRegion:string) => {
   return results;
 }
 
-
-
-export function MyMapComponent({ departements }: MyMapComponent) {
-  const [ dataCommunes, setDataCommunes ] = useState([]);
+export function MyMapComponent({ departements, showDep, showCom }: MyMapComponent) {
+  const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
 
   const handlefetchData = useCallback( async () => {
-    let communesToDisplay: any[] = Array();
+    let communesToDisplay = new Array();
     let regionToDisplay = [];
     regionCodes.map( async (regionCode) => {
       // TODO make this fetch quicker or send it to GeoJson before
       const regionCommunes = await fetchData(regionCode);
-      const regionSaintCommunes = await regionCommunes.features.filter((asset) => asset.properties.nom.includes("Saint"));
+      const regionSaintCommunes = await regionCommunes.features.filter((asset:Feature) => asset.properties.nom.includes("Saint"));
       communesToDisplay = communesToDisplay.concat(regionSaintCommunes)
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
+        console.log(communesToDisplay);
+        
         setDataCommunes(communesToDisplay);
       }
     });
@@ -59,14 +65,12 @@ export function MyMapComponent({ departements }: MyMapComponent) {
 
   useEffect(() => {
     if (dataCommunes.length < 1) {
-      console.log("=== === === ===");
       handlefetchData()
     }
   }, [dataCommunes, handlefetchData])
 
-  const deptLayer = {
+  const deptLayer : {data:FeatureCollection, style?:any} = {
     data: require("@/data/departements.geojson"),
-    style
   }
 
   deptLayer.style = (feature: Feature) => {
@@ -80,7 +84,7 @@ export function MyMapComponent({ departements }: MyMapComponent) {
     };
   };
 
-  const communesLayer = {
+  const communesLayer : {data:FeatureCollection, style?:any} = {
     data: dataCommunes
   }
 
@@ -96,26 +100,20 @@ export function MyMapComponent({ departements }: MyMapComponent) {
   };
 
   return (
-    <MapContainer 
+    <>
+    {/* <MapContainer
       center={[46.449, 2.867]}
       zoom={6}
       scrollWheelZoom={false}
-      placeholder={<p>carte machin</p>}>
+      placeholder={<p>carte de France</p>}>
       <TileLayer
         attribution={OpenStreetMap_France.attribution} 
         url={OpenStreetMap_France.url}
         maxZoom={OpenStreetMap_France.maxZoom}
       />
-      {/* { GeoData() } */}
-      <GeoJSON key="dada" data={deptLayer.data} style={deptLayer.style} />
-      {dataCommunes.length > 1 && <GeoJSON key="saints" data={communesLayer.data} style={communesLayer.style} />}
-      {/* {dataCommunes &&
-        regionCodes.map((regionCode) => {
-          console.log(regionCode);
-          
-          return (<GeoJSON key={regionCode} data={dataCommunes[regionCode]} />)
-        })
-      } */}
-    </MapContainer>
+      {showDep && <GeoJSON key="dada" data={deptLayer.data} style={deptLayer.style} />}
+      {showCom && dataCommunes.length > 1 && <GeoJSON key="saints" data={communesLayer.data} style={communesLayer.style} />}
+    </MapContainer> */}
+    </>
   )
 }

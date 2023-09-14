@@ -63,13 +63,13 @@ export const getPostcodes = async (user, city) => {
     return cities;
   }
 
-    export const refreshUser = async (user) => {
-      const requestOptions = {
+  export const refreshUser = async (user) => {
+    const requestOptions = {
       method: 'GET',
       credentials: 'include',
     };
 
-    // cookie set doesn't worrk (samee domain)
+    // cookie set doesn't worrk (same domain)
     // const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1`, requestOptions)
     const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1&PHPSESSID=${user.sessionid}`, requestOptions)
       .catch(function (err) {

@@ -29,7 +29,7 @@ export default function Dashboard() {
         <h1>
           {!user && `You need to log in to see this page…`}
           {user?.username && `Dashboard of ${user.username}`}
-          </h1>
+        </h1>
       </div>
       {user?.username && <Profile />}
       {user?.username && <Cities />}
