@@ -7,7 +7,8 @@ import 'leaflet/dist/leaflet.css';
 import './map.css';
 
 type MyMapComponent = {
-  departements: any;
+  departements: string[];
+  communes: string[];
   showDep: boolean;
   showCom: boolean;
 }
@@ -43,7 +44,7 @@ const fetchData = async (codeRegion:string) => {
   return results;
 }
 
-export function MyMapComponent({ departements, showDep, showCom }: MyMapComponent) {
+export function MyMapComponent({ departements, communes, showDep, showCom }: MyMapComponent) {
   const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
 
   const handlefetchData = useCallback( async () => {
@@ -52,12 +53,12 @@ export function MyMapComponent({ departements, showDep, showCom }: MyMapComponen
     regionCodes.map( async (regionCode) => {
       // TODO make this fetch quicker or send it to GeoJson before
       const regionCommunes = await fetchData(regionCode);
-      const regionSaintCommunes = await regionCommunes.features.filter((asset:Feature) => asset.properties.nom.includes("Saint"));
-      communesToDisplay = communesToDisplay.concat(regionSaintCommunes)
+      const regionUserCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
+      // keeping nice example
+      // const regionSaintCommunes = await regionCommunes.features.filter((asset:Feature) => asset.properties.code.includes("Saint"));
+      communesToDisplay = communesToDisplay.concat(regionUserCommunes)
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
-        console.log(communesToDisplay);
-        
         setDataCommunes(communesToDisplay);
       }
     });
