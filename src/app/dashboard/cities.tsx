@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/hooks/authprovider"
 import { matchCommunes, addPostcodes, matchPrefectures } from "@/helpers/cityutils"
 import { getCities } from "@/helpers/ebtutils"
-import Spinner from "@/components/spinner";
+import Spinner from "@/components/common/spinner";
 
 interface city {
   "code"?: string;

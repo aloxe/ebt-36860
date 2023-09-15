@@ -1,6 +1,6 @@
 'use client'
 import { useAuth } from "@/hooks/authprovider"
-import {MyMapComponent} from "@/components/map";
+import {MyMapComponent} from "@/components/Map/map";
 import { useState } from "react";
 
 

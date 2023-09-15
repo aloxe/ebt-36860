@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/authprovider"
 import { refreshUser } from "@/helpers/ebtutils";
-import Spinner from "@/components/spinner";
+import Spinner from "@/components/common/spinner";
 
 export function Profile() {
   const { user, setUser } = useAuth();

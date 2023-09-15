@@ -18,13 +18,13 @@ type Feature = GeoJsonTypes.Feature
 type FeatureCollection = GeoJsonTypes.FeatureCollection
 
 // TILES :
-const OSM ={ 
+const OSM = { 
   url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   maxZoom: 20,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }
 
-const OpenStreetMap_France ={ 
+const OpenStreetMap_France = { 
   url: 'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
   maxZoom: 20,
   attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -101,7 +101,7 @@ export function MyMapComponent({ departements, showDep, showCom }: MyMapComponen
 
   return (
     <>
-    {/* <MapContainer
+    <MapContainer
       center={[46.449, 2.867]}
       zoom={6}
       scrollWheelZoom={false}
@@ -113,7 +113,7 @@ export function MyMapComponent({ departements, showDep, showCom }: MyMapComponen
       />
       {showDep && <GeoJSON key="dada" data={deptLayer.data} style={deptLayer.style} />}
       {showCom && dataCommunes.length > 1 && <GeoJSON key="saints" data={communesLayer.data} style={communesLayer.style} />}
-    </MapContainer> */}
+    </MapContainer>
     </>
   )
 }

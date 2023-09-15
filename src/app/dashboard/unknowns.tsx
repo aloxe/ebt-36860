@@ -1,7 +1,7 @@
 'use client'
 import { useMemo } from "react";
 import { useAuth } from "@/hooks/authprovider";
-import { Dropdown } from "@/components/dropdown";
+import { Dropdown } from "@/components/common/dropdown";
 
 
 interface commune {
