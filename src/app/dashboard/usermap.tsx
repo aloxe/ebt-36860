@@ -41,7 +41,7 @@ export function UserMap() {
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
         {typeof window !== 'undefined' && (
-          <MyMapComponent departements={visited?.departements} showDep={showDep} showCom={showCom} />
+          <MyMapComponent departements={visited?.departements} communes={visited?.communes}  showDep={showDep} showCom={showCom} />
         )}
       </div>
     </div>

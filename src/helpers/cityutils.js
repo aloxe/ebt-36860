@@ -101,9 +101,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       city.departement = foundCommune ? foundCommune.codeCommune.substring(0,2) : undefined;
     }
   });
-  console.log("matchCommunes", visitedCities);
-
- return refreshVisited(visitedCities)
+  return refreshVisited(visitedCities)
 }
 
 export const matchPrefectures = async (visitedCities, departements) => {
@@ -114,7 +112,6 @@ export const matchPrefectures = async (visitedCities, departements) => {
   const visitedPrefectures = removeDuplicatePrefectures(visitedCities);
   const visited =  refreshVisited(visitedCities);
   visited.prefectures = visitedPrefectures.length;
-  console.log("matchPrefectures", visited);
   return visited;
 }
 
@@ -137,13 +134,11 @@ export function addPostcodes(user, citiesArray) {
 export const refreshVisited = (visitedCities) =>  {
   const visitedKnown = visitedCities.filter(city => city.code)
   const visitedCommunes = removeDuplicateCommunes(visitedKnown);
-  const communes = visitedCommunes.map(el => el.departement)
+  const communes = visitedCommunes.map(el => el.code)
   const visitedDepartements = removeDuplicateDepartements(visitedCities);
   const departements = visitedDepartements.map(el => el.departement)
   const visitedUnknown = visitedCities.filter(city => !city.code);
 
-  var result = visitedDepartements.map(el => el.departement);
-console.log(result);
   return {
     visitedCities,
     communes,
