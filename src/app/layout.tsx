@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import Header from '../components/header';
+import Header from '../components/Header/header';
 import { AuthProvider } from '../hooks/authprovider';
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
             {children}
           </main>
         </body>
-        </AuthProvider>
+      </AuthProvider>
     </html>
   )
 }
