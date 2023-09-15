@@ -40,7 +40,7 @@ export function UserMap() {
         </div>
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
-        {process.env.BROWSER && (
+        {typeof window !== 'undefined' && (
           <MyMapComponent departements={visited?.departements} showDep={showDep} showCom={showCom} />
         )}
       </div>
