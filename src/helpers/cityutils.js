@@ -96,9 +96,11 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       // check name + dept + postcode in EBT locations
       var foundCommune = EBTLocations.lieux.find((lieu) => lieu.nomEBT == city.city
         && hasSamePostcode(city.postcodes || [], [lieu.codePostal]))
-      city.code = foundCommune ? foundCommune.codeCommune : undefined;
-      city.commune = foundCommune ? foundCommune.nomCommune : undefined;
-      city.departement = foundCommune ? foundCommune.codeCommune.substring(0,2) : undefined;
+      if (foundCommune) {
+        city.code = foundCommune.codeCommune;
+        city.commune = foundCommune.nomCommune;
+        city.departement = foundCommune.codeCommune.substring(0,2);
+      }
     }
   });
   return refreshVisited(visitedCities)
@@ -124,7 +126,7 @@ export function addPostcodes(user, citiesArray) {
     } else {
     city.postcodes = [city.top_zipcode];
     }
-  // useful french division
+  // add departement: useful french division
     if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     return city
   })
@@ -139,6 +141,13 @@ export const refreshVisited = (visitedCities) =>  {
   const departements = visitedDepartements.map(el => el.departement)
   const visitedUnknown = visitedCities.filter(city => !city.code);
 
+  // console.log({
+  //   visitedCities,
+  //   communes,
+  //   departements,
+  //   unknown: visitedUnknown.length,
+  //   date: Date.now()
+  // });
   return {
     visitedCities,
     communes,

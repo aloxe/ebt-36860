@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/hooks/authprovider"
 import { matchCommunes, addPostcodes, matchPrefectures } from "@/helpers/cityutils"
 import { getCities } from "@/helpers/ebtutils"
+import { saveVisited } from "@/helpers/saveutils"
 import Spinner from "@/components/common/spinner";
 
 interface city {
@@ -32,8 +33,10 @@ export function Cities() {
     const EBTLocations = require("@/data/ebtlocation-test.json")
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     localStorage.setItem('visited', JSON.stringify(visited));
+    // save user visited file
+    saveVisited(user.id, visited)
     setVisited(visited);
-  }, [cities, setVisited]);
+  }, [cities,user, setVisited]);
 
     const countFrenchPrefectures = useCallback( async (visited:any) => {
     const visitedlocations = visited.visitedCities

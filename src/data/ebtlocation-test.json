@@ -9,32 +9,39 @@
         },
         {
             "codePostal": "16300",
-            "codeCommune": "16360",
+            "codeCommune": "16028",
             "nomEBT": "Barbezieux",
-            "nomCommune": "Salles-de-Barbezieux",
+            "nomCommune": "Barbezieux-Saint-Hilaire",
             "ref": "undefined"
         },
         {
             "codePostal": "25340",
-            "codeCommune": "25246",
+            "codeCommune": "25156",
             "nomEBT": "Clerval",
-            "nomCommune": "Fontaine-lès-Clerval",
+            "nomCommune": "Pays-de-Clerval",
             "ref": "undefined"
         },
         {
-            "codePostal": "17240",
-            "codeCommune": "17084",
-            "nomEBT": "Port-Maubert",
-            "nomCommune": "Champagnolles",
+            "codePostal": "31120",
+            "codeCommune": "31458",
+            "nomEBT": "Roques-sur-Garonne",
+            "nomCommune": "Roques",
             "ref": "undefined"
         },
         {
-            "codePostal": "17150",
-            "codeCommune": "17052",
-            "nomEBT": "Port-Vitrezay",
-            "nomCommune": "Boisredon",
+            "codePostal": "60490",
+            "codeCommune": "60533",
+            "nomEBT": "Ressons",
+            "nomCommune": "Ressons-sur-Matz",
+            "ref": "undefined"
+        },
+        {
+            "codePostal": "44350",
+            "codeCommune": "44069",
+            "nomEBT": "Saillé",
+            "nomCommune": "Guérande",
             "ref": "undefined"
         }
     ],
-    "date": "last_updated=2023-09-02T20:56:19.673Z"
+    "date": "last_updated=2023-09-19T06:34:08.973Z"
 }

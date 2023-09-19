@@ -2,14 +2,13 @@
 import { useMemo } from "react";
 import { useAuth } from "@/hooks/authprovider";
 import { Dropdown } from "@/components/common/dropdown";
-
+import { saveEBTlocation } from "@/helpers/saveutils"
 
 interface commune {
   "code": string;
   "nom": string;
   "departement": string;
 }
-
 
 interface city {
   "code"?: string;
@@ -32,38 +31,6 @@ export function Unknowns() {
 
   const visitedUnknown = useMemo(() => visited.visitedCities.filter((city: city) => !city.code),
 [visited.visitedCities]);
-
-const saveEBTlocation = async (newLocation:any) => {
-
-    // TODO factorise this one
-    function getRequestBody(body: any) {
-      var bodyArray: String[] = [];
-      for (var property in body) {
-        var encodedKey = encodeURIComponent(property);
-        var encodedValue = encodeURIComponent(body[property]);
-        bodyArray.push(encodedKey + "=" + encodedValue);
-      }
-      return bodyArray.join("&");
-    }
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      }
-    };
-    const requestDetail = getRequestBody(newLocation)
-
-    // api bellow is rewritting to EBTlocations
-    const response = await fetch(`/api/staticdata/?${requestDetail}`, requestOptions)
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-
-    const dataresult = await response?.json();
-    return dataresult;
-  }
 
   function handleDropdownChoice(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
@@ -104,7 +71,6 @@ const saveEBTlocation = async (newLocation:any) => {
     const code = (event.target as HTMLInputElement).getElementsByTagName("input")[2].value
     const commune = (event.target as HTMLInputElement).getElementsByTagName("input")[3].value
     const feedback = (event.target as HTMLInputElement).getElementsByTagName("span")[1]
-
       // if no commune or no code : error code
       if (!commune || !code) {
         feedback.className = "error"
@@ -120,8 +86,8 @@ const saveEBTlocation = async (newLocation:any) => {
           } else {
             city.code = code
             city.commune = commune
+            city.possible = undefined 
             delete city.possible
-
             const newEBTlocation:any = {
               "codePostal": city.top_zipcode,
               "codeCommune": city.code,
