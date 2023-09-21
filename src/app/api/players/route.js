@@ -1,21 +1,43 @@
-import { NextResponse } from 'next/server'
-const fs = require('fs');
-
-// export default async function handler(req, res) {
-//   try {
-//     const result = await req.json();
-//     res.status(200).send({ result })
-//   } catch (err) {
-//     res.status(500).send({ error: 'failed to fetch data' })
-//   }
-// }
+import prisma from "@/lib/prisma";
+import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const res = await request.json();
-  saveData(res);
+  await saveData(res);
   return NextResponse.json(res);
 }
 
-function saveData(visited) {
-  fs.writeFileSync(`src/data/players/${visited.userId}-visited.json`, JSON.stringify(visited, null, 4));
+// async function saveData(res) {
+//   const date = new Date().toISOString()
+//   await prisma.visited.create({
+//     data: {
+//       user_id: "id",
+//       username: "name",
+//       content: "content",
+//       date: date,
+//     },
+//   })
+//   console.log("data saved 👍");
+// }
+
+
+async function saveData(visited) {
+  const date = new Date().toISOString()
+  const userContent = JSON.stringify(visited)
+  await prisma.visited.upsert({
+    where: {
+      user_id: `${visited.userId}`,
+    },
+    update: {
+      content: `${userContent}`,
+      date: date,
+    },
+    create: {
+      user_id: `${visited.userId}`,
+      username: `${visited.username}`,
+      content: `${userContent}`,
+      date: date,
+    },
+  })
+  console.log("data saved 👍");
 }

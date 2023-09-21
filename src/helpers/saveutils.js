@@ -28,25 +28,20 @@ export const saveEBTlocation = async (newLocation) => {
   return dataresult;
 }
 
-
-
-  export const saveVisited= async (userId, visited) => {
-  console.log("saving visited");
-  console.log(Date().toLocaleString());
-
-  visited.userId = userId;
+  export const saveVisited= async (user, visited) => {
+  visited.userId = user.id;
+  visited.username = user.username;
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(visited),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
 
-      const response = await fetch(`/api/players/`, requestOptions)
+      const response = await fetch(`/api/players`, requestOptions)
       .then(
         response => {
           if (response.status === 200) {
-            console.log("visited saved");
-            console.log(Date().toLocaleString());
+            console.log("visited saved 👍");
           } else {
             console.log("problème ", response.status);
           }
@@ -56,3 +51,36 @@ export const saveEBTlocation = async (newLocation) => {
         return null;
       });
 }
+
+
+//   export const saveStuff= async () => {
+//   const stuff = {"menu": {
+//   "id": "file",
+//   "value": "File",
+//   "popup": {
+//     "menuitem": [
+//       {"value": "New", "onclick": "CreateNewDoc()"},
+//       {"value": "Open", "onclick": "OpenDoc()"},
+//       {"value": "Close", "onclick": "CloseDoc()"}
+//     ]
+//   }
+// }}
+//   const requestOptions = {
+//     method: 'POST',
+//     body: JSON.stringify(stuff),
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+//   };
+//       const response = await fetch(`/api/players/`, requestOptions)
+//       .then(
+//         response => {
+//           if (response.status === 200) {
+//             console.log("stuff saved 👍");
+//           } else {
+//             console.log("problem ", response.status);
+//           }
+//         })
+//       .catch(function (err) {
+//         console.log('Fetch Error :-S', err);
+//         return null;
+//       });
+// }
