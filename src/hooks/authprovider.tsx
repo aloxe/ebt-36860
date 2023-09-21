@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface user {
   "sessionid": string
@@ -22,23 +22,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!user) {
-      const storeUser = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') || "{}");
+      const storeUser = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('user') || "{}");
       storeUser.username && setUser(storeUser);
     }
     if (!cities) {
-      const storeCities = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('cities') || "{}");
+      const storeCities = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('cities') || "{}");
       storeCities.data && setCities(storeCities);
     }
     if (!visited) {
-      const storeVisited = typeof window !== 'undefined' && JSON.parse(localStorage.getItem('visited') || "{}");
+      const storeVisited = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('visited') || "{}");
       storeVisited.date && setVisited(storeVisited);
     }
   }, [user, cities, visited])
 
     const logout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('cities');
-    localStorage.removeItem('visited');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('cities');
+    sessionStorage.removeItem('visited');
     setUser(undefined)
   }
 

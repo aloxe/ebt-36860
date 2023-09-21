@@ -1,8 +1,8 @@
 'use client'
-import { useState } from "react";
-import { useAuth } from "@/hooks/authprovider"
-import { refreshUser } from "@/helpers/ebtutils";
 import Spinner from "@/components/common/spinner";
+import { refreshUser } from "@/helpers/ebtutils";
+import { useAuth } from "@/hooks/authprovider";
+import { useState } from "react";
 
 export function Profile() {
   const { user, setUser } = useAuth();
@@ -23,7 +23,7 @@ export function Profile() {
       loginUser.email = login;
       setUser(loginUser);
       setRequestRefresh(false);
-      localStorage.setItem('user', JSON.stringify(loginUser));
+      sessionStorage.setItem('user', JSON.stringify(loginUser));
     } else {
       console.log('Fetch relogin Error :-S');
       user.my_city = citySave;

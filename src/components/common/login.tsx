@@ -1,6 +1,6 @@
 'use client'
-import { useAuth } from "@/hooks/authprovider"
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
+import { useAuth } from "@/hooks/authprovider";
 
 export function Login() {
   const { user, setUser, logout } = useAuth();
@@ -27,7 +27,7 @@ export function Login() {
     if (loginUser) {
       loginUser.email = login;
       loginUser.date = Date.now();
-      localStorage.setItem('user', JSON.stringify(loginUser));
+      sessionStorage.setItem('user', JSON.stringify(loginUser));
       setUser(loginUser)
     }
   }
