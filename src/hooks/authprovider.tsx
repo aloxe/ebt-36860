@@ -1,5 +1,6 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { saveVisited } from '@/helpers/dbutils'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 interface user {
   "sessionid": string
@@ -35,7 +36,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user, cities, visited])
 
-    const logout = () => {
+  const saveVisitedNoUser = useCallback( async (visited:any) => {
+  user && saveVisited(user, visited)
+  }, [user]);
+
+  useEffect(() => {
+   visited && saveVisitedNoUser(visited)
+}, [visited, saveVisitedNoUser]);
+
+
+  const logout = () => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('cities');
     sessionStorage.removeItem('visited');

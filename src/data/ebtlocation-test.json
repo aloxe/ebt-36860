@@ -6,42 +6,7 @@
             "nomEBT": "Paris",
             "nomCommune": "Paris 1er Arrondissement",
             "ref": "0"
-        },
-        {
-            "codePostal": "16300",
-            "codeCommune": "16028",
-            "nomEBT": "Barbezieux",
-            "nomCommune": "Barbezieux-Saint-Hilaire",
-            "ref": "undefined"
-        },
-        {
-            "codePostal": "25340",
-            "codeCommune": "25156",
-            "nomEBT": "Clerval",
-            "nomCommune": "Pays-de-Clerval",
-            "ref": "undefined"
-        },
-        {
-            "codePostal": "31120",
-            "codeCommune": "31458",
-            "nomEBT": "Roques-sur-Garonne",
-            "nomCommune": "Roques",
-            "ref": "undefined"
-        },
-        {
-            "codePostal": "60490",
-            "codeCommune": "60533",
-            "nomEBT": "Ressons",
-            "nomCommune": "Ressons-sur-Matz",
-            "ref": "undefined"
-        },
-        {
-            "codePostal": "44350",
-            "codeCommune": "44069",
-            "nomEBT": "Saillé",
-            "nomCommune": "Guérande",
-            "ref": "undefined"
         }
     ],
-    "date": "last_updated=2023-09-19T06:34:08.973Z"
+    "date": "last_updated=2023-09-23T21:55:55.795Z"
 }

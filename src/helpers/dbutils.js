@@ -17,13 +17,23 @@ export const saveEBTlocation = async (newLocation) => {
   };
   const requestDetail = getRequestBodyQuery(newLocation)
 
-  // api bellow is rewritting to EBTlocations (see route.js)
+  // api bellow writting to DB EBT locations (see route.js)
   const response = await fetch(`/api/locations/?${requestDetail}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
     });
+  const dataresult = await response?.json();
+  return dataresult;
+}
 
+export const getEBTlocation = async () => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/locations`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
   const dataresult = await response?.json();
   return dataresult;
 }
@@ -37,12 +47,10 @@ export const saveEBTlocation = async (newLocation) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
 
-      const response = await fetch(`/api/players`, requestOptions)
+      await fetch(`/api/players/`, requestOptions)
       .then(
         response => {
-          if (response.status === 200) {
-            console.log("visited saved 👍");
-          } else {
+          if (response.status !== 200) {
             console.log("problème ", response.status);
           }
         })
@@ -51,36 +59,3 @@ export const saveEBTlocation = async (newLocation) => {
         return null;
       });
 }
-
-
-//   export const saveStuff= async () => {
-//   const stuff = {"menu": {
-//   "id": "file",
-//   "value": "File",
-//   "popup": {
-//     "menuitem": [
-//       {"value": "New", "onclick": "CreateNewDoc()"},
-//       {"value": "Open", "onclick": "OpenDoc()"},
-//       {"value": "Close", "onclick": "CloseDoc()"}
-//     ]
-//   }
-// }}
-//   const requestOptions = {
-//     method: 'POST',
-//     body: JSON.stringify(stuff),
-//     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-//   };
-//       const response = await fetch(`/api/players/`, requestOptions)
-//       .then(
-//         response => {
-//           if (response.status === 200) {
-//             console.log("stuff saved 👍");
-//           } else {
-//             console.log("problem ", response.status);
-//           }
-//         })
-//       .catch(function (err) {
-//         console.log('Fetch Error :-S', err);
-//         return null;
-//       });
-// }

@@ -15,3 +15,11 @@ model visited {
   date      DateTime
 }
 
+model lieux {
+  id            Int      @id @default(autoincrement())
+  code_postal   String
+  code_commune  String
+  nom_ebt       String
+  nom_commune   String
+  ref_user      String
+}

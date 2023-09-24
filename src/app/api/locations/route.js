@@ -1,5 +1,10 @@
-import { NextResponse } from 'next/server'
-const fs = require('fs');
+import prisma from "@/lib/prisma";
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  const res = await prisma.lieux.findMany();
+  return NextResponse.json({ res })
+}
 
 export async function POST(request) {
   const { nextUrl: { search } } = request;
@@ -9,9 +14,12 @@ export async function POST(request) {
   return NextResponse.json(params)
 }
 
-function saveData(newLocation) {
-  let data = require('@/data/ebtlocation-test.json');
-  data.lieux.push(newLocation)
-  data.date = "last_updated=" + new Date().toISOString();
-  fs.writeFileSync('src/data/ebtlocation-test.json', JSON.stringify(data, null, 4));
+async function saveData(newLocation) {
+    const newEntry = await prisma.lieux.create({
+        data: newLocation,
+        select: {
+           id: true
+        }
+    });
+  return newEntry;
 }
