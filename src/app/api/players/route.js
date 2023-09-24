@@ -7,20 +7,6 @@ export async function POST(request) {
   return NextResponse.json(res);
 }
 
-// async function saveData(res) {
-//   const date = new Date().toISOString()
-//   await prisma.visited.create({
-//     data: {
-//       user_id: "id",
-//       username: "name",
-//       content: "content",
-//       date: date,
-//     },
-//   })
-//   console.log("data saved 👍");
-// }
-
-
 async function saveData(visited) {
   const date = new Date().toISOString()
   const userContent = JSON.stringify(visited)
@@ -39,5 +25,4 @@ async function saveData(visited) {
       date: date,
     },
   })
-  console.log("data saved 👍");
 }

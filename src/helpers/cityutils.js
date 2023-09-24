@@ -1,5 +1,5 @@
-import { sansAccent } from "@/helpers/strings"
-import { getPostcodes } from "@/helpers/ebtutils"
+import { getPostcodes } from "@/helpers/ebtutils";
+import { sansAccent } from "@/helpers/strings";
 
 export const hasSamePostcode = (cp1, cp2) => cp1.filter(cp => cp2.includes(cp)).length > 0;
 
@@ -94,12 +94,12 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
   visitedCities.map(function (city) {
     if (!city.code) {
       // check name + dept + postcode in EBT locations
-      var foundCommune = EBTLocations.lieux.find((lieu) => lieu.nomEBT == city.city
-        && hasSamePostcode(city.postcodes || [], [lieu.codePostal]))
+      var foundCommune = EBTLocations.find((lieu) => lieu.nom_ebt == city.city
+        && hasSamePostcode(city.postcodes || [], [lieu.code_postal]))
       if (foundCommune) {
-        city.code = foundCommune.codeCommune;
-        city.commune = foundCommune.nomCommune;
-        city.departement = foundCommune.codeCommune.substring(0,2);
+        city.code = foundCommune.code_commune;
+        city.commune = foundCommune.nom_commune;
+        city.departement = foundCommune.code_commune.substring(0,2);
       }
     }
   });

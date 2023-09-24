@@ -1,8 +1,8 @@
 'use client'
-import { useMemo } from "react";
-import { useAuth } from "@/hooks/authprovider";
 import { Dropdown } from "@/components/common/dropdown";
-import { saveEBTlocation } from "@/helpers/saveutils"
+import { saveEBTlocation, saveVisited } from "@/helpers/dbutils";
+import { useAuth } from "@/hooks/authprovider";
+import { useMemo } from "react";
 
 interface commune {
   "code": string;
@@ -24,7 +24,7 @@ interface city {
 }
 
 export function Unknowns() {
-  const { visited, user } = useAuth();
+  const { visited, user, setVisited} = useAuth();
 
     var d = new Date(visited?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -89,11 +89,11 @@ export function Unknowns() {
             city.possible = undefined 
             delete city.possible
             const newEBTlocation:any = {
-              "codePostal": city.top_zipcode,
-              "codeCommune": city.code,
-              "nomEBT": city.city,
-              "nomCommune": city.commune,
-              "ref": user.name
+              "code_postal": city.top_zipcode,
+              "code_commune": city.code,
+              "nom_ebt": city.city,
+              "nom_commune": city.commune,
+              "ref_user": user.id
             };
             // TODO make asyn
             const response = await saveEBTlocation(newEBTlocation)
@@ -106,6 +106,8 @@ export function Unknowns() {
           }
         }
       });
+      // visited has changed but is not new so we need to trigger its saving
+      saveVisited(user, visited)
   }
 
   return (

@@ -1,8 +1,8 @@
 'use client'
 import Spinner from "@/components/common/spinner";
 import { addPostcodes, matchCommunes, matchPrefectures } from "@/helpers/cityutils";
+import { getEBTlocation } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
-import { saveVisited } from "@/helpers/saveutils";
 import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
 
@@ -21,27 +21,25 @@ interface city {
 }
 
 export function Cities() {
-  const { user, logout } = useAuth();
+  const { user, logout, cities, setCities, visited, setVisited } = useAuth();
   const [request, setRequest] = useState<any>(undefined);
-  const { cities, setCities } = useAuth();
-  const { visited, setVisited } = useAuth();
 
   const countFrenchCommunes = useCallback( async () => {
     const citiesFrance = cities.data.filter((city: city) => city.country == "France");
     const visitedlocations = [].concat(citiesFrance);
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
-    const EBTLocations = require("@/data/ebtlocation-test.json")
+    const EBTLocations = await getEBTlocation();
+    console.log(EBTLocations);
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     sessionStorage.setItem('visited', JSON.stringify(visited));
-    // save user visited file
-    saveVisited(user, visited)
     setVisited(visited);
-  }, [cities,user, setVisited]);
+  }, [cities, setVisited]);
 
     const countFrenchPrefectures = useCallback( async (visited:any) => {
     const visitedlocations = visited.visitedCities
     const regions = require("@/data/departments_regions_france_2017.json")
     const newVisited = await matchPrefectures(visitedlocations, regions)
+    // TODO handle this from authprovider hook
     sessionStorage.setItem('visited', JSON.stringify(newVisited));
     setVisited(newVisited);
   }, [setVisited]);
@@ -82,30 +80,10 @@ export function Cities() {
     setRequest(false);
   }
 
-
-  const handleSave = async (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-      saveVisited(user, visited)
-  }
-
-
   return (
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          {!request && visited && <a
-            onClick={handleSave}
-            href="#cities"
-            className="px-5 py-4"
-          >
-            <h2 className={`mb-3 text-lg font-semibold`}>
-              Save{' '}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                →
-              </span>
-            </h2>
-          </a>}
-
           {!request && !cities && <a
             onClick={handleCityRequest}
             href="#cities"
