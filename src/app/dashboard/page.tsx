@@ -33,8 +33,8 @@ export default function Dashboard() {
       </div>
       {user?.username && <Profile />}
       {user?.username && <Cities />}
+      {user?.username && visited && <UserMap />}
       {user?.username && visited?.unknown > 0 && <Unknowns />}
-      {user?.username && <UserMap />}
       </>
     )
 }

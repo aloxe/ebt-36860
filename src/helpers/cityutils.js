@@ -141,13 +141,6 @@ export const refreshVisited = (visitedCities) =>  {
   const departements = visitedDepartements.map(el => el.departement)
   const visitedUnknown = visitedCities.filter(city => !city.code);
 
-  // console.log({
-  //   visitedCities,
-  //   communes,
-  //   departements,
-  //   unknown: visitedUnknown.length,
-  //   date: Date.now()
-  // });
   return {
     visitedCities,
     communes,
