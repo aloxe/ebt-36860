@@ -55,7 +55,7 @@ export const getPostcodes = async (user, city) => {
 
     const response = await fetch(`/api/eurobilltracker/?m=mycities&v=1&PHPSESSID=${user.sessionid}`, requestOptions)
       .catch(function (err) {
-        console.log('Fetch ciities Error :-S', err);
+        console.log('Fetch cities Error :-S', err);
         return null;
       });
 
@@ -69,7 +69,7 @@ export const getPostcodes = async (user, city) => {
       credentials: 'include',
     };
 
-    // cookie set doesn't worrk (same domain)
+    // cookie set doesn't work (same domain)
     // const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1`, requestOptions)
     const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1&PHPSESSID=${user.sessionid}`, requestOptions)
       .catch(function (err) {

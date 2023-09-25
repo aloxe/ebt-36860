@@ -1,16 +1,14 @@
 'use client'
-import { TileLayer, MapContainer, GeoJSON } from 'react-leaflet'
-import { useEffect, useState, useCallback } from 'react';
-import { removeDuplicateRegions } from '@/helpers/cityutils';
+import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet';
 // import { GeoJSON as GeoJsonTypes } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 import './map.css';
 
 type MyMapComponent = {
   departements: string[];
-  communes: string[];
   showDep: boolean;
   showCom: boolean;
+  dataCommunes:Feature[];
 }
 
 // @ts-ignore
@@ -31,44 +29,7 @@ const OpenStreetMap_France = {
   attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }
 
-const regionsDept = require('@/data/departments_regions_france_2017.json')
-// @ts-ignore
-const regionCodes:string[] = removeDuplicateRegions(regionsDept).map(item => item.regionCode);
-
-
-const fetchData = async (codeRegion:string) => {
-  const response = await fetch(
-      `https://geo.api.gouv.fr/communes?codeRegion=${codeRegion}&format=geojson&geometry=contour`
-    )
-  const results = await response.json()
-  return results;
-}
-
-export function MyMapComponent({ departements, communes, showDep, showCom }: MyMapComponent) {
-  const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
-
-  const handlefetchData = useCallback( async () => {
-    let communesToDisplay = new Array();
-    let regionToDisplay = [];
-    regionCodes.map( async (regionCode) => {
-      // TODO make this fetch quicker or send it to GeoJson before
-      const regionCommunes = await fetchData(regionCode);
-      const regionUserCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
-      // keeping nice example
-      // const regionSaintCommunes = await regionCommunes.features.filter((asset:Feature) => asset.properties.code.includes("Saint"));
-      communesToDisplay = communesToDisplay.concat(regionUserCommunes)
-      regionToDisplay.push(regionCode)
-      if (regionToDisplay.length == regionCodes.length) {
-        setDataCommunes(communesToDisplay);
-      }
-    });
-  }, [])
-
-  useEffect(() => {
-    if (dataCommunes.length < 1) {
-      handlefetchData()
-    }
-  }, [dataCommunes, handlefetchData])
+export function MyMapComponent({ departements, dataCommunes, showDep, showCom }: MyMapComponent) {
 
   const deptLayer : {data:FeatureCollection, style?:any} = {
     data: require("@/data/departements.geojson"),
