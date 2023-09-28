@@ -29,7 +29,6 @@ export function Cities() {
     const visitedlocations = [].concat(citiesFrance);
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
     const EBTLocations = await getEBTlocation();
-    console.log(EBTLocations);
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     sessionStorage.setItem('visited', JSON.stringify(visited));
     setVisited(visited);

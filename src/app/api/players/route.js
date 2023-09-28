@@ -1,6 +1,11 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
 
+export async function GET() {
+  const res = await prisma.visited.findMany();
+  return NextResponse.json(res)
+}
+
 export async function POST(request) {
   const res = await request.json();
   await saveData(res);
