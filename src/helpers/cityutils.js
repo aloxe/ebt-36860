@@ -40,14 +40,22 @@ export const removeDuplicatePrefectures = (cities) => {
   return newcities;
 }
 
+const chefLieu = (code, communes) => {
+  const chefLieu = communes.find((commune) => code === commune.code);
+  return chefLieu[0];
+}
+
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
   visitedCities.map(function (city) {
     // check same name + dept
     var foundCommune = communes.find((commune) => city.city == commune.nom
       && city.departement == commune.departement)
-    city.code = foundCommune ? foundCommune.code : undefined;
-    city.commune = foundCommune ? foundCommune.nom : undefined;
+      if (foundCommune?.chefLieu) {
+        foundCommune = chefLieu(foundCommune.chefLieu, communes)
+      }
+      city.code = foundCommune ? foundCommune.code : undefined; 
+      city.commune = foundCommune ? foundCommune.nom : undefined;
   });
 
   visitedCities.map(function (city) {
@@ -55,6 +63,9 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       // check same name no diacritics + dept
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
         && city.departement == commune.departement)
+      if (foundCommune?.chefLieu) {
+        foundCommune = chefLieu(foundCommune.chefLieu, communes)
+      }
       city.code = foundCommune ? foundCommune.code : undefined;
       city.commune = foundCommune ? foundCommune.nom : undefined;
     }
@@ -66,10 +77,11 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var possibleCommunes = communes.filter((commune) => commune.nom.includes(city.city)
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || [])
         )
-      if (possibleCommunes?.length == 1) {
-        city.code = possibleCommunes[0].code;
-        city.commune = possibleCommunes[0].nom;
-        city.departement = possibleCommunes[0].departement;
+      if (possibleCommunes?.length === 1) {
+        var foundCommune = possibleCommunes[0].chefLieu ? chefLieu(possibleCommunes[0].chefLieu, communes) : possibleCommunes[0];
+        city.code = foundCommune.code;
+        city.commune = foundCommune.nom;
+        city.departement = foundCommune.departement;
       } else if (possibleCommunes?.length > 1) {
         city.possible = possibleCommunes;
       }
@@ -81,10 +93,11 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       // check postcode if only one
       const samePostcode = communes.filter((commune) => city.departement == commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
-      if (samePostcode.length == 1) {
-        city.code = samePostcode[0].code;
-        city.commune = samePostcode[0].nom;
-        city.departement = samePostcode[0].departement;
+      if (samePostcode.length === 1) {
+        var foundCommune = samePostcode[0].chefLieu ? chefLieu(samePostcode[0].chefLieu, communes) : samePostcode[0];
+        city.code = foundCommune.code;
+        city.commune = foundCommune.nom;
+        city.departement = foundCommune.departement;
       } else if (samePostcode?.length > 1 && !city.possible) {
         city.possible = samePostcode;
       }
@@ -97,6 +110,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var foundCommune = EBTLocations.find((lieu) => lieu.nom_ebt == city.city
         && hasSamePostcode(city.postcodes || [], [lieu.code_postal]))
       if (foundCommune) {
+        if (foundCommune.chefLieu) foundCommune = chefLieu(foundCommune.chefLieu, communes)
         city.code = foundCommune.code_commune;
         city.commune = foundCommune.nom_commune;
         city.departement = foundCommune.code_commune.substring(0,2);

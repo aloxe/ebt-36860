@@ -8,6 +8,18 @@ function getRequestBodyQuery(body) {
   return bodyArray.join("&");
 }
 
+export const getEBTlocation = async () => {
+  console.log("get EBT *********************");
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/locations`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
+}
+
 export const saveEBTlocation = async (newLocation) => {
   const requestOptions = {
     method: 'POST',
@@ -27,9 +39,20 @@ export const saveEBTlocation = async (newLocation) => {
   return dataresult;
 }
 
-export const getEBTlocation = async () => {
+export const getAllVisited = async () => {
   const requestOptions = { method: 'GET' };
-  const response = await fetch(`/api/locations`, requestOptions)
+  const response = await fetch(`/api/players`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
+}
+
+export const getVisited = async (userId) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/players/${userId}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
