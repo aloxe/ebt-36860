@@ -1,6 +1,27 @@
 import { getPostcodes } from "@/helpers/ebtutils";
 import { sansAccent } from "@/helpers/strings";
 
+// API calls
+export const fetchAllCommunes = async () => {
+  // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
+  const response = await fetch(
+      `https://geo.api.gouv.fr/communes?fields=code,nom`
+    )
+  const communes = await response.json()
+  return communes;
+}
+
+export const fetchComplete = async (code) => {
+    const response = await fetch(
+      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,surface,population,codesPostaux,departement,region,centre,contour,zone`
+    )
+  const communes = await response.json()
+    // console.log("fetch complete", code, communes[0]);
+  return communes[0];
+}
+
+// operations
+
 export const hasSamePostcode = (cp1, cp2) => cp1.filter(cp => cp2.includes(cp)).length > 0;
 
 export const removeDuplicateCommunes = (cities) => {

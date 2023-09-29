@@ -1,3 +1,19 @@
+import prisma from "@/lib/prisma";
+
+//server side
+
+export const getUserVisited = async (id) => {
+  const response = await prisma.visited.findUnique({
+    where: {
+        user_id: id,
+    },
+  });
+  const visited = JSON.parse(response?.content || "")
+  return visited;
+}
+
+//client side
+
 function getRequestBodyQuery(body) {
   var bodyArray = [];
   for (var property in body) {
@@ -9,7 +25,6 @@ function getRequestBodyQuery(body) {
 }
 
 export const getEBTlocation = async () => {
-  console.log("get EBT *********************");
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/locations`, requestOptions)
     .catch(function (err) {
