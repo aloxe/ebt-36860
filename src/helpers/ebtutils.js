@@ -1,4 +1,24 @@
-function getRequestBody(body) {
+// server side
+
+export const getPublicUser = async (id) => {
+      const requestOptions = {
+      method: 'GET'
+    };
+
+    const response = await fetch(`https://api.eurobilltracker.com/?m=globalstats_profile_user&v=1&user_id=${id}`, requestOptions)
+      .catch(function (err) {
+        console.log('get User Error :-S', err);
+        return null;
+      });
+
+    const publicUser = await response?.json();
+    return publicUser.data;
+  }
+
+
+  // client side
+
+  function getRequestBody(body) {
   var bodyArray = [];
   for (var property in body) {
     var encodedKey = encodeURIComponent(property);

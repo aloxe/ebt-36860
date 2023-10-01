@@ -1,24 +1,10 @@
 'use client'
 import Spinner from "@/components/common/spinner";
-import { addPostcodes, matchCommunes, matchPrefectures } from "@/helpers/cityutils";
+import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
-
-interface city {
-  "code"?: string;
-  "commune"?: string;
-  "possible"?: any[];
-  "city": string,
-  "country": string,
-  "top_zipcode": string,
-  "nrlocations": number,
-  "postcodes": string[],
-  "departement": string,
-  "samePostcode"?: string[],
-  "pref"?: ""
-}
 
 export function Cities() {
   const { user, logout, cities, setCities, visited, setVisited } = useAuth();
@@ -34,23 +20,11 @@ export function Cities() {
     setVisited(visited);
   }, [cities, setVisited]);
 
-    const countFrenchPrefectures = useCallback( async (visited:any) => {
-    const visitedlocations = visited.visitedCities
-    const regions = require("@/data/departments_regions_france_2017.json")
-    const newVisited = await matchPrefectures(visitedlocations, regions)
-    // TODO handle this from authprovider hook
-    sessionStorage.setItem('visited', JSON.stringify(newVisited));
-    setVisited(newVisited);
-  }, [setVisited]);
-
   useEffect(() => {
     if (cities?.france > 0 && !visited) {
       countFrenchCommunes();
     }
-    if (visited && !visited.prefectures) {
-      countFrenchPrefectures(visited);
-    }
-  }, [cities, visited, countFrenchCommunes, countFrenchPrefectures])
+  }, [cities, visited, countFrenchCommunes])
 
   var d = new Date(cities?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
@@ -111,8 +85,7 @@ export function Cities() {
             📍 : {cities.france} locations in France
             <br/>🏘️ : <b>{visited.communes.length} french communes</b>
             <br/>🇫🇷 : {visited.departements.length} départements
-            {visited && !visited.prefectures && <><br/><br/><Spinner /> finding french préfectures</>}
-            {visited?.prefectures && <><br/>🏛️ : {visited.prefectures} préfectures</>}
+            <br/>🏛️ : {visited.prefectures?.length} préfectures
             </>
             }
             {visited && visited.unknown > 0 && <><br/><br/>you have {visited.unknown} unidentified locations</>}

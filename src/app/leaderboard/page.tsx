@@ -5,9 +5,9 @@ const List = async () => {
       <h1>Leaderboard</h1>
       <hr style={{ width: '220px' }} />
       <div style={{ paddingTop: '40px' }}>
-        {players.map(player => (
+        {/* {players.map(player => (
           <div>{player.username}</div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

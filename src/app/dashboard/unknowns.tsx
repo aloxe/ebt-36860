@@ -4,25 +4,6 @@ import { saveEBTlocation, saveVisited } from "@/helpers/dbutils";
 import { useAuth } from "@/hooks/authprovider";
 import { useMemo } from "react";
 
-interface commune {
-  "code": string;
-  "nom": string;
-  "departement": string;
-}
-
-interface city {
-  "code"?: string;
-  "commune"?: string;
-  "city": string,
-  "country": string,
-  "top_zipcode": string,
-  "nrlocations": number,
-  "postcodes": string[],
-  "departement": string,
-  "samePostcode"?: string[]
-  "possible"?: commune[];
-}
-
 export function Unknowns() {
   const { visited, user, setVisited} = useAuth();
 
