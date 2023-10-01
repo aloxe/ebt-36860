@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Login } from '../common/login';
+import { Login } from './login';
 
 export default function Header() {
   return (

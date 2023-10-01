@@ -1,7 +1,7 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import Header from '../components/Header/header';
+import type { Metadata } from 'next';
+import Header from '../components/header/header';
 import { AuthProvider } from '../hooks/authprovider';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Eurobilltracker ▤ 36860 ▥',

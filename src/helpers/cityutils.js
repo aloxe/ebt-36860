@@ -11,9 +11,27 @@ export const fetchAllCommunes = async () => {
   return communes;
 }
 
+export const fetchAllComplete = async () => {
+  // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
+  const response = await fetch(
+      `https://geo.api.gouv.fr/communes?fields=code,nom,surface,population`
+    )
+  const communes = await response.json()
+  return communes;
+}
+
 export const fetchComplete = async (code) => {
     const response = await fetch(
-      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,surface,population,codesPostaux,departement,region,centre,contour,zone`
+      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,surface,population,codesPostaux,departement,region,zone`
+    )
+  const communes = await response.json()
+    // console.log("fetch complete", code, communes[0]);
+  return communes[0];
+}
+
+export const fetchGeo = async (code) => {
+    const response = await fetch(
+      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,departement,region,centre,contour`
     )
   const communes = await response.json()
     // console.log("fetch complete", code, communes[0]);
@@ -51,17 +69,16 @@ export const removeDuplicateRegions = (depRegions) => {
   return newdepRegions;
 }
 
-export const removeDuplicatePrefectures = (cities) => {
-  var newcities = cities.filter((city, index, self) =>
-    !!city.pref &&
-    index === self.findIndex((c) => (
-      c.pref === city.pref
-    ))
-  );
-  return newcities;
+export const removeNotPrefecture = (communes) => {
+  const departements = require('@etalab/decoupage-administratif/data/departements.json')
+  const allPrefectures = departements.map(el => el.chefLieu);
+  var prefectures = communes.filter((commune) => allPrefectures.includes(commune))
+  return prefectures;
 }
 
-const chefLieu = (code, communes) => {
+const getChefLieu = (code, communes) => {
+  // in case there is a match with a "code" of a commune déléguée
+  // we return the chek lieu "commune actuelle" instead
   const chefLieu = communes.find((commune) => code === commune.code);
   return chefLieu[0];
 }
@@ -73,7 +90,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     var foundCommune = communes.find((commune) => city.city == commune.nom
       && city.departement == commune.departement)
       if (foundCommune?.chefLieu) {
-        foundCommune = chefLieu(foundCommune.chefLieu, communes)
+        foundCommune = getChefLieu(foundCommune.chefLieu, communes)
       }
       city.code = foundCommune ? foundCommune.code : undefined; 
       city.commune = foundCommune ? foundCommune.nom : undefined;
@@ -85,7 +102,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
         && city.departement == commune.departement)
       if (foundCommune?.chefLieu) {
-        foundCommune = chefLieu(foundCommune.chefLieu, communes)
+        foundCommune = getChefLieu(foundCommune.chefLieu, communes)
       }
       city.code = foundCommune ? foundCommune.code : undefined;
       city.commune = foundCommune ? foundCommune.nom : undefined;
@@ -99,7 +116,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || [])
         )
       if (possibleCommunes?.length === 1) {
-        var foundCommune = possibleCommunes[0].chefLieu ? chefLieu(possibleCommunes[0].chefLieu, communes) : possibleCommunes[0];
+        var foundCommune = possibleCommunes[0].chefLieu ? getChefLieu(possibleCommunes[0].chefLieu, communes) : possibleCommunes[0];
         city.code = foundCommune.code;
         city.commune = foundCommune.nom;
         city.departement = foundCommune.departement;
@@ -115,7 +132,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       const samePostcode = communes.filter((commune) => city.departement == commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
       if (samePostcode.length === 1) {
-        var foundCommune = samePostcode[0].chefLieu ? chefLieu(samePostcode[0].chefLieu, communes) : samePostcode[0];
+        var foundCommune = samePostcode[0].chefLieu ? getChefLieu(samePostcode[0].chefLieu, communes) : samePostcode[0];
         city.code = foundCommune.code;
         city.commune = foundCommune.nom;
         city.departement = foundCommune.departement;
@@ -131,7 +148,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var foundCommune = EBTLocations.find((lieu) => lieu.nom_ebt == city.city
         && hasSamePostcode(city.postcodes || [], [lieu.code_postal]))
       if (foundCommune) {
-        if (foundCommune.chefLieu) foundCommune = chefLieu(foundCommune.chefLieu, communes)
+        if (foundCommune.chefLieu) foundCommune = getChefLieu(foundCommune.chefLieu, communes)
         city.code = foundCommune.code_commune;
         city.commune = foundCommune.nom_commune;
         city.departement = foundCommune.code_commune.substring(0,2);
@@ -139,17 +156,6 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     }
   });
   return refreshVisited(visitedCities)
-}
-
-export const matchPrefectures = async (visitedCities, departements) => {
-  visitedCities.map(function (city) {
-  let foundPref = departements.find((dep) => city.commune == dep.prefecture)
-    city.pref = foundPref ? foundPref.departmentCode : undefined;
-  });
-  const visitedPrefectures = removeDuplicatePrefectures(visitedCities);
-  const visited =  refreshVisited(visitedCities);
-  visited.prefectures = visitedPrefectures.length;
-  return visited;
 }
 
 export function addPostcodes(user, citiesArray) {
@@ -174,12 +180,25 @@ export const refreshVisited = (visitedCities) =>  {
   const communes = visitedCommunes.map(el => el.code)
   const visitedDepartements = removeDuplicateDepartements(visitedCities);
   const departements = visitedDepartements.map(el => el.departement)
+  const prefectures = removeNotPrefecture(communes);
   const visitedUnknown = visitedCities.filter(city => !city.code);
+
+
+  console.log("visited::: ", {
+    visitedCities,
+    communes,
+    departements,
+    prefectures,
+    unknown: visitedUnknown.length,
+    date: Date.now()
+  });
+
 
   return {
     visitedCities,
     communes,
     departements,
+    prefectures,
     unknown: visitedUnknown.length,
     date: Date.now()
   };

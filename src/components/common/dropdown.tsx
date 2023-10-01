@@ -20,8 +20,6 @@ export function Dropdown({label, array}:{label:string, array:any[]}) {
               </div>)
               }
             })}
-            {/* </> */}
-            {/* </div> */}
           </div>
         </div>
         </div>

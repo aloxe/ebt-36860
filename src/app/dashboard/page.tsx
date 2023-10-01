@@ -5,18 +5,6 @@ import { Profile } from './profile';
 import { Unknowns } from "./unknowns";
 import { UserMap } from "./usermap";
 
-interface user {
-  "sessionid": string
-  "username": string
-  "my_city": string[]
-  "my_country": string
-  "my_zip": string
-  "totalbills": number
-  "totalhits": number
-  "email": string
-  "date": string
-}
-
 export default function Dashboard() {
   const { user, visited } = useAuth();
 
