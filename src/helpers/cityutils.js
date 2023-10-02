@@ -14,7 +14,7 @@ export const fetchAllCommunes = async () => {
 export const fetchAllComplete = async () => {
   // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
   const response = await fetch(
-      `https://geo.api.gouv.fr/communes?fields=code,nom,surface,population`
+      `https://geo.api.gouv.fr/communes?fields=code,nom,surface,population,zone`
     )
   const communes = await response.json()
   return communes;
