@@ -25,43 +25,49 @@ async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}
   const visitedSurface = (visitedSurf.reduce((a, b) => a + b) /100)
   const thirdPourcent = visitedSurface * 100 / allSurface;
 
-    const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
+  const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
 
+  // @ts-ignore
 const visitedNumbers = allCommunes.filter(c => visited.communes.includes(c.code) ).map(c => ({
   code: c.code, 
   nom: c.nom, 
   population: c.population,
   surface: c.surface / 100,
-  altitude: inseeAltitude.find(el => el.code === c.code).altitude,
+      // @ts-ignore
+  altitude: parseInt(inseeAltitude.find(el => el.code === c.code).altitude),
 }))
 
+    // @ts-ignore
 const maxPop = visitedNumbers.reduce((prev, current) => {
     return (prev && prev.population > current.population) ? prev : current
 })
-
+    // @ts-ignore
 const minPop = visitedNumbers.reduce((prev, current) => {
     return (prev && prev.population < current.population) ? prev : current
 })
-
+    // @ts-ignore
 const maxSurf = visitedNumbers.reduce((prev, current) => {
     return (prev && prev.surface > current.surface) ? prev : current
 })
-
+    // @ts-ignore
 const minSurf = visitedNumbers.reduce((prev, current) => {
     return (prev && prev.surface < current.surface) ? prev : current
 })
-
+    // @ts-ignore
 const maxAlt = visitedNumbers.reduce((prev, current) => {
     return (prev && prev.altitude > current.altitude) ? prev : current
 })
-
+    // @ts-ignore
 const minAlt = visitedNumbers.reduce((prev, current) => {
     return (prev && prev.altitude < current.altitude) ? prev : current
 })
-
+    // @ts-ignore
   const visitedAlt = visitedNumbers.filter(c => c.altitude)
-  const visitedAltMoyenne = (visitedAlt.reduce((a, b) => a + parseInt(b.altitude), 0)) / visitedAlt.length
+    // @ts-ignore
+      const visitedAltMoyenne = (visitedAlt.reduce((a, b) => a + b.altitude, 0)) / visitedAlt.length
 
+  
+  // console.log(visitedNumbers);
   
   // visited.communes.map(code => {
   //   code
@@ -113,10 +119,13 @@ const minAlt = visitedNumbers.reduce((prev, current) => {
           la plus étendue : {maxSurf.nom} avec {Intl.NumberFormat('de', {maximumFractionDigits: 2,}).format(maxPop.surface)} km²<br/>
           la moins étendue : {minSurf.nom} avec {Intl.NumberFormat('de', {maximumFractionDigits: 2,}).format(minPop.surface)} km²
         </div>
-        <div className="text-left mb-2">
+        <div className="text-left mb-3">
           la plus élevée : {maxAlt.nom} avec {Intl.NumberFormat('de').format(maxAlt.altitude)} m<br/>
           la moins élevée : {minAlt.nom} avec {Intl.NumberFormat('de').format(minAlt.altitude)} m<br/>
           altitude moyenne : {visitedAltMoyenne.toFixed(2)} m
+        </div>
+        <div className="text-left text-sm mb-2">
+          calculations are made from metropolitan France
         </div>
       </div>
     </>
