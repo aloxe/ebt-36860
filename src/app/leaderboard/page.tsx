@@ -1,16 +1,68 @@
+import { getUsers } from "@/helpers/dbutils";
+import { getPublicUser } from "@/helpers/ebtutils";
+import { compareScore, countryCodeToFlag, formatDate } from "@/helpers/strings";
+
 const List = async () => {
 
-  return (
-    <div>
-      <h1>Leaderboard</h1>
-      <hr style={{ width: '220px' }} />
-      <div style={{ paddingTop: '40px' }}>
-        {/* {players.map(player => (
-          <div>{player.username}</div>
-        ))} */}
+const players: user[] = await getUsers()
+
+var countries = require("i18n-iso-countries");
+
+async function getUserFlag(id: string) {
+  if (!id) return null
+  let publicUser = await getPublicUser(id)
+  let alpha2 = countries.getAlpha2Code(publicUser.home_country_name, "en")
+  return countryCodeToFlag(alpha2);  
+}
+
+players.map( async p => {
+  p.score = JSON.parse(p.content || "{}").communes.length;
+})
+
+players.sort( compareScore );
+
+return (
+    <>
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
+        <div className="text-right text-stone-500 text-sm">
+        <table className="min-w-full text-left text-md font-light">
+          <thead className="border-b font-medium dark:border-neutral-500">
+            <tr>
+              <th colSpan={4} className="whitespace-nowrap px-6 py-4 text-center">Leaderboard</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-sky-200">
+              <th className="whitespace-nowrap px-6 py-4">rank</th>
+              <th className="whitespace-nowrap px-6 py-4">name</th>
+              <th className="whitespace-nowrap px-6 py-4">score</th>
+              <th className="whitespace-nowrap px-6 py-4">map</th>
+              </tr>
+                {players.map( async (p, index) => (
+                <tr className="border-b dark:border-neutral-500  text-stone-800 text-md" key={p.user_id}>
+                  <td className="whitespace-nowrap px-6 py-4 w-4">
+                      { index + 1 }
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 w-6">
+                    <a href={`/stats/${p.user_id}`}>
+                    {await getUserFlag(p.user_id)} {p.username}</a>
+                    </td>
+                  <td className="whitespace-nowrap px-6 py-4 flex justify-between">
+<div>{p.score}</div>
+<div className="text-right text-xs">({formatDate(JSON.parse(players[0].content || "{}").date)})</div>
+{/* {p.date} */}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 w-2"></td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        </div>
       </div>
-    </div>
-  );
+    </>
+  )
+
+
 }
 
 export default List

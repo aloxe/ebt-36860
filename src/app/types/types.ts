@@ -1,13 +1,18 @@
 interface user {
+  "user_id": string
   "sessionid"?: string
   "username": string
-  "my_city": string[]
-  "my_country": string
-  "my_zip": string
-  "totalbills": number
-  "totalhits": number
+  "my_city"?: string[]
+  "my_country"?: string
+  "my_flag"?: string
+  "my_zip"?: string
+  "totalbills"?: number
+  "totalhits"?: number
+  "score"?: number
   "email"?: string
-  "date"?: string
+  "date"?: string | Date
+  "content"?: string;
+  "visited"?: visited;
 }
 
 interface visited {

@@ -12,7 +12,7 @@ async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}
   const allCommunesPop: number[] = allCommunes.map(el => el.population || 0)
   const allPop = allCommunesPop.reduce((a, b) => a + b)
   // @ts-ignore
-  const visitedPop = visited.communes.map(code => allCommunes.find(el => el.code === code).population )
+  const visitedPop = visited.communes?.map(code => allCommunes.find(el => el.code === code)?.population ) || []
   const visitedPopulation = visitedPop.reduce((a, b) => a + b)
   const secondPourcent = visitedPopulation * 100 / allPop;
 
@@ -20,8 +20,8 @@ async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}
   const allCommunesSurf: number[] = allCommunes.map(el => el.surface)
   const allSurface = allCommunesSurf.reduce((a, b) => a + b) / 100
   // @ts-ignore
-  const visitedSurf = visited.communes.map(code => allCommunes.find(el => el.code === code).surface )
-  const visitedSurface = (visitedSurf.reduce((a, b) => a + b) /100)
+  const visitedSurf = visited.communes?.map(code => allCommunes.find(el => el.code === code)?.surface /100 ) || []
+  const visitedSurface = (visitedSurf.reduce((a, b) => a + b))
   const thirdPourcent = visitedSurface * 100 / allSurface;
 
   const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
@@ -32,7 +32,7 @@ const visitedNumbers = allCommunes.filter(c => visited.communes.includes(c.code)
   population: c.population,
   surface: c.surface / 100,
   // @ts-ignore
-  altitude: parseInt(inseeAltitude.find(el => el.code === c.code).altitude),
+  altitude: parseInt(inseeAltitude.find(el => el.code === c.code)?.altitude),
 }))
 
   // @ts-ignore
