@@ -49,7 +49,10 @@ return (
                     </td>
                   <td className="whitespace-nowrap px-6 py-4 flex justify-between">
 <div>{p.score}</div>
-<div className="text-right text-xs">({formatDate(JSON.parse(players[0].content || "{}").date)})</div>
+<div className="text-right text-xs">({formatDate(JSON.parse(players[0].content || "{}").date)})<br/>
+<a href={`/stats/36860/${p.user_id}`}>jeu 36860</a><br/>
+<a href={`/stats/liste/${p.user_id}`}>liste communes</a>
+</div>
 {/* {p.date} */}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 w-2"></td>
