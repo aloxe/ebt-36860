@@ -8,8 +8,13 @@ export const getUserVisited = async (id) => {
         user_id: id,
     },
   });
-  const visited = JSON.parse(response?.content || "")
+  const visited = await JSON.parse(response?.content || "")
   return visited;
+}
+
+export const getUsers = async () => {
+  const res = await prisma.visited.findMany();
+  return res;
 }
 
 //client side

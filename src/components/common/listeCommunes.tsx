@@ -24,22 +24,22 @@ async function ListeCommunes({user, visited}: {user: publicUser, visited: visite
             {departements.map((departement: any)  => (
               <>
               <tr key={departement.code} className={visitedCommunes.filter(function(commune: commune){
-                  return commune.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
+                  return commune?.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
                   <th colSpan={3} className="whitespace-nowrap px-6 py-4">{departement.nom} ({departement.code})</th>
                   <th colSpan={1} className="whitespace-nowrap px-6 py-4">{visitedCommunes.filter(function(commune: commune){
-                  return commune.departement?.code === departement.code }).length}</th>
+                  return commune?.departement?.code === departement.code }).length}</th>
               </tr>
               {visitedCommunes.map( commune => ( 
-                commune.departement?.code === departement.code &&
+                commune?.departement?.code === departement.code &&
                 <tr className="border-b dark:border-neutral-500" key={commune.code}>
                   <td className="whitespace-nowrap px-6 py-4">
-                    {commune.codesPostaux[0]}
-                  {!!commune.codesPostaux[1] && "…"}
+                    {commune?.codesPostaux[0]}
+                  {!!commune?.codesPostaux[1] && "…"}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">{commune.nom}</td>
                   <td className="whitespace-nowrap px-6 py-4">
-                    {(commune.surface || 0 / 100).toFixed(2)} km²<br />
-                    {commune.population} hab.
+                    {(commune?.surface || 0 / 100).toFixed(2)} km²<br />
+                    {commune?.population} hab.
                   </td>
                 </tr>
               ))}
@@ -48,7 +48,7 @@ async function ListeCommunes({user, visited}: {user: publicUser, visited: visite
           </tbody>
         </table>
     </div>
-    {/* essai liste brune */}
+    {/* essai liste brute */}
     {/* <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
       {allCommuneNames.map((name, index) => <span key={index}>{name}</span>)}
       {visited?.communes.map((code, index) => <span key={index}>{getName(code) || <b>→ {code} ←</b>} </span>)}

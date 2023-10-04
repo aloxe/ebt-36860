@@ -23,3 +23,18 @@ export function countryCodeToFlag(countrycode) {
 
   return String.fromCodePoint(f + offset) + String.fromCodePoint(s + offset);
 }
+
+export function formatDate(date) {
+  var d = new Date(date);
+  return d.toLocaleString("en-GB", { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+export function compareScore( a, b ) {
+  if ( a.score > b.score ){
+    return -1;
+  }
+  if ( a.score < b.score ){
+    return 1;
+  }
+  return 0;
+}

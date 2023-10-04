@@ -7,9 +7,14 @@ import { getPublicUser } from "@/helpers/ebtutils";
 const UserData = async ({ params }: { params: { id: string } }) => {
   console.log("c parti " + params.id);
 
+  console.log("public user");
+  
   const publicUser = await getPublicUser(params.id);
+console.log("getUserVisited");
+
   const visited = await getUserVisited(params.id);
 
+console.log("visited done" + visited.date);
 
 // var visitedCommunes: commune[] = await Promise.all(visited.communes.map(async (code: string): Promise<commune> => {
 //     let visitedCommune = await fetchComplete(code);
