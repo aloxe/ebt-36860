@@ -24,6 +24,8 @@ export default function RootLayout({
           <main className="flex min-h-screen flex-col p-8 mt-12">
             {children}
           </main>
+          {/* allow safari users to log in https://itnext.io/fixing-focus-for-safari-b5916fef1064 */}
+          <script type="text/javascript" src="/js/polyfill-focus.js" async />
         </body>
       </AuthProvider>
     </html>
