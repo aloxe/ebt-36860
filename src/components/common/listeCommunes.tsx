@@ -3,25 +3,8 @@ import { fetchAllComplete } from "@/helpers/cityutils";
 async function ListeCommunes({user, visited}: {user: publicUser, visited: visited}) {
 
   const departements = require('@etalab/decoupage-administratif/data/departements.json')
-  // const { communes: visitedCommunes } = visited
-  // const allCommunes = await fetchAllComplete();
-const allcommunes: commune[] = await fetchAllComplete();
-
+  const allcommunes: commune[] = await fetchAllComplete();
   const visitedCommunes: commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
-
-    // const visitedCommunes: commune[] = allcommunes.filter(c => c.code === "01080")
-
-  // console.log(visitedCommunes);
-  
-  // console.log(visited.communes);
-// console.log(visited.communes.includes("62080"));
-//   console.log(allcommunes[20]);
-
-  
-//     const visitedCommunes: commune[] =await Promise.all(visited.communes.map(async (code: string): Promise<commune> => {
-//     let visitedCommune = await fetchComplete(code);
-//     return visitedCommune;
-// }));
 
   return (
     <>
@@ -49,9 +32,10 @@ const allcommunes: commune[] = await fetchAllComplete();
                   {!!commune?.codesPostaux[1] && "…"}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">{commune.nom}</td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    {(commune?.surface || 0 / 100).toFixed(2)} km²<br />
-                    {commune?.population} hab.
+                  <td className="whitespace-nowrap px-6 py-4 text-right">
+                    {commune?.surface && <>{Intl.NumberFormat('fr', {maximumFractionDigits: 2}).format((commune?.surface / 100 || 0))} km²<br /></>}
+                    {commune?.population && <>{Intl.NumberFormat('fr').format(commune?.population)} hab.</>}
+                    {!commune?.population && <>UNDEF</>}
                   </td>
                 </tr>
               ))}
