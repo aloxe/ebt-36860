@@ -5,6 +5,7 @@ async function ListeCommunes({user, visited}: {user: publicUser, visited: visite
   const departements = require('@etalab/decoupage-administratif/data/departements.json')
   const allcommunes: commune[] = await fetchAllComplete();
   const visitedCommunes: commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
+  const visitedPrefectures: string[] = visited.prefectures;
 
   return (
     <>
@@ -22,7 +23,7 @@ async function ListeCommunes({user, visited}: {user: publicUser, visited: visite
                   return commune?.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
                   <th colSpan={3} className="whitespace-nowrap px-6 py-4">{departement.nom} ({departement.code})</th>
                   <th colSpan={1} className="whitespace-nowrap px-6 py-4">{visitedCommunes.filter(function(commune: commune){
-                  return commune?.departement?.code === departement.code }).length}</th>
+                  return commune?.departement?.code === departement.code }).length} {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? "🏛️" : ""}</th>
               </tr>
               {visitedCommunes.map( commune => (
                 commune?.departement?.code === departement.code &&
