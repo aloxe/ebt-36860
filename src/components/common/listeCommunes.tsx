@@ -35,7 +35,7 @@ async function ListeCommunes({user, visited}: {user: publicUser, visited: visite
                   <td className="whitespace-nowrap px-6 py-4 text-right">
                     {commune?.surface && <>{Intl.NumberFormat('fr', {maximumFractionDigits: 2}).format((commune?.surface / 100 || 0))} km²<br /></>}
                     {commune?.population && <>{Intl.NumberFormat('fr').format(commune?.population)} hab.</>}
-                    {!commune?.population && <>UNDEF</>}
+                    {typeof(commune?.population) !== "number" && <>UNDEF</>}
                   </td>
                 </tr>
               ))}
