@@ -17,10 +17,10 @@ async function  Summary({user, visited}: {user: publicUser, visited: visited}) {
           </div>
         </div>
         <div className="flex justify-between">
-          <ScoreCard icon="📍" score={visited.visitedCities.length} label="locations" />
-          <ScoreCard icon="🏘️" score={visited.communes.length} label="communes" />
-          <ScoreCard icon="🇫🇷" score={visited.departements.length} label="départements" />
-          <ScoreCard icon="🏛️" score={visited.prefectures.length} label="préfectures" />
+          <ScoreCard icon="📍" score={visited.visitedCities.length} label="location" />
+          <ScoreCard icon="🏘️" score={visited.communes.length} label="commune" />
+          <ScoreCard icon="🇫🇷" score={visited.departements.length} label="département" />
+          <ScoreCard icon="🏛️" score={visited.prefectures.length} label="préfecture" />
         </div>
       </div>
     </>

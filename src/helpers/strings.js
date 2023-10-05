@@ -9,6 +9,10 @@ export function sansAccent(str) {
   return str.toLowerCase();
 }
 
+export function addSauPluriel(value) {
+  return value && value > 1 ? "s" : "";
+}
+
 export function countryCodeToFlag(countrycode) {
   const offset = 127397;
   const A = 65;

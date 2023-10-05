@@ -2,99 +2,56 @@ import { fetchAllComplete } from "@/helpers/cityutils";
 
 async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}) {
 
-  const allCommunesWithDomTom = await fetchAllComplete();
+  const allCommunesWithDomTom: commune[] = await fetchAllComplete();
   // we remove oversea municipalities
-  // @ts-ignore
   const allCommunes = allCommunesWithDomTom.filter(el => el.zone === "metro")
   const firstPourcent = visited.communes.length * 100 / allCommunes.length;
 
-  // @ts-ignore
+  const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
+  const visitedCommunes = allCommunes.filter(c => visited.communes.includes(c.code) ).map(c => ({
+    code: c.code, 
+    nom: c.nom, 
+    population: c.population || 0,
+    surface: c.surface ? c.surface / 100 : 0,
+    // @ts-ignore
+    altitude: parseInt(inseeAltitude.find(el => el.code === c.code)?.altitude),
+  }))
+
+
   const allCommunesPop: number[] = allCommunes.map(el => el.population || 0)
   const allPop = allCommunesPop.reduce((buf, a) => buf + a)
-  // @ts-ignore
-  const visitedPop = visited.communes?.map(code => allCommunes.find(el => el.code === code)?.population ) || []
-  const visitedPopulation = visitedPop.reduce((buf, a) => {
-    const plop = buf + a;
-    console.log(buf + " + " + a + " == " + plop)
-    if (typeof(a) !== "number") {
-      console.log(a + "NOT A NUMBER «<<<<<<<<<<<<<<<<<<<<<<<<<");
-      return buf
-    } 
-    return buf + a
-  }
-)
+  const visitedCommunesPop: number[] = visitedCommunes.map(el => el.population || 0)
+  const visitedPop = visitedCommunesPop.reduce((buf, a) => buf + a) || 0
+  const secondPourcent = visitedPop * 100 / allPop;
 
-  const secondPourcent = visitedPopulation * 100 / allPop;
-
-  // @ts-ignore
-  const allCommunesSurf: number[] = allCommunes.map(el => el.surface)
+  const allCommunesSurf: number[] = allCommunes.map(el => el.surface || 0)
   const allSurface = allCommunesSurf.reduce((a, b) => a + b) / 100
-  // @ts-ignore
-  const visitedSurf = visited.communes?.map(code => allCommunes.find(el => el.code === code)?.surface) || []
-  const visitedSurface = visitedSurf.reduce((buf, a) => {
-    const plop = buf + a;
-    console.log(buf + " + " + a + " == " + plop)
-    if (typeof(a) !== "number") {
-      console.log(a + "NOT A NUMBER «<<<<<<<<<<<<<<<<<<<<<<<<<");
-      return buf
-    } 
-    return buf + a
-  }, 0)
-  const thirdPourcent = visitedSurface * 100 / allSurface;
+  const visitedCommunesSurf: number[] = visitedCommunes.map(el => el.surface || 0)
+  const visitedSurf = visitedCommunesSurf.reduce((a, b) => a + b)
+  const thirdPourcent = visitedSurf * 100 / allSurface;
 
-    // const visitedSpe = visited.communes?.map(c => c.population ) || []
+  const visitedAlt = visitedCommunes.filter(c => c.altitude)
+  const visitedAltMoyenne = (visitedAlt.reduce((a, b) => a + b.altitude, 0)) / visitedAlt.length
 
-    
-// visitedSurf.map(c => {
-//   if (typeof(c) !== "number") {
-//     console.log(c + typeof(c));
-
-//   } else {
-//     console.log("ok");
-    
-//   }
-// })
-
-
-  const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
-  // @ts-ignore
-const visitedNumbers = allCommunes.filter(c => visited.communes.includes(c.code) ).map(c => ({
-  code: c.code, 
-  nom: c.nom, 
-  population: c.population,
-  surface: c.surface / 100,
-  // @ts-ignore
-  altitude: parseInt(inseeAltitude.find(el => el.code === c.code)?.altitude),
-}))
-
-  // @ts-ignore
-const maxPop = visitedNumbers.reduce((prev, current) => {
+  const maxPop = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.population > current.population) ? prev : current
 })
-  // @ts-ignore
-const minPop = visitedNumbers.reduce((prev, current) => {
+
+const minPop = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.population < current.population) ? prev : current
 })
-  // @ts-ignore
-const maxSurf = visitedNumbers.reduce((prev, current) => {
+const maxSurf = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.surface > current.surface) ? prev : current
 })
-  // @ts-ignore
-const minSurf = visitedNumbers.reduce((prev, current) => {
+const minSurf = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.surface < current.surface) ? prev : current
 })
-  // @ts-ignore
-const maxAlt = visitedNumbers.reduce((prev, current) => {
+const maxAlt = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.altitude > current.altitude) ? prev : current
 })
-  // @ts-ignore
-const minAlt = visitedNumbers.reduce((prev, current) => {
+const minAlt = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.altitude < current.altitude) ? prev : current
 })
-  // @ts-ignore
-  const visitedAlt = visitedNumbers.filter(c => c.altitude)
-  // @ts-ignore
-  const visitedAltMoyenne = (visitedAlt.reduce((a, b) => a + b.altitude, 0)) / visitedAlt.length
 
   return (
     <>
@@ -106,8 +63,8 @@ const minAlt = visitedNumbers.reduce((prev, current) => {
         </div>
         <div className="text-left text-lg font-bold mb-4">
           <span className="text-blue-600">{visited.communes.length}</span> communes soit <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> du nombre de communes<br />
-          <span className="text-red-600">{Intl.NumberFormat('fr').format(visitedPopulation)}</span> habitants soit <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> de la population<br />
-          <span className="text-green-500">{Intl.NumberFormat('fr', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurface)}</span> km² soit <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> de la superficie
+          <span className="text-red-600">{Intl.NumberFormat('fr').format(visitedPop)}</span> habitants soit <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> de la population<br />
+          <span className="text-green-500">{Intl.NumberFormat('fr', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² soit <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> de la superficie
         </div>
         <div className="text-left mb-4">
           la plus peuplée : {maxPop.nom} avec {Intl.NumberFormat('fr').format(maxPop.population)} habitants<br/>
@@ -122,7 +79,7 @@ const minAlt = visitedNumbers.reduce((prev, current) => {
           la moins élevée : {minAlt.nom} avec {Intl.NumberFormat('fr').format(minAlt.altitude)} m<br/>
           altitude moyenne : {visitedAltMoyenne.toFixed(2)} m
         </div>
-        <div className="text-left text-sm mb-2">
+        <div className="text-center text-xs mb-2">
           calculations are made from metropolitan France
         </div>
       </div>
