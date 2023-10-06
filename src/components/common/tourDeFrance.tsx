@@ -3,14 +3,12 @@ import { removeDuplicateDepartements } from "@/helpers/cityutils";
 // import { MouseEvent, useRef, useState } from "react";
 import './tourDeFrance.css';
 
-async function TourDeFrance({user, visited}: {user: publicUser, visited: visited}) {
+function TourDeFrance({user, visited}: {user: publicUser, visited: visited}) {
 
   const regionsWithDomTom: region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const departementsWithDomTom: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const regions = regionsWithDomTom.filter(el => el.zone === "metro")
   const departements = departementsWithDomTom.filter(el => el.zone === "metro")
-
-
 
   let visitedDepartementCities: city[] = removeDuplicateDepartements(visited.visitedCities);
   const visitedDepartements: string[] = visitedDepartementCities.map(city => city.departement);
@@ -41,8 +39,9 @@ async function TourDeFrance({user, visited}: {user: publicUser, visited: visited
     //   onMouseOver: (e:MouseEvent) => handleMouseOver(e),
     //   onMouseOut: () => handleMouseOut()
     // };
-    //   // @ts-ignore
-    //     const Tooltip = () => (<span ref={tooltip} className="tooltip" style={{ top: '0', left: '0' }}>{hovered}</span>)
+
+    // // @ts-ignore
+    // const Tooltip = () => (<span ref={tooltip} className="tooltip" style={{ top: '0', left: '0' }}>{hovered}</span>)
 
     // function handleMouseOver(e:MouseEvent) {
     //   // @ts-ignore
@@ -82,7 +81,7 @@ async function TourDeFrance({user, visited}: {user: publicUser, visited: visited
           </>
         </div>
         <div className="text-left text-md mb-4">
-          <CarteDeFranceSvg visited={visitedDepartements}/>
+          <CarteDeFranceSvg visited={visitedDepartements} />
           {/* <CarteSvg {...france} checkedLayers={visitedDepartements} layerProps={layerProps} /> */}
         </div>
       </div>

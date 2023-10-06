@@ -1,4 +1,9 @@
-const CarteDeFranceSvg = ({visited}:any) => {
+interface CarteDeFranceSvgProps  {
+  visited: string[]
+  // layerProps: any
+}
+
+const CarteDeFranceSvg = ({visited}:CarteDeFranceSvgProps) => {
 
   return (
   <svg
@@ -8,18 +13,17 @@ const CarteDeFranceSvg = ({visited}:any) => {
     y="0"
     viewBox="60 0 667 590"
     xmlSpace="preserve"
-    {...visited}
   >
     <g
       className="region region-11"
       data-nom="Île-de-France"
       data-code_insee={11}
     >
+      <title>Île-de-France</title>
       <path
         data-nom="Paris"
         data-numerodepartement={75}
         className={visited.includes('75') ? "departement visited" : "region-11 departement departement-75 departement-paris"}
-        // className={visited.includes('75') ? "departement visited" : "departement"}
         d="M641.8,78.3l-0.2,3.8l-1,2.6l-8.3-1.7l-6-0.6l-5.2,3h-4l-2.5-0.3l-0.4-0.1l-13.5-5l-3-3.8l-4.3-1.9l-0.5-0.2 l0.4-1.9l1.3-3.1l2.7-2.1l2.9-1.1l3.9,0.5h0.1l0.9-2.2l7.1-4.6l14-0.1l1.8,3.6l1.8,2.4l0.6,0.9l0.1,0.4L631,68l0.4,5.4l0.4,1.8v0.1 l-0.3,0.8l0.1,3.6l0.6-0.5l1.6-1.6l2-0.5l2-0.5L641.8,78.3z M396.8,154.7l-3.2-0.5l-2.5,1.7l3,3.5l5.3-0.1l-1.8-1.9L396.8,154.7z"
       />
       <path
@@ -70,6 +74,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       data-nom="Centre-Val de Loire"
       data-code_insee={24}
     >
+      <title>Centre-Val de Loire</title>
       <path
         data-nom="Cher"
         data-numerodepartement={18}
@@ -109,9 +114,10 @@ const CarteDeFranceSvg = ({visited}:any) => {
     </g>
     <g
       className="region region-27"
-      data-nom="Bourgogne-Franche-Comt\xE9"
+      data-nom="Bourgogne-Franche-Comté"
       data-code_insee={27}
     >
+      <title>Bourgogne-Franche-Comté</title>
       <path
         data-nom="C\xF4te-d\u2019Or"
         data-numerodepartement={21}
@@ -162,6 +168,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       />
     </g>
     <g className="region region-28" data-nom="Normandie" data-code_insee={28}>
+      <title>Normandie</title>
       <path
         data-nom="Calvados"
         data-numerodepartement={14}
@@ -198,6 +205,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       data-nom="Hauts-de-France"
       data-code_insee={32}
     >
+      <title>Hauts-de-France</title>
       <path
         data-nom="Aisne"
         data-numerodepartement={2}
@@ -230,6 +238,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       />
     </g>
     <g className="region region-44" data-nom="Grand Est" data-code_insee={44}>
+      <title>Grand Est</title>
       <path
         data-nom="Ardennes"
         data-numerodepartement={8}
@@ -296,6 +305,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       data-nom="Pays de la Loire"
       data-code_insee={52}
     >
+      <title>Pays de la Loire</title>
       <path
         data-nom="Loire-Atlantique"
         data-numerodepartement={44}
@@ -328,6 +338,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       />
     </g>
     <g className="region region-53" data-nom="Bretagne" data-code_insee={53}>
+      <title>Bretagne</title>
       <path
         data-nom="C\xF4tes-d\u2019Armor"
         data-numerodepartement={22}
@@ -358,6 +369,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       data-nom="Nouvelle-Aquitaine"
       data-code_insee={75}
     >
+      <title>Nouvelle-Aquitaine</title>
       <path
         data-nom="Charente"
         data-numerodepartement={16}
@@ -432,6 +444,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       />
     </g>
     <g className="region region-76" data-nom="Occitanie" data-code_insee={76}>
+      <title>Occitanie</title>
       <path
         data-nom="Ari\xE8ge"
         data-numerodepartement={9}
@@ -516,6 +529,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       data-nom="Auvergne-Rh\xF4ne-Alpes"
       data-code_insee={84}
     >
+      <title>Auvergne-Rhône-Alpes</title>
       <path
         data-nom="Ain"
         data-numerodepartement={1}
@@ -591,9 +605,10 @@ const CarteDeFranceSvg = ({visited}:any) => {
     </g>
     <g
       className="region region-93"
-      data-nom="Provence-Alpes-C\xF4te d&#39;Azur"
+      data-nom="Provence-Alpes-Côte d&#39;Azur"
       data-code_insee={93}
     >
+      <title>Provence-Alpes-Côte d&#39;Azur</title>
       <path
         data-nom="Alpes-de-Haute-Provence"
         data-numerodepartement={4}
@@ -632,6 +647,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
       />
     </g>
     <g className="region region-94" data-nom="Corse" data-code_insee={94}>
+      <title>Corse</title>
       <path
         data-nom="Corse-du-Sud"
         data-numerodepartement="2A"
@@ -643,7 +659,7 @@ const CarteDeFranceSvg = ({visited}:any) => {
         data-numerodepartement="2B"
         className="region-94 departement departement-2B departement-haute-corse"
         d="m643.7,551.5v1l-3.2,1.7l-3.8-0.5l-3.7-11 l-2.7-1.1l-0.5-3.2l-6-5.9l-6-3.4l-1.2-3.5l-13.6-2.1v-0.2l3.9-5l-0.3-3.4l2.2-2.8l2.8-0.3l0.9-2.9l10.7-4.2l3.5-4.9l8.6,1.3 l-0.5-17.4l2.4-2l2.9,1.1l0.18,0.89l1.52,8.21l-0.5,10.6l4,5.6l3.8,26l-5.4,11.9V551.5L643.7,551.5z"
-      />
+       />
     </g>
   </svg>
 )};

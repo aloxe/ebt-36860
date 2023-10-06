@@ -1,5 +1,5 @@
+import JeuPrefectures from "@/components/common/jeuPrefectures";
 import Summary from "@/components/common/summary";
-import TourDeFrance from "@/components/common/tourDeFrance";
 import { getUserVisited } from "@/helpers/dbutils";
 import { getPublicUser } from "@/helpers/ebtutils";
 
@@ -19,9 +19,10 @@ const UserData = async ({ params }: { params: { id: string } }) => {
           jeu des préfectures
         </menu>
       </div>
-      {/* <ListeCommunes user={publicUser} visited={visited}/>
-      <JeuCommunes user={publicUser} visited={visited}/> */}
-      <TourDeFrance user={publicUser} visited={visited}/>
+      {/* <ListeCommunes user={publicUser} visited={visited}/> */}
+      {/* <JeuCommunes user={publicUser} visited={visited}/> */}
+      {/* <TourDeFrance user={publicUser} visited={visited}/> */}
+      <JeuPrefectures user={publicUser} visited={visited}/>
       </>
     )
 }
