@@ -2,7 +2,7 @@ import { fetchAllComplete } from "@/helpers/cityutils";
 
 async function ListeCommunes({user, visited}: {user: publicUser, visited: visited}) {
 
-  const departements = require('@etalab/decoupage-administratif/data/departements.json')
+  const departements: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const allcommunes: commune[] = await fetchAllComplete();
   const visitedCommunes: commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
   const visitedPrefectures: string[] = visited.prefectures;

@@ -61,9 +61,26 @@ interface commune {
     "surface"?: number;
     "population"?: number;
     "codesPostaux": string[];
-    "centre"?: { type: 'Point', coordinates: Array<string> },
-    "contour"?: { type: 'Polygon', coordinates: Array<string> },
-    "zone"?: 'metro',
-    "departement"?: { code: string, nom: string; }, //   "departement": string;
-    "region"?: { code: string, nom: string; }
+    "centre"?: { type: 'Point', coordinates: Array<string> };
+    "contour"?: { type: 'Polygon', coordinates: Array<string> };
+    "zone": 'metro' | 'com' | 'drom';
+    "departement"?: { code: string, nom: string; }; //   "departement": string;
+    "region"?: { code: string, nom: string; };
+  }
+
+interface departement {
+    "code": string;
+    "region": string;
+    "chefLieu": string;
+    "nom": string;
+    "typeLiaison": number;
+    "zone": 'metro' | 'com' | 'drom';
+}
+
+interface region {
+    "code": string;
+    "chefLieu": string;
+    "nom": string;
+    "typeLiaison": number
+    "zone": 'metro' | 'com' | 'drom';
   }

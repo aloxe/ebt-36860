@@ -1,33 +1,11 @@
-import JeuCommunes from "@/components/common/jeuCommunes";
-import ListeCommunes from "@/components/common/listeCommunes";
 import Summary from "@/components/common/summary";
+import TourDeFrance from "@/components/common/tourDeFrance";
 import { getUserVisited } from "@/helpers/dbutils";
 import { getPublicUser } from "@/helpers/ebtutils";
 
 const UserData = async ({ params }: { params: { id: string } }) => {
-  console.log("c parti " + params.id);
-  
   const publicUser = await getPublicUser(params.id);
-
   const visited = await getUserVisited(params.id);
-
-// var visitedCommunes: commune[] = await Promise.all(visited.communes.map(async (code: string): Promise<commune> => {
-//     let visitedCommune = await fetchComplete(code);
-//     return visitedCommune;
-// }));
- 
-// visitedCommunes.sort( (a, b) => {
-//     if (a.codesPostaux[0] < b.codesPostaux[0]) {
-//         return -1;
-//     }
-//     if (a.codesPostaux[0] > b.codesPostaux[0]) {
-//         return 1;
-//     }
-//     return 0;
-// });
-
-
-
 
     return (
       <>
@@ -41,8 +19,9 @@ const UserData = async ({ params }: { params: { id: string } }) => {
           jeu des préfectures
         </menu>
       </div>
-      <ListeCommunes user={publicUser} visited={visited}/>
-      <JeuCommunes user={publicUser} visited={visited}/>
+      {/* <ListeCommunes user={publicUser} visited={visited}/>
+      <JeuCommunes user={publicUser} visited={visited}/> */}
+      <TourDeFrance user={publicUser} visited={visited}/>
       </>
     )
 }
