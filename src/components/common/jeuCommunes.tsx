@@ -17,7 +17,6 @@ async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}
     altitude: parseInt(inseeAltitude.find(el => el.code === c.code)?.altitude),
   }))
 
-
   const allCommunesPop: number[] = allCommunes.map(el => el.population || 0)
   const allPop = allCommunesPop.reduce((buf, a) => buf + a)
   const visitedCommunesPop: number[] = visitedCommunes.map(el => el.population || 0)
@@ -36,7 +35,6 @@ async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}
   const maxPop = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.population > current.population) ? prev : current
 })
-
 const minPop = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.population < current.population) ? prev : current
 })
