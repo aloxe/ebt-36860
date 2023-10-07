@@ -60,15 +60,6 @@ export const removeDuplicateDepartements = (cities) => {
   return newcities;
 }
 
-export const removeDuplicateRegions = (depRegions) => {
-  var newdepRegions = depRegions.filter((dept, index, self) =>
-    index === self.findIndex((d) => (
-      d.regionCode === dept.regionCode
-    ))
-  );
-  return newdepRegions;
-}
-
 export const removeNotPrefecture = (communes) => {
   const departements = require('@etalab/decoupage-administratif/data/departements.json')
   const allPrefectures = departements.map(el => el.chefLieu);

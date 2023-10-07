@@ -57,8 +57,9 @@ const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
       </nav>
       {is36860 && children[0]}
       {list && children[1]}
-      {tour && children[2]}
-      {pref && children[3]}
+      {map && children[2]}
+      {tour && children[3]}
+      {pref && children[4]}
     </>
   )
 }

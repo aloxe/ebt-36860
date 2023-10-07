@@ -6,9 +6,9 @@ import './map.css';
 
 type MyMapComponent = {
   departements: string[];
+  dataCommunes:Feature[];
   showDep: boolean;
   showCom: boolean;
-  dataCommunes:Feature[];
 }
 
 // @ts-ignore
@@ -30,6 +30,7 @@ const OpenStreetMap_France = {
 }
 
 export function MyMapComponent({ departements, dataCommunes, showDep, showCom }: MyMapComponent) {
+
 
   const deptLayer : {data:FeatureCollection, style?:any} = {
     data: require("@/data/departements.geojson"),
@@ -61,6 +62,8 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom }:
     };
   };
 
+  console.log("show?" + showDep + showCom);
+  
   return (
     <>
     <MapContainer
