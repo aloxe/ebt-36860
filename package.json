@@ -10,8 +10,7 @@
   },
   "dependencies": {
     "@etalab/decoupage-administratif": "^3.0.0",
-    "@prisma/client": "^5.3.1",
-    "@south-paw/react-vector-maps": "^3.2.0",
+    "@prisma/client": "^5.4.1",
     "@types/geojson": "^7946.0.10",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
@@ -25,7 +24,7 @@
     "leaflet": "^1.9.4",
     "next": "13.4.10",
     "postcss": "8.4.26",
-    "prisma": "^5.3.1",
+    "prisma": "^5.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-leaflet": "^4.2.1",

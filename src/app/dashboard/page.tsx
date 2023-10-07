@@ -1,9 +1,9 @@
 'use client'
 import { useAuth } from "../../hooks/authprovider";
-import { Cities } from './cities';
-import { Profile } from './profile';
-import { Unknowns } from "./unknowns";
-import { UserMap } from "./usermap";
+// import { Cities } from './cities';
+// import { Profile } from './profile';
+// import { Unknowns } from "./unknowns";
+// import { UserMap } from "./usermap";
 
 export default function Dashboard() {
   const { user, visited } = useAuth();
@@ -19,10 +19,10 @@ export default function Dashboard() {
           {user?.username && `Dashboard of ${user.username}`}
         </h1>
       </div>
-      {user?.username && <Profile />}
+      {/* {user?.username && <Profile />}
       {user?.username && <Cities />}
       {user?.username && visited && <UserMap />}
-      {user?.username && visited?.unknown > 0 && <Unknowns />}
+      {user?.username && visited?.unknown > 0 && <Unknowns />} */}
       </>
     )
 }
