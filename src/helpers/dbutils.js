@@ -11,6 +11,15 @@ export const getUserVisited = async (id) => {
   const visited = await JSON.parse(response?.content || "")
   return visited;
 }
+export const getUserPolygons = async (id) => {
+  const response = await prisma.visited.findUnique({
+    where: {
+        user_id: id,
+    },
+  });
+  const polygons = await JSON.parse(response?.polygons || "")
+  return polygons;
+}
 
 export const getUsers = async () => {
   const res = await prisma.visited.findMany();
@@ -73,6 +82,17 @@ export const getAllVisited = async () => {
 export const getVisited = async (userId) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/players/${userId}`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
+}
+
+export const getPolygons = async (userId) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/polygons/${userId}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
