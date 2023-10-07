@@ -22,6 +22,7 @@ async function saveData(visited) {
       user_id: `${visited.userId}`,
       username: `${visited.username}`,
       content: `${userContent}`,
+      polygons: "{}",
       date: date,
     },
   })

@@ -9,10 +9,11 @@ generator client {
 }
 
 model visited {
-  user_id   String  @unique
+  user_id    String    @unique
   username   String
-  content   String
-  date      DateTime
+  content    String
+  polygons   String
+  date       DateTime
 }
 
 model lieux {

@@ -1,7 +1,7 @@
 'use client'
 import Spinner from "@/components/common/spinner";
 import { MyMapComponent } from "@/components/maps/map";
-import { removeDuplicateRegions } from "@/helpers/cityutils";
+import { savePolygons } from "@/helpers/dbutils";
 import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
@@ -18,9 +18,8 @@ export function UserMap() {
   const [ disabled, setDisabled ] = useState<Boolean>(true);
 const { communes } = visited;
 
-  const regionsDept = require('@/data/departments_regions_france_2017.json')
-// @ts-ignore
-const regionCodes:string[] = removeDuplicateRegions(regionsDept).map(item => item.regionCode).filter((regionCode) => regionCode !== null);
+  const regionsWithDomTom: region[] = require('@etalab/decoupage-administratif/data/regions.json')
+  const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
 
 const fetchData = async (codeRegion:string) => {
   const response = await fetch(
@@ -36,13 +35,12 @@ const fetchData = async (codeRegion:string) => {
     // console.log("handlefetchData" + new Date().toLocaleTimeString());
     setFetching(true);
     regionCodes.map( async (regionCode) => {
-      console.log(new Date().toLocaleTimeString());
+      // console.log(new Date().toLocaleTimeString());
       // TODO make this fetch quicker
       const regionCommunes = await fetchData(regionCode);
       const regionUserCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
       // keeping nice example with Saints => asset.properties.code.includes("Saint"));
       communesToDisplay = communesToDisplay.concat(regionUserCommunes)
-
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
         // console.log("****** set communes data ******* " + new Date().toLocaleTimeString());
@@ -52,11 +50,26 @@ const fetchData = async (codeRegion:string) => {
     });
 }, [communes, regionCodes])
 
+  const handlesavePolygons = useCallback( async () => {
+    const objectToSave = {
+      userId: user.id,
+      username: user.username,
+      polygons: dataCommunes
+    }
+    savePolygons(objectToSave);
+}, [user, dataCommunes])
+
   useEffect(() => {
     if (!fetching) {
       handlefetchData()
     }
   }, [fetching, handlefetchData])
+
+  useEffect(() => {
+    if (dataCommunes) {
+      handlesavePolygons()
+    }
+  }, [dataCommunes, handlesavePolygons])
 
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">

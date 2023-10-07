@@ -62,8 +62,6 @@ const List = async () => {
       </div>
     </>
   )
-
-
 }
 
 export default List
