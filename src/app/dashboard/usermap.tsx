@@ -104,9 +104,9 @@ const fetchData = async (codeRegion:string) => {
         </div>
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
-        {/* {typeof window !== 'undefined' && ( */}
+        {typeof window !== 'undefined' && (
           <MyMapComponent departements={visited?.departements} dataCommunes={dataCommunes} showDep={showDep} showCom={showCom} />
-        {/* )} */}
+        )}
       </div>
     </div>
     )

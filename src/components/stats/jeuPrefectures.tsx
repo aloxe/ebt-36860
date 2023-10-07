@@ -18,7 +18,7 @@ function JeuPrefectures({user, visited}: DetailsProps) {
           {departements.map(departement => {
             if (prefectures.includes(departement.chefLieu)) {
                 const pref = visited.visitedCities.find(city => city.code === departement.chefLieu)
-                return pref && <div><b key={pref.code}>{departement.code}</b> {pref.city}</div>
+                return pref && <div><b key={pref.code}>{departement.code}</b> {pref.commune || pref.city}</div>
             }
           })}
           </>
