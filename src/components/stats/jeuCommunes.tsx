@@ -1,7 +1,6 @@
 import { fetchAllComplete } from "@/helpers/cityutils";
 
-async function JeuCommunes({user, visited}: {user: publicUser, visited: visited}) {
-
+async function JeuCommunes({user, visited}: DetailsProps) {
   const allCommunesWithDomTom: commune[] = await fetchAllComplete();
   // we remove oversea municipalities
   const allCommunes = allCommunesWithDomTom.filter(el => el.zone === "metro")

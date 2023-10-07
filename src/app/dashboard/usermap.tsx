@@ -1,6 +1,6 @@
 'use client'
-import { MyMapComponent } from "@/components/Map/map";
 import Spinner from "@/components/common/spinner";
+import { MyMapComponent } from "@/components/maps/map";
 import { removeDuplicateRegions } from "@/helpers/cityutils";
 import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
@@ -16,7 +16,6 @@ export function UserMap() {
   const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
   const [ fetching, setFetching ] = useState<Boolean>(false);
   const [ disabled, setDisabled ] = useState<Boolean>(true);
-  // const [ disabled, setDisabled ] = useState<boolean | undefined>(false);
 const { communes } = visited;
 
   const regionsDept = require('@/data/departments_regions_france_2017.json')
