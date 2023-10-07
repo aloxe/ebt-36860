@@ -1,6 +1,6 @@
 import { removeNotPrefecture } from "@/helpers/cityutils";
 
-function JeuPrefectures({user, visited}: {user: publicUser, visited: visited}) {
+function JeuPrefectures({user, visited}: DetailsProps) {
   const prefectures = removeNotPrefecture(visited.communes);
   const departementsWithDomTom: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const departements = departementsWithDomTom.filter(el => el.zone === "metro")

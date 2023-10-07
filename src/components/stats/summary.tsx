@@ -1,6 +1,6 @@
-import { ScoreCard } from "./scoreCard";
+import { ScoreCard } from "@/components/stats/scoreCard";
 
-async function  Summary({user, visited}: {user: publicUser, visited: visited}) {
+async function  Summary({user, visited}: DetailsProps) {
 
     var d = new Date(visited?.date || '');
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })

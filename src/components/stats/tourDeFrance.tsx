@@ -1,9 +1,8 @@
 import CarteDeFranceSvg from "@/assets/france-departements.svg";
 import { removeDuplicateDepartements } from "@/helpers/cityutils";
-// import { MouseEvent, useRef, useState } from "react";
 import './tourDeFrance.css';
 
-function TourDeFrance({user, visited}: {user: publicUser, visited: visited}) {
+function TourDeFrance({user, visited}: DetailsProps) {
 
   const regionsWithDomTom: region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const departementsWithDomTom: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
@@ -29,35 +28,6 @@ function TourDeFrance({user, visited}: {user: publicUser, visited: visited}) {
       deps
     })
   })
-    console.log(visitedRegions);
-
-    // const [hovered, setHovered] = useState('');
-    // const tooltip = useRef();
-
-
-    // const layerProps = {
-    //   onMouseOver: (e:MouseEvent) => handleMouseOver(e),
-    //   onMouseOut: () => handleMouseOut()
-    // };
-
-    // // @ts-ignore
-    // const Tooltip = () => (<span ref={tooltip} className="tooltip" style={{ top: '0', left: '0' }}>{hovered}</span>)
-
-    // function handleMouseOver(e:MouseEvent) {
-    //   // @ts-ignore
-    //     setHovered(e.target.attributes.name.value);
-    //     const tooltipBox = tooltip.current;
-    //     tooltipBox.style.left = e.pageX + 'px';
-    //     tooltipBox.style.top = e.pageY + 'px';
-    //     tooltipBox.style.opacity = 1;
-    // }
-
-    // function handleMouseOut() {
-    //     const tooltipBox = tooltip.current;
-    //     tooltipBox.style.opacity = 0;
-    // }
-
-
 
   return (
     <>
