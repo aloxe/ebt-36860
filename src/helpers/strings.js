@@ -14,15 +14,16 @@ export function addSauPluriel(value) {
 }
 
 export function countryCodeToFlag(countrycode) {
+    if (countrycode?.length !== 2) return;
+
+
   const offset = 127397;
   const A = 65;
   const Z = 90;
   const f = countrycode.codePointAt(0);
   const s = countrycode.codePointAt(1);
 
-  if (countrycode.length !== 2
-    || f > Z || f < A
-    || s > Z || s < A)
+  if (f > Z || f < A || s > Z || s < A)
     throw new Error('Not an alpha2 country code');
 
   return String.fromCodePoint(f + offset) + String.fromCodePoint(s + offset);
