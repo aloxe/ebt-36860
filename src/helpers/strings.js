@@ -34,7 +34,12 @@ export function formatDate(date) {
   return d.toLocaleString("en-GB", { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-export function compareScore( a, b ) {
+export function formatDayDate(date) {
+  var d = new Date(date);
+  return d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+  export function compareScore( a, b ) {
   if ( a.score > b.score ){
     return -1;
   }

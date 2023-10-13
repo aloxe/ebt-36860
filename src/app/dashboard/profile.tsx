@@ -1,15 +1,14 @@
 'use client'
 import Spinner from "@/components/common/spinner";
 import { refreshUser } from "@/helpers/ebtutils";
+import { formatDayDate } from "@/helpers/strings";
+// import { formatDayDate } from "@/helpers/strings";
 import { useAuth } from "@/hooks/authprovider";
 import { useState } from "react";
 
 export function Profile() {
   const { user, setUser } = useAuth();
   const [requestRefresh, setRequestRefresh] = useState<boolean>(false);
-
-  var d = new Date(user?.date);
-  const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
     const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -19,7 +18,7 @@ export function Profile() {
     var login = user.email
     const loginUser = await refreshUser(user);
     if (loginUser) {
-      loginUser.date = Date.now();
+      loginUser.date =  Date.now();
       loginUser.email = login;
       setUser(loginUser);
       setRequestRefresh(false);
@@ -31,11 +30,13 @@ export function Profile() {
     }
   }
 
+  console.log(user);
+  
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
       <div className="flex justify-between">
         <h2>Profile</h2>
-        {user?.my_city && <div className="text-right text-stone-400 text-sm">{date} 
+        {user?.my_city && <div className="text-right text-stone-400 text-sm">{formatDayDate(user.date)}
           <span className="text-right text-blue-900 text-lg cursor-pointer" onClick={handleRefreshUser}> ⟳ </span>
       </div>}
       </div>

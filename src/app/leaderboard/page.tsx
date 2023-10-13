@@ -50,7 +50,7 @@ const List = async () => {
                 <td className="whitespace-nowrap px-6 py-4 flex justify-between">
                   <div className="text-md">{p.score}</div>
                   <div className="text-right text-xs">
-                    ({formatDate(JSON.parse(players[0].content || "{}").date)})
+                    ({formatDate(p.content ? JSON.parse(p.content).date : p.date)})
                   </div>
                 </td>
                 {/* <td className="whitespace-nowrap px-6 py-4 w-2"></td> */}
