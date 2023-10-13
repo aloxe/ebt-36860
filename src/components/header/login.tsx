@@ -1,9 +1,11 @@
 'use client'
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 import { useAuth } from "@/hooks/authprovider";
+import { useRouter } from 'next/navigation';
 
 export function Login() {
   const { user, setUser, logout } = useAuth();
+const { push } = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,7 +30,8 @@ export function Login() {
       loginUser.email = login;
       loginUser.date = Date.now();
       sessionStorage.setItem('user', JSON.stringify(loginUser));
-      setUser(loginUser)
+      setUser(loginUser);
+      push('/dashboard/');
     }
   }
 
@@ -74,9 +77,12 @@ export function Login() {
         <div className="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
           <div className="absolute right-0 w-80 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
             <div className="px-4 py-3">
+              <div className="form-row font-extralight text-xs">
+                Use your eurobilltracker.com credentials
+              </div>
               <form onSubmit={handleSubmit}>
                 <div className="form-row">
-                  <label className="form-label">Username</label>
+                  <label className="form-label">Email</label>
                   <input name="username" type="text" className="form-input" />
                 </div>
                 <div className="form-row">
