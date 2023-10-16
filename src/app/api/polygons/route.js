@@ -10,6 +10,7 @@ export async function POST(request) {
 async function saveData(objectToSave) {
   const date = new Date().toISOString()
   const polygonString = JSON.stringify(objectToSave.polygons)
+  const userString = JSON.stringify(objectToSave.user)
   await prisma.visited.upsert({
     where: {
       user_id: `${objectToSave.userId}`,
@@ -20,7 +21,7 @@ async function saveData(objectToSave) {
     },
     create: {
       user_id: `${objectToSave.userId}`,
-      username: `${objectToSave.username}`,
+      user: `${userString}`,
       content: "{}",
       polygons: `${polygonString}`,
       date: date,

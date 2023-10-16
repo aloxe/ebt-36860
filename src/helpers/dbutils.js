@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { isJson } from "./strings";
 
 //server side
 
@@ -79,34 +80,77 @@ export const getAllVisited = async () => {
   return dataresult;
 }
 
-export const getVisited = async (userId) => {
-  const requestOptions = { method: 'GET' };
-  const response = await fetch(`/api/players/${userId}`, requestOptions)
-    .catch(function (err) {
-      console.log('Fetch Error :-S', err);
-      return null;
-    });
-  const dataresult = await response?.json();
-  return dataresult;
-}
-
-export const getPolygons = async (userId) => {
-  const requestOptions = { method: 'GET' };
-  const response = await fetch(`/api/polygons/${userId}`, requestOptions)
-    .catch(function (err) {
-      console.log('Fetch Error :-S', err);
-      return null;
-    });
-  const dataresult = await response?.json();
-  return dataresult;
-}
-
-  export const saveVisited = async (user, visited) => {
-  visited.userId = user.id;
-  visited.username = user.username;
+export const getPlayerData = async (key, userId) => {
+  // accept keys from the db column (user, content, polygons)
   const requestOptions = {
     method: 'POST',
-    body: JSON.stringify(visited),
+    body: JSON.stringify(userId),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+  const response = await fetch(`/api/players/get`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  console.log("dataresult", dataresult[key]);
+  if (isJson(dataresult[key])) {
+    return JSON.parse(dataresult[key]);
+  }
+  if (!dataresult[key] || !Object.keys(dataresult[key]).length || dataresult[key] === "undefined") {
+    return undefined;
+  }
+  return dataresult[key]
+}
+
+export const savePlayerData = async (dataToSave) => {
+  const { user, visited, polygon } = dataToSave
+
+  const userId = user.id || visited.userId || polygon.userId;
+  if (!userId) {
+      console.log('savePlayerData Error :-S', dataToSave);
+      return null;
+    };
+
+  const userTosave = user ? user : await getPlayerData ("user", userId) || "undefined"
+  const visitedTosave = visited ? visited : await getPlayerData ("content", userId) || {}
+  const polygonTosave = polygon ? polygon : await getPlayerData ("polygon", userId) || {}
+
+  const objectToSave = {
+    userId: userId,
+    user: userTosave,
+    visited: visitedTosave,
+    polygon: polygonTosave
+  }
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+
+  console.log("objectToSave", objectToSave);
+      await fetch(`/api/players/`, requestOptions)
+      .then(
+        response => {
+          if (response.status !== 200) {
+            console.log("problème ", response.status);
+          }
+        })
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+}
+
+
+  export const saveVisited = async (user, visited) => {
+  console.log("saveVisited", user, visited);
+  objectToSave.userId = user.id;
+  objectToSave.user = user;
+  objectToSave.visited = visited;
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
 

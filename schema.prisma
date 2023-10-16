@@ -10,7 +10,7 @@ generator client {
 
 model visited {
   user_id    String    @unique
-  username   String
+  user   String
   content    String
   polygons   String
   date       DateTime

@@ -1,3 +1,4 @@
+// Ascii language manipulation 
 export function sansAccent(str) {
   if (!str) return null;
   str = str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
@@ -29,6 +30,17 @@ export function countryCodeToFlag(countrycode) {
   return String.fromCodePoint(f + offset) + String.fromCodePoint(s + offset);
 }
 
+// Json 
+export function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+// dates
 export function formatDate(date) {
   var d = new Date(date);
   return d.toLocaleString("en-GB", { year: 'numeric', month: 'long', day: 'numeric' })
@@ -39,6 +51,7 @@ export function formatDayDate(date) {
   return d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 }
 
+// results
   export function compareScore( a, b ) {
   if ( a.score > b.score ){
     return -1;

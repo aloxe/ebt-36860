@@ -53,7 +53,7 @@ const fetchData = async (codeRegion:string) => {
   const handlesavePolygons = useCallback( async () => {
     const objectToSave = {
       userId: user.id,
-      username: user.username,
+      user: user,
       polygons: dataCommunes
     }
     savePolygons(objectToSave);

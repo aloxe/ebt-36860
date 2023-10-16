@@ -12,25 +12,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!user) {
       const storeUser = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('user') || "{}");
-      storeUser.username && setUser(storeUser);
+      storeUser.id && setUser(storeUser);
     }
-    if (!cities) {
-      const storeCities = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('cities') || "{}");
-      storeCities.data && setCities(storeCities);
-    }
-    if (!visited) {
-      const storeVisited = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('visited') || "{}");
-      storeVisited.date && setVisited(storeVisited);
-    }
+    // if (!cities) {
+    //   const storeCities = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('cities') || "{}");
+    //   storeCities.data && setCities(storeCities);
+    // }
+    // if (!visited) {
+    //   const storeVisited = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('visited') || "{}");
+    //   storeVisited.date && setVisited(storeVisited);
+    // }
   }, [user, cities, visited])
 
   const saveVisitedNoUser = useCallback( async (visited:any) => {
   user && saveVisited(user, visited)
   }, [user]);
 
-  useEffect(() => {
-   visited && saveVisitedNoUser(visited)
-}, [visited, saveVisitedNoUser]);
+//   useEffect(() => {
+//    visited && saveVisitedNoUser(visited)
+// }, [visited, saveVisitedNoUser]);
 
 
   const logout = () => {

@@ -44,7 +44,7 @@ const List = async () => {
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-blue-900">
                   <a href={`/stats/${p.user_id}`} className="border-b dark:border-blue-900">
-                    {await getUserFlag(p.user_id)} {p.username}
+                    {/* {await getUserFlag(p.user_id)} {p.user?.username || p.username} */}
                   </a>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 flex justify-between">

@@ -23,6 +23,10 @@ export function Profile() {
       setUser(loginUser);
       setRequestRefresh(false);
       sessionStorage.setItem('user', JSON.stringify(loginUser));
+      console.log(loginUser.id + "=================NOT  save visited");
+      // let theVisited = getVisited(loginUser.id)
+      // console.log(theVisited);
+      
     } else {
       console.log('Fetch relogin Error :-S');
       user.my_city = citySave;
@@ -45,7 +49,7 @@ export function Profile() {
         👤 :
         {user.id !== user.username
         ? <a href={`https://fr.eurobilltracker.com/profile/?user=${user.id}`} target="_blank">{user.username} (🔗)</a>
-        : <>{user.username}</>}
+        : <>{user.user_name}</>}
         <br />📧 : {user.email}
         <br />🏠 : {user.my_city}, {user.my_country}
         <br />💶 : {user.totalbills}

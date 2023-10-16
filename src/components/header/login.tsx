@@ -1,15 +1,19 @@
 'use client'
+import { getPlayerData, savePlayerData } from "@/helpers/dbutils";
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 import { useAuth } from "@/hooks/authprovider";
 import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from "react";
 
 export function Login() {
   const { user, setUser, logout } = useAuth();
-const { push } = useRouter();
+  const [userLogsIn, setUserLogsIn] = useState<boolean>(false);
+  const { push } = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setUserLogsIn(true)
     const login = (event.target as HTMLInputElement).getElementsByTagName("input")[0].value
     const password = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
     const loginUser = await EBTlogin(login, password);
@@ -20,6 +24,8 @@ const { push } = useRouter();
     }
     const searchUser = await EBTsearch(loginUser, loginUser.username, 1)
     if (searchUser.users.length = 1) {
+        console.log("search for ", loginUser);
+      
       loginUser.id = searchUser.users[0].id
       loginUser.active = searchUser.users[0].active
     } else {
@@ -30,14 +36,38 @@ const { push } = useRouter();
       loginUser.email = login;
       loginUser.date = Date.now();
       sessionStorage.setItem('user', JSON.stringify(loginUser));
-      setUser(loginUser);
-      push('/dashboard/');
+      let theUser = await getPlayerData("user", loginUser.id)
+      console.log("theUser", theUser);
+
+  let theSave = await savePlayerData({user: loginUser, visited: null, polygon: null})
+  console.log("theSave", theSave);
+      // let theVisited = await getPlayerData("content", loginUser.id)
+      // console.log("theVisited", theVisited);
+      console.log("set user with " + loginUser.id);
+
+            setUser(loginUser);
+      console.log("did set user with " + loginUser.id);
+      
     }
   }
 
   const handleLogout = () => {
     logout()
   }
+
+    const handleRedirect = useCallback(() => {
+      console.log("redirect with " + user?.id);
+      push('/dashboard/');
+  }, [push, user])
+
+  useEffect(() => {
+   if (userLogsIn && user) {
+    console.log("will redirect with " + user?.id);
+    
+    setUserLogsIn(false)
+    handleRedirect();
+   }
+}, [userLogsIn, user, handleRedirect]);
 
   if (user) {
     return (

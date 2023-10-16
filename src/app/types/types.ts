@@ -1,7 +1,8 @@
 interface user {
   "user_id": string
   "sessionid"?: string
-  "username": string
+  "username"?: string
+  "user"?: string | user
   "my_city"?: string[]
   "my_country"?: string
   "my_flag"?: string
