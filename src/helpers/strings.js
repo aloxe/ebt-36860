@@ -14,7 +14,13 @@ export function addSauPluriel(value) {
   return value && value > 1 ? "s" : "";
 }
 
-export function countryCodeToFlag(countrycode) {
+export function getUserFlag(country) {
+    var countries = require("i18n-iso-countries");
+    let alpha2 = countries.getAlpha2Code(country, "en")
+    return countryCodeToFlag(alpha2);  
+}
+
+function countryCodeToFlag(countrycode) {
     if (countrycode?.length !== 2) return;
 
 
@@ -48,7 +54,9 @@ export function formatDate(date) {
 
 export function formatDayDate(date) {
   var d = new Date(date);
-  return d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  return d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) +
+  " " + 
+  d.toLocaleTimeString("fr-FR")
 }
 
 // results

@@ -92,21 +92,29 @@ export const getPlayerData = async (key, userId) => {
       console.log('Fetch Error :-S', err);
       return null;
     });
+      console.log("response", response);
+      console.log("response data ", response.data);
   const dataresult = await response?.json();
-  console.log("dataresult", dataresult[key]);
+  if (!response || !dataresult) {
+        console.log("f rien rien so on passe à suivant");
+    return undefined;}
+  // console.log("dataresult", dataresult);
+  // console.log("!dataresult", !dataresult);
+  if (!dataresult[key] || !Object.keys(dataresult[key]).length || dataresult[key] === "undefined") {
+    console.log("undefini so on passe à suivant");
+    return undefined;
+  }
   if (isJson(dataresult[key])) {
     return JSON.parse(dataresult[key]);
   }
-  if (!dataresult[key] || !Object.keys(dataresult[key]).length || dataresult[key] === "undefined") {
-    return undefined;
-  }
+
   return dataresult[key]
 }
 
 export const savePlayerData = async (dataToSave) => {
   const { user, visited, polygon } = dataToSave
 
-  const userId = user.id || visited.userId || polygon.userId;
+  const userId = user?.id || visited?.userId || polygon?.userId;
   if (!userId) {
       console.log('savePlayerData Error :-S', dataToSave);
       return null;

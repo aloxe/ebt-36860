@@ -1,18 +1,9 @@
 import { getUsers } from "@/helpers/dbutils";
-import { getPublicUser } from "@/helpers/ebtutils";
-import { compareScore, countryCodeToFlag, formatDate } from "@/helpers/strings";
+import { compareScore, formatDate } from "@/helpers/strings";
 
 const List = async () => {
 
-  const players: user[] = await getUsers()
-  var countries = require("i18n-iso-countries");
-
-  async function getUserFlag(id: string) {
-    if (!id) return null
-    let publicUser = await getPublicUser(id)
-    let alpha2 = countries.getAlpha2Code(publicUser.home_country_name, "en")
-    return countryCodeToFlag(alpha2);  
-  }
+  const players: dbUser[] = await getUsers()
 
   players.map( async p => {
     p.score = JSON.parse(p.content || "{}").communes.length;

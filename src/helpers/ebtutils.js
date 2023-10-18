@@ -12,7 +12,8 @@ export const getPublicUser = async (id) => {
       });
 
     const publicUser = await response?.json();
-    return publicUser.data;
+    console.log(publicUser.data);
+    return remapPublicUser(publicUser.data);
   }
 
 
@@ -117,3 +118,17 @@ export const getPostcodes = async (user, city) => {
     if (searchResponse) return searchResponse
     else return null
   }
+
+  // utils
+  const remapPublicUser = (publicUser) => {
+  const user  = {
+    "id": publicUser.user_id,
+    "username": publicUser.user_name,
+    "my_city": publicUser.home_city_name,
+    "my_country": publicUser.home_country_name,
+    "my_zip": publicUser.home_postal_code,
+    "totalbills": publicUser.total_notes,
+    "totalhits": publicUser.total_hits
+  }
+  return user;
+}

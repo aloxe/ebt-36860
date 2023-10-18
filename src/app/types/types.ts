@@ -1,7 +1,9 @@
 interface user {
-  "user_id": string
+  "id": number
+  // "user_id": string
   "sessionid"?: string
   "username"?: string
+  "url"?: string
   "user"?: string | user
   "my_city"?: string[]
   "my_country"?: string
@@ -16,6 +18,16 @@ interface user {
   "visited"?: visited;
 }
 
+interface dbUser {
+  "user_id": string
+  "user"?: string
+  "content"?: string
+  "polygon"?: string
+  "visited"?: visited
+  "date"?: string | Date
+  "score"?: number
+}
+
 interface visited {
   "visitedCities": city[]
   "communes": string[]
@@ -26,20 +38,6 @@ interface visited {
 }
 
 // API eurobilltracker
-
-interface publicUser {
-  "user_id": number
-  "user_name": string
-  "join_date"?: string
-  "home_city_name"?: string
-  "home_location_name"?: string
-  "home_country_name": string
-  "home_city_latitude"?: number
-  "home_city_longitude"?: number
-  "url"?: string
-  "total_notes": number
-  "total_hits": number
-}
 
 interface city {
   "code"?: string;

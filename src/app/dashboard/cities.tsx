@@ -1,9 +1,9 @@
 'use client'
 import Spinner from "@/components/common/spinner";
+import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
-import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
 
 export function Cities() {

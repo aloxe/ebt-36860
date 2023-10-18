@@ -1,7 +1,7 @@
 'use client'
-import { getPlayerData, savePlayerData } from "@/helpers/dbutils";
+import { useAuth } from "@/context/authcontext";
+import { savePlayerData } from "@/helpers/dbutils";
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
-import { useAuth } from "@/hooks/authprovider";
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from "react";
 
@@ -12,42 +12,32 @@ export function Login() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     setUserLogsIn(true)
     const login = (event.target as HTMLInputElement).getElementsByTagName("input")[0].value
     const password = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
+
     const loginUser = await EBTlogin(login, password);
     if (!loginUser) {
       //TODO error message
-      console.log("login error ");
+      console.log("login error: no user");
       return
     }
+    // add missing info from EBT user service
     const searchUser = await EBTsearch(loginUser, loginUser.username, 1)
     if (searchUser.users.length = 1) {
-        console.log("search for ", loginUser);
-      
       loginUser.id = searchUser.users[0].id
       loginUser.active = searchUser.users[0].active
     } else {
       // TODO error message for users without id?
+      console.log("login error: user with no");
       loginUser.id = loginUser.username
     }
     if (loginUser) {
       loginUser.email = login;
       loginUser.date = Date.now();
       sessionStorage.setItem('user', JSON.stringify(loginUser));
-      let theUser = await getPlayerData("user", loginUser.id)
-      console.log("theUser", theUser);
-
-  let theSave = await savePlayerData({user: loginUser, visited: null, polygon: null})
-  console.log("theSave", theSave);
-      // let theVisited = await getPlayerData("content", loginUser.id)
-      // console.log("theVisited", theVisited);
-      console.log("set user with " + loginUser.id);
-
-            setUser(loginUser);
-      console.log("did set user with " + loginUser.id);
-      
+      await savePlayerData({user: loginUser, visited: null, polygon: null})
+      setUser(loginUser);
     }
   }
 
@@ -56,14 +46,11 @@ export function Login() {
   }
 
     const handleRedirect = useCallback(() => {
-      console.log("redirect with " + user?.id);
       push('/dashboard/');
-  }, [push, user])
+  }, [push])
 
   useEffect(() => {
    if (userLogsIn && user) {
-    console.log("will redirect with " + user?.id);
-    
     setUserLogsIn(false)
     handleRedirect();
    }

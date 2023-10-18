@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Header from '../components/header/header';
-import { AuthProvider } from '../hooks/authprovider';
+import { AuthProvider } from '../context/authcontext';
 import './globals.css';
 
 export const metadata: Metadata = {

@@ -1,4 +1,5 @@
 interface DetailsProps {
-  user: publicUser, 
+  user: user, 
   visited: visited
+  className?: string
 }

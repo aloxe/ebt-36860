@@ -1,8 +1,8 @@
 'use client'
 import Spinner from "@/components/common/spinner";
 import { MyMapComponent } from "@/components/maps/map";
+import { useAuth } from "@/context/authcontext";
 import { savePolygons } from "@/helpers/dbutils";
-import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';

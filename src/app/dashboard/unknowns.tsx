@@ -1,7 +1,7 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
+import { useAuth } from "@/context/authcontext";
 import { saveEBTlocation, saveVisited } from "@/helpers/dbutils";
-import { useAuth } from "@/hooks/authprovider";
 import { useMemo } from "react";
 
 export function Unknowns() {

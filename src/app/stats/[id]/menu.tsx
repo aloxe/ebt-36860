@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 
-const UserDetails = ({ children }: {children: JSX.Element[] }) => {
+const StatsMenu = ({ children }: {children: JSX.Element[] }) => {
 const [is36860, setIs36860] = useState(true)
 const [list, setList] = useState(false)
 const [map, setMap] = useState(false)
@@ -64,4 +64,4 @@ const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
   )
 }
 
-export default UserDetails
+export default StatsMenu
