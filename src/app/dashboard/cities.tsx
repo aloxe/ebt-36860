@@ -1,5 +1,6 @@
 'use client'
 import Spinner from "@/components/common/spinner";
+import TitleButton from "@/components/common/titleButton";
 import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";
@@ -55,26 +56,22 @@ export function Cities() {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
+      {!request && !cities && 
+      <TitleButton
+      label={"Load your locations from EBT"}
+      callback={handleCityRequest}
+      />}
+      {request || cities &&
+      <div className="group bg-white rounded-lg border border-blue-200 text-left  p-4 m-4">
         <div className="flex justify-between">
-          {!request && !cities && <a
-            onClick={handleCityRequest}
-            href="#cities"
-            className="px-5 py-4"
-          >
-            <h2 className={`mb-3 text-lg font-semibold`}>
-              Load your locations from EBT{' '}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-          </a>}
-          { ((request && !cities) || cities) && <h2>Locations where you found notes</h2>}
+          <h2>Locations where you found notes</h2>
           { cities && <div className="text-right text-stone-400 text-sm">{date} 
-            <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span></div> }
+            <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span>
+          </div>}
         </div>
-            { request && !cities && <><br/><br/><Spinner /> loading locations from eurobilltracker</> }
-            { cities && <>
+        <div className="f">
+          {!cities && <><br/><br/><Spinner /> loading locations from eurobilltracker</>}
+          { cities && <>
             🌍 : {cities.rows} locations worldwide
             {cities?.france > 0 && !visited && <div>🇫🇷 : {cities.france} locations in France</div>}
             {cities?.france == 0 && <div>🇫🇷 : You didn&apos;t reccord euro bank notes in France</div>}
@@ -90,7 +87,9 @@ export function Cities() {
             }
             {visited && visited.unknown > 0 && <><br/><br/>you have {visited.unknown} unidentified locations</>}
           </> }
+        </div>
       </div>
+      }
     </>
   )
 }

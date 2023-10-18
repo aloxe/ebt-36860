@@ -7,7 +7,7 @@ async function  Summary({user, visited, className}: DetailsProps) {
 
   return (
     <>
-      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5`}>
+      <div className={`${className} bg-white rounded-lg border border-blue-200 text-leftp-4 m-4`}>
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold">
             {user.username} in France

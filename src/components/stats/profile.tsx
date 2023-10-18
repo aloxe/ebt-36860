@@ -7,7 +7,7 @@ function  Profile({user, handleRefreshUser, className}: {user: user, handleRefre
   const isLoggedIn = !!user.sessionid;
   return (
     <>
-      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5`}>
+      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left p-4 m-4`}>
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold">
             {user.username}
