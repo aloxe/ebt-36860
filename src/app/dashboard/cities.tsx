@@ -1,9 +1,10 @@
 'use client'
 import Spinner from "@/components/common/spinner";
 import TitleButton from "@/components/common/titleButton";
+import { ScoreCard } from "@/components/stats/scoreCard";
 import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
-import { getEBTlocation } from "@/helpers/dbutils";
+import { getEBTlocation, savePlayerData } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import { useCallback, useEffect, useState } from "react";
 
@@ -18,8 +19,9 @@ export function Cities() {
     const EBTLocations = await getEBTlocation();
     const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     sessionStorage.setItem('visited', JSON.stringify(visited));
+    await savePlayerData({user, visited, polygon: null})
     setVisited(visited);
-  }, [cities, setVisited]);
+  }, [cities, setVisited, user]);
 
   useEffect(() => {
     if (cities?.france > 0 && !visited) {
@@ -51,7 +53,6 @@ export function Cities() {
     cities.date = Date.now();
     setCities(cities)
     sessionStorage.setItem('cities', JSON.stringify(cities));
-    setRequest(false);
   }
 
   return (
@@ -61,7 +62,7 @@ export function Cities() {
       label={"Load your locations from EBT"}
       callback={handleCityRequest}
       />}
-      {request || cities &&
+      {request &&
       <div className="group bg-white rounded-lg border border-blue-200 text-left  p-4 m-4">
         <div className="flex justify-between">
           <h2>Locations where you found notes</h2>
@@ -78,14 +79,13 @@ export function Cities() {
             {/* {TODO: why don't you start to collect? } */}
             {cities && !visited && <><br/><br/><Spinner /> finding french communes</>}
             {visited && <h2 className="mt-2">Your french statistics</h2>}
-            {visited && <>
-            📍 : {cities.france} locations in France
-            <br/>🏘️ : <b>{visited.communes.length} french communes</b>
-            <br/>🇫🇷 : {visited.departements.length} départements
-            <br/>🏛️ : {visited.prefectures?.length} préfectures
-            </>
-            }
-            {visited && visited.unknown > 0 && <><br/><br/>you have {visited.unknown} unidentified locations</>}
+        {visited && <div className="flex justify-between">
+          <ScoreCard icon="📍" score={visited?.visitedCities?.length} label="location" />
+          <ScoreCard icon="🏘️" score={visited?.communes?.length} label="commune" />
+          <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />
+          <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label="préfecture" />
+        </div>}
+            {visited && visited.unknown > 0 && <><br/>you have {visited.unknown} unidentified locations</>}
           </> }
         </div>
       </div>

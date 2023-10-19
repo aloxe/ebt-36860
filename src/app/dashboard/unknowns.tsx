@@ -1,7 +1,7 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
 import { useAuth } from "@/context/authcontext";
-import { saveEBTlocation, saveVisited } from "@/helpers/dbutils";
+import { saveEBTlocation, savePlayerData } from "@/helpers/dbutils";
 import { useMemo } from "react";
 
 export function Unknowns() {
@@ -15,24 +15,31 @@ export function Unknowns() {
 
   function handleDropdownChoice(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
+    const myform = event?.currentTarget.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode
+    const DropDownRowSpan = event?.currentTarget.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0]?.childNodes[0]
+
     const newname = event.currentTarget.childNodes[0].nodeValue
     const newcode = event.currentTarget.id 
 
-    // add name on dropdown button
-    const DropDownRowSpan = event?.currentTarget.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0]?.childNodes[0]
     // writte name instead of chooze
     if (DropDownRowSpan) DropDownRowSpan.nodeValue = newname;
-    
-    // add name and code in form input values
-    const codeEl = event?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[3];
-    const communeEl = event?.currentTarget?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[4];
 
+    // add name and code in hidden input values
+    // @ts-ignore 
+    const communeEl = myform?.commune;
     if (communeEl) communeEl.setAttribute("value", newname || "")
+    // @ts-ignore
+    const codeEl = myform?.code;
     if (codeEl) codeEl.setAttribute("value", newcode)
 
-    const saveButton = event.currentTarget.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[6]
+    // unfocus button and unable save
+    event.currentTarget.blur()
+    // @ts-ignore
+    const saveButton = myform?.save;
     saveButton?.removeAttribute('disabled')
-    const error = event.currentTarget.parentNode?.parentNode?.parentNode?.parentNode?.parentNode?.children[2]
+
+    // @ts-ignore clean error 
+    const error = myform?.error
     if (error) error.innerHTML = ""
   }
 
@@ -52,6 +59,7 @@ export function Unknowns() {
     const code = (event.target as HTMLInputElement).getElementsByTagName("input")[2].value
     const commune = (event.target as HTMLInputElement).getElementsByTagName("input")[3].value
     const feedback = (event.target as HTMLInputElement).getElementsByTagName("span")[1]
+
       // if no commune or no code : error code
       if (!commune || !code) {
         feedback.className = "error"
@@ -88,32 +96,42 @@ export function Unknowns() {
         }
       });
       // visited has changed but is not new so we need to trigger its saving
-      saveVisited(user, visited)
+      savePlayerData({ user, visited, polygon: null })
+      // TODO do we still use storage for Visited?
   }
 
   return (
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
         <div className="flex justify-between">
-          { visited?.unknown > 0 && <h2>Locations you visited without identified commune</h2>}
-          { visited?.date && <div className="text-right text-stone-400 text-sm">{date}
+          <h2>Unknown commune you visited</h2>
+          {visited?.date && <div className="text-right text-stone-400 text-sm">
+            {date}
           </div>}
         </div>
-        <div className="">
+        <div className="text-sm text-stone-600 my-1">
+          Find out in which commune is the location you visited with the map. Choose it in the list of possible communes and save this choice for next time.
+        </div>
+        <div className="table w-full">
           {visitedUnknown.map((city:city) => {
             const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
-            return city.possible && <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="grid grid-cols-3 leading-10 even:bg-indigo-50 ">
-                <div className="leading-7 p-5">{city.city} is in 
-                  <br /><a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">find on 🗺 OSMap</a>
+            return city.possible && <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="table-row even:bg-indigo-50">
+                <div className="table-cell min-w-max pb-4 align-top pt-2">{city.city}<br/>
+                <div className="h-3"></div>
+                  <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">find on 🗺 OSMap</a>
+                <input type="hidden" value={city.city} name="location" id="location" />
+                <input type="hidden" value={city.departement} name="departement"  id="departement"/>
+                <input type="hidden" value="" name="code"  id="code" />
+                <input type="hidden" value="" name="commune" id="commune" />
                 </div>
-                <input type="hidden" value={city.city} name="location" />
-                <input type="hidden" value={city.departement} name="departement" />
-                <input type="hidden" value="" name="code" />
-                <input type="hidden" value="" name="commune" />
-                <div className="mt-4 text-center leading-7">{dropdownCommunes(city.possible || [])}
-                <br/><span className="error float-left"></span>
+                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-2 xs:hidden block">
+                  is in
+                </div>
+                <div className="table-cell float-left">
+                  {dropdownCommunes(city.possible || [])}
+                <br/><span id="error" className="error float-left"></span>
                   </div>
-                <button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4 mt-4" disabled>Save</button>
+                  <div className="table-cell "><button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4" id="save" disabled>Save</button></div>
             </form>
           })}
         </div>

@@ -1,6 +1,5 @@
 'use client'
-import { saveVisited } from '@/helpers/dbutils'
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export const AuthContext = createContext<any>(null)
 
@@ -24,9 +23,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // }
   }, [user, cities, visited])
 
-  const saveVisitedNoUser = useCallback( async (visited:any) => {
-  user && saveVisited(user, visited)
-  }, [user]);
+  // const saveVisitedNoUser = useCallback( async (visited:any) => {
+  // user && saveVisited(user, visited)
+  // }, [user]);
 
 //   useEffect(() => {
 //    visited && saveVisitedNoUser(visited)

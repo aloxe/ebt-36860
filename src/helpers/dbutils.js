@@ -96,12 +96,12 @@ export const getPlayerData = async (key, userId) => {
       console.log("response data ", response.data);
   const dataresult = await response?.json();
   if (!response || !dataresult) {
-        console.log("f rien rien so on passe à suivant");
+        console.log("rien so on passe à suivant");
     return undefined;}
   // console.log("dataresult", dataresult);
   // console.log("!dataresult", !dataresult);
   if (!dataresult[key] || !Object.keys(dataresult[key]).length || dataresult[key] === "undefined") {
-    console.log("undefini so on passe à suivant");
+    console.log("undefined so on passe à suivant");
     return undefined;
   }
   if (isJson(dataresult[key])) {
@@ -151,29 +151,29 @@ export const savePlayerData = async (dataToSave) => {
 }
 
 
-  export const saveVisited = async (user, visited) => {
-  console.log("saveVisited", user, visited);
-  objectToSave.userId = user.id;
-  objectToSave.user = user;
-  objectToSave.visited = visited;
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(objectToSave),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-  };
+//   export const saveVisited = async (user, visited) => {
+//   console.log("saveVisited", user, visited);
+//   objectToSave.userId = user.id;
+//   objectToSave.user = user;
+//   objectToSave.visited = visited;
+//   const requestOptions = {
+//     method: 'POST',
+//     body: JSON.stringify(objectToSave),
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+//   };
 
-      await fetch(`/api/players/`, requestOptions)
-      .then(
-        response => {
-          if (response.status !== 200) {
-            console.log("problème ", response.status);
-          }
-        })
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-}
+//       await fetch(`/api/players/`, requestOptions)
+//       .then(
+//         response => {
+//           if (response.status !== 200) {
+//             console.log("problème ", response.status);
+//           }
+//         })
+//       .catch(function (err) {
+//         console.log('Fetch Error :-S', err);
+//         return null;
+//       });
+// }
 
   export const savePolygons = async (objectToSave) => {
   const requestOptions = {
