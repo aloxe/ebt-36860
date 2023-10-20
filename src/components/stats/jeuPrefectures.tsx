@@ -10,7 +10,7 @@ function JeuPrefectures({user, visited}: DetailsProps) {
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold text-center">
-            Les préfectures de {user.user_name}
+            Les préfectures de {user.username}
           </h2>
         </div>
         <div className="text-left text-md mb-4">

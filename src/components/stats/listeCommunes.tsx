@@ -15,7 +15,7 @@ async function ListeCommunes({user, visited}: DetailsProps) {
         <table className="min-w-full text-left text-md font-light">
           <thead className="border-b font-medium dark:border-neutral-500">
             <tr>
-              <th colSpan={3} className="whitespace-nowrap px-6 py-4 text-center">{user.user_name} list of communes</th>
+              <th colSpan={3} className="whitespace-nowrap px-6 py-4 text-center">{user.username} list of communes</th>
             </tr>
           </thead>
           <tbody>

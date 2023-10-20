@@ -20,7 +20,8 @@ interface user {
 
 interface dbUser {
   "user_id": string
-  "user"?: string
+  "user": string
+  "username"?: string
   "content"?: string
   "polygon"?: string
   "visited"?: visited

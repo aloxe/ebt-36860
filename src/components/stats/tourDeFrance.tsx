@@ -34,7 +34,7 @@ function TourDeFrance({user, visited}: DetailsProps) {
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold text-center">
-            Tour de France de {user.user_name}
+            Tour de France de {user.username}
           </h2>
         </div>
         <div className="text-left text-md mb-4">

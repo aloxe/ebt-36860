@@ -55,7 +55,7 @@ const minAlt = visitedCommunes.reduce((prev, current) => {
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold text-center">
-            {user.user_name} score in ▤ 36860 communes ▥
+            {user.username} score in ▤ 36860 communes ▥
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">
