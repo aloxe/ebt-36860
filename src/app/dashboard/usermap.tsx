@@ -2,7 +2,6 @@
 import Spinner from "@/components/common/spinner";
 import { MyMapComponent } from "@/components/maps/map";
 import { useAuth } from "@/context/authcontext";
-import { savePolygons } from "@/helpers/dbutils";
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
@@ -10,18 +9,18 @@ import { GeoJsonTypes } from 'react-leaflet';
 type Feature = GeoJsonTypes.Feature
 
 export function UserMap() {
-  const { user, visited } = useAuth();
+  const { visited } = useAuth();
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
   const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
-  const [ fetching, setFetching ] = useState<Boolean>(false);
-  const [ disabled, setDisabled ] = useState<Boolean>(true);
+  const [ fetching, setFetching ] = useState<boolean>(false);
+  const [ disabled, setDisabled ] = useState<boolean>(true);
 const { communes } = visited;
 
-  const regionsWithDomTom: region[] = require('@etalab/decoupage-administratif/data/regions.json')
+  const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
 
-const fetchData = async (codeRegion:string) => {
+const fetchPolygonsPerRegion = async (codeRegion:string) => {
   const response = await fetch(
       `https://geo.api.gouv.fr/communes?codeRegion=${codeRegion}&format=geojson&geometry=contour`
     )
@@ -32,32 +31,29 @@ const fetchData = async (codeRegion:string) => {
   const handlefetchData = useCallback( async () => {
     let communesToDisplay = new Array();
     let regionToDisplay = [];
-    // console.log("handlefetchData" + new Date().toLocaleTimeString());
+
     setFetching(true);
     regionCodes.map( async (regionCode) => {
-      // console.log(new Date().toLocaleTimeString());
-      // TODO make this fetch quicker
-      const regionCommunes = await fetchData(regionCode);
-      const regionUserCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
-      // keeping nice example with Saints => asset.properties.code.includes("Saint"));
-      communesToDisplay = communesToDisplay.concat(regionUserCommunes)
+      // TODO try to make this fetch quicker
+      const regionCommunes = await fetchPolygonsPerRegion(regionCode);
+      const regionVisitedCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
+      communesToDisplay = communesToDisplay.concat(regionVisitedCommunes)
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
-        // console.log("****** set communes data ******* " + new Date().toLocaleTimeString());
         setDataCommunes(communesToDisplay);
         setDisabled(false);
       }
     });
 }, [communes, regionCodes])
 
-  const handlesavePolygons = useCallback( async () => {
-    const objectToSave = {
-      userId: user.id,
-      user: user,
-      polygons: dataCommunes
-    }
-    savePolygons(objectToSave);
-}, [user, dataCommunes])
+//   const handlesavePolygons = useCallback( async () => {
+//     const objectToSave = {
+//       userId: user.id,
+//       user: user,
+//       polygons: dataCommunes
+//     }
+//     savePolygons(objectToSave);
+// }, [user, dataCommunes])
 
   useEffect(() => {
     if (!fetching) {
@@ -65,16 +61,16 @@ const fetchData = async (codeRegion:string) => {
     }
   }, [fetching, handlefetchData])
 
-  useEffect(() => {
-    if (dataCommunes) {
-      handlesavePolygons()
-    }
-  }, [dataCommunes, handlesavePolygons])
+  // useEffect(() => {
+  //   if (dataCommunes) {
+  //     handlesavePolygons()
+  //   }
+  // }, [dataCommunes, handlesavePolygons])
 
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
       <div className="flex justify-between">
-        <h2>{user.username}&apos;s map</h2>
+        <h2>Your map</h2>
       </div>
       <div className="flex justify-around">
         <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">

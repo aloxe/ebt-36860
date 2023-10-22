@@ -1,9 +1,10 @@
 import { getPostcodes } from "@/helpers/ebtutils";
 import { sansAccent } from "@/helpers/strings";
 
-// API calls
+// API calls such as:
+// curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
+  
 export const fetchAllCommunes = async () => {
-  // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
   const response = await fetch(
       `https://geo.api.gouv.fr/communes?fields=code,nom`
     )
@@ -12,7 +13,6 @@ export const fetchAllCommunes = async () => {
 }
 
 export const fetchAllComplete = async () => {
-  // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
   const response = await fetch(
       `https://geo.api.gouv.fr/communes?fields=code,nom,surface,population,codesPostaux,departement,zone`
     )
@@ -29,12 +29,11 @@ export const fetchComplete = async (code) => {
   return communes[0];
 }
 
-export const fetchGeo = async (code) => {
+export const fetchPolygon = async (code) => {
     const response = await fetch(
       `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,departement,region,centre,contour`
     )
   const communes = await response.json()
-    // console.log("fetch complete", code, communes[0]);
   return communes[0];
 }
 
@@ -158,7 +157,7 @@ export function addPostcodes(user, citiesArray) {
     } else {
     city.postcodes = [city.top_zipcode];
     }
-  // add departement: useful french division
+    // add departement: useful french division
     if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     return city
   })
@@ -173,17 +172,6 @@ export const refreshVisited = (visitedCities) =>  {
   const departements = visitedDepartements.map(el => el.departement)
   const prefectures = removeNotPrefecture(communes);
   const visitedUnknown = visitedCities.filter(city => !city.code);
-
-
-  console.log("visited::: ", {
-    visitedCities,
-    communes,
-    departements,
-    prefectures,
-    unknown: visitedUnknown.length,
-    date: Date.now()
-  });
-
 
   return {
     visitedCities,

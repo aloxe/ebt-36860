@@ -1,35 +1,26 @@
 'use client'
+import { savePlayerData } from '@/helpers/dbutils';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export const AuthContext = createContext<any>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<user | undefined>(undefined);
-  const [cities, setCities] = useState<any>(undefined);
-  const [visited, setVisited] = useState<any>(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [cities, setCities] = useState<City[] | undefined>(undefined);
+  const [visited, setVisited] = useState<Visited | undefined>(undefined);
 
   useEffect(() => {
     if (!user) {
       const storeUser = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('user') || "{}");
       storeUser.id && setUser(storeUser);
     }
-    // if (!cities) {
-    //   const storeCities = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('cities') || "{}");
-    //   storeCities.data && setCities(storeCities);
-    // }
-    // if (!visited) {
-    //   const storeVisited = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('visited') || "{}");
-    //   storeVisited.date && setVisited(storeVisited);
-    // }
-  }, [user, cities, visited])
+    user && savePlayerData(user?.id, user)
+  }, [user])
 
-  // const saveVisitedNoUser = useCallback( async (visited:any) => {
-  // user && saveVisited(user, visited)
-  // }, [user]);
-
-//   useEffect(() => {
-//    visited && saveVisitedNoUser(visited)
-// }, [visited, saveVisitedNoUser]);
+useEffect(() => {
+  console.log("visited is ", visited );
+  visited && savePlayerData(user?.id, visited)
+}, [visited, user?.id])
 
 
   const logout = () => {
@@ -37,6 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     sessionStorage.removeItem('cities');
     sessionStorage.removeItem('visited');
     setUser(undefined)
+    // TODO clear visited and polygons
   }
 
   return (

@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { isJson } from "./strings";
 
-//server side
+// server side
 
 export const getUserVisited = async (id) => {
   const response = await prisma.visited.findUnique({
@@ -27,7 +27,7 @@ export const getUsers = async () => {
   return res;
 }
 
-//client side
+// client side
 
 function getRequestBodyQuery(body) {
   var bodyArray = [];
@@ -81,7 +81,7 @@ export const getAllVisited = async () => {
 }
 
 export const getPlayerData = async (key, userId) => {
-  // accept keys from the db column (user, content, polygons)
+  // accept db keys from columns: user | content | polygons
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(userId),
@@ -92,51 +92,34 @@ export const getPlayerData = async (key, userId) => {
       console.log('Fetch Error :-S', err);
       return null;
     });
-      console.log("response", response);
-      console.log("response data ", response.data);
   const dataresult = await response?.json();
   if (!response || !dataresult) {
-        console.log("rien so on passe à suivant");
+    // no response
     return undefined;}
-  // console.log("dataresult", dataresult);
-  // console.log("!dataresult", !dataresult);
   if (!dataresult[key] || !Object.keys(dataresult[key]).length || dataresult[key] === "undefined") {
-    console.log("undefined so on passe à suivant");
+    // response undefined
     return undefined;
   }
   if (isJson(dataresult[key])) {
+    // response ok
     return JSON.parse(dataresult[key]);
   }
-
   return dataresult[key]
 }
 
-export const savePlayerData = async (dataToSave) => {
-  const { user, visited, polygon } = dataToSave
-
-  const userId = user?.id || visited?.userId || polygon?.userId;
+export const savePlayerData = async (userId, dataToSave) => {
   if (!userId) {
-      console.log('savePlayerData Error :-S', dataToSave);
-      return null;
-    };
+    console.log('savePlayerData Error :-S', dataToSave);
+    return null;
+  };
 
-  const userTosave = user ? user : await getPlayerData ("user", userId) || "undefined"
-  const visitedTosave = visited ? visited : await getPlayerData ("content", userId) || {}
-  const polygonTosave = polygon ? polygon : await getPlayerData ("polygon", userId) || {}
-
-  const objectToSave = {
-    userId: userId,
-    user: userTosave,
-    visited: visitedTosave,
-    polygon: polygonTosave
-  }
+  const objectToSave = { userId, dataToSave }
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(objectToSave),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
 
-  console.log("objectToSave", objectToSave);
       await fetch(`/api/players/`, requestOptions)
       .then(
         response => {
@@ -150,47 +133,3 @@ export const savePlayerData = async (dataToSave) => {
       });
 }
 
-
-//   export const saveVisited = async (user, visited) => {
-//   console.log("saveVisited", user, visited);
-//   objectToSave.userId = user.id;
-//   objectToSave.user = user;
-//   objectToSave.visited = visited;
-//   const requestOptions = {
-//     method: 'POST',
-//     body: JSON.stringify(objectToSave),
-//     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-//   };
-
-//       await fetch(`/api/players/`, requestOptions)
-//       .then(
-//         response => {
-//           if (response.status !== 200) {
-//             console.log("problème ", response.status);
-//           }
-//         })
-//       .catch(function (err) {
-//         console.log('Fetch Error :-S', err);
-//         return null;
-//       });
-// }
-
-  export const savePolygons = async (objectToSave) => {
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(objectToSave),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-  };
-
-      await fetch(`/api/polygons/`, requestOptions)
-      .then(
-        response => {
-          if (response.status !== 200) {
-            console.log("problème ", response.status);
-          }
-        })
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-}

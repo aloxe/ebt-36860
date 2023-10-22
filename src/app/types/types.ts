@@ -1,10 +1,9 @@
-interface user {
+interface User {
   "id": number
-  // "user_id": string
   "sessionid"?: string
   "username"?: string
   "url"?: string
-  "user"?: string | user
+  "user"?: string | User
   "my_city"?: string[]
   "my_country"?: string
   "my_flag"?: string
@@ -15,32 +14,32 @@ interface user {
   "email"?: string
   "date"?: string | Date
   "content"?: string;
-  "visited"?: visited;
+  "visited"?: Visited;
 }
 
-interface dbUser {
+interface DbUser {
   "user_id": string
   "user": string
   "username"?: string
   "content"?: string
   "polygon"?: string
-  "visited"?: visited
+  "visited"?: Visited
   "date"?: string | Date
   "score"?: number
 }
 
-interface visited {
-  "visitedCities": city[]
+interface Visited {
+  "visitedCities": City[]
   "communes": string[]
   "departements": string[]
   "prefectures": string[]
   "unknown": number
-  "date"?: string
+  "date"?: string | number | Date
+  "userId"?: string | number
 }
 
 // API eurobilltracker
-
-interface city {
+interface City {
   "code"?: string;
   "commune"?: string;
   "city": string,
@@ -50,12 +49,12 @@ interface city {
   "postcodes": string[],
   "departement": string,
   "samePostcode"?: string[]
-  "possible"?: commune[];
+  "possible"?: Commune[];
   "pref"?: ""
 }
 
 // API découpage administratif
-interface commune {
+interface Commune {
     "code": string;
     "nom": string;
     "surface"?: number;
@@ -64,11 +63,11 @@ interface commune {
     "centre"?: { type: 'Point', coordinates: Array<string> };
     "contour"?: { type: 'Polygon', coordinates: Array<string> };
     "zone": 'metro' | 'com' | 'drom';
-    "departement"?: { code: string, nom: string; }; //   "departement": string;
+    "departement"?: { code: string, nom: string; };
     "region"?: { code: string, nom: string; };
   }
 
-interface departement {
+interface Departement {
     "code": string;
     "region": string;
     "chefLieu": string;
@@ -77,7 +76,7 @@ interface departement {
     "zone": 'metro' | 'com' | 'drom';
 }
 
-interface region {
+interface Region {
     "code": string;
     "chefLieu": string;
     "nom": string;

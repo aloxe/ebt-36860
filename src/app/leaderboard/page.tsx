@@ -3,7 +3,7 @@ import { compareScore, formatDate, getUserFlag, isJson } from "@/helpers/strings
 
 const List = async () => {
 
-  const players: dbUser[] = await getUsers()
+  const players: DbUser[] = await getUsers()
 
   players.map( async p => {
     p.score = JSON.parse(p.content || "{}").communes.length;
@@ -47,7 +47,7 @@ const List = async () => {
                     ({formatDate(p.content ? JSON.parse(p.content).date : p.date)})
                   </div>
                 </td>
-                {/* <td className="whitespace-nowrap px-6 py-4 w-2"></td> */}
+                {/* <td className="whitespace-nowrap px-6 py-4 w-2">carte</td> */}
               </tr>
               ))}
           </tbody>

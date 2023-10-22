@@ -1,6 +1,5 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
-import { savePlayerData } from "@/helpers/dbutils";
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from "react";
@@ -18,7 +17,7 @@ export function Login() {
 
     const loginUser = await EBTlogin(login, password);
     if (!loginUser) {
-      //TODO error message
+      //TODO display error message
       console.log("login error: no user");
       return
     }
@@ -36,7 +35,6 @@ export function Login() {
       loginUser.email = login;
       loginUser.date = Date.now();
       sessionStorage.setItem('user', JSON.stringify(loginUser));
-      await savePlayerData({user: loginUser, visited: null, polygon: null})
       setUser(loginUser);
     }
   }

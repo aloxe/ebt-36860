@@ -3,7 +3,7 @@ import { useAuth } from "@/context/authcontext";
 import { Cities } from './cities';
 import { Unknowns } from "./unknowns";
 import UserDetails from "./userdetails";
-// import { UserMap } from "./usermap";
+import { UserMap } from "./usermap";
 
 export default function Dashboard() {
   const { user, visited } = useAuth();
@@ -21,7 +21,7 @@ export default function Dashboard() {
       </div>
       {user?.username && <UserDetails />}
       {user?.username && <Cities />}
-      {/* {user?.username && visited && <UserMap />} */}
+      {user?.username && visited && <UserMap />}
       {user?.username && visited?.unknown > 0 && <Unknowns />}
       </>
     )

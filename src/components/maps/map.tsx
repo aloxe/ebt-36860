@@ -31,6 +31,7 @@ const CartoDB_VoyagerNoLabels = {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
 
 }
+// TODO allow tile choice
 const OSM = { 
   url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   maxZoom: 20,
@@ -66,6 +67,7 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
     data: dataCommunes
   }
 
+  // feature is used
   communesLayer.style = (feature: Feature) => {
     return {
       fillColor: 'indigo', 
@@ -77,8 +79,6 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
     };
   };
 
-  console.log("show?" + showDep + showCom);
-  
   return (
     <>
     <MapContainer
