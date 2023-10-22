@@ -9,10 +9,9 @@ import { GeoJsonTypes } from 'react-leaflet';
 type Feature = GeoJsonTypes.Feature
 
 export function UserMap() {
-  const { visited } = useAuth();
+  const { visited, polygons, setPolygons } = useAuth();
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
-  const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
   const [ fetching, setFetching ] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
 const { communes } = visited;
@@ -40,20 +39,11 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
       communesToDisplay = communesToDisplay.concat(regionVisitedCommunes)
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
-        setDataCommunes(communesToDisplay);
+        setPolygons(communesToDisplay);
         setDisabled(false);
       }
     });
-}, [communes, regionCodes])
-
-//   const handlesavePolygons = useCallback( async () => {
-//     const objectToSave = {
-//       userId: user.id,
-//       user: user,
-//       polygons: dataCommunes
-//     }
-//     savePolygons(objectToSave);
-// }, [user, dataCommunes])
+}, [communes, regionCodes, setPolygons])
 
   useEffect(() => {
     if (!fetching) {
@@ -61,11 +51,12 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
     }
   }, [fetching, handlefetchData])
 
-  // useEffect(() => {
-  //   if (dataCommunes) {
-  //     handlesavePolygons()
-  //   }
-  // }, [dataCommunes, handlesavePolygons])
+    useEffect(() => {
+    if (visited) {
+      setDisabled(true)
+      setFetching(false)
+    }
+  }, [visited])
 
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
@@ -94,14 +85,14 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
              />
           <label
             className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
-            htmlFor="com"> communes ({dataCommunes.length})
+            htmlFor="com"> communes {!disabled && polygons && `(${polygons.length})`}
           </label> 
           {disabled && <Spinner />}
         </div>
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
-        {typeof window !== 'undefined' && (
-          <MyMapComponent departements={visited?.departements} dataCommunes={dataCommunes} showDep={showDep} showCom={showCom} />
+        {typeof window !== 'undefined' && polygons && (
+          <MyMapComponent departements={visited?.departements} dataCommunes={polygons} showDep={showDep} showCom={showCom} />
         )}
       </div>
     </div>

@@ -8,16 +8,15 @@ export async function GET() {
 
 export async function POST(request) {
   const res = await request.json();
-
   if (!!res.dataToSave.id) {
     await saveUserData(res);
   } else if (!!res.dataToSave.communes) {
     await saveVisited(res);
-  } else if (!res.dataToSave[0].type) {
+  } else if (res.dataToSave[0].type === 'Feature') {
     await savePolygons(res);
   } else {
-    // TOD send correct error code
-    console.log("ERROR can't save data");
+    // TODO send correct error code
+    console.log("ERROR not good data: can't save");
   }
   return NextResponse.json(res);
 }
@@ -57,7 +56,6 @@ async function saveVisited(res) {
   })
 }
 
-// TODO remove polygon route folder
 async function savePolygons(res) {
   const date = new Date().toISOString()
   const polygonString = JSON.stringify(res.dataToSave)
