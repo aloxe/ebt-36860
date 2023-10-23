@@ -2,16 +2,16 @@ import { fetchAllComplete } from "@/helpers/cityutils";
 
 async function ListeCommunes({user, visited}: DetailsProps) {
 
-  const departements: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
-  const allcommunes: commune[] = await fetchAllComplete();
-  const visitedCommunes: commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
+  const departements: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
+  const allcommunes: Commune[] = await fetchAllComplete();
+  const visitedCommunes: Commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
   const visitedPrefectures: string[] = visited.prefectures;
 
   console.log("ListeCommunes");
   
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <table className="min-w-full text-left text-md font-light">
           <thead className="border-b font-medium dark:border-neutral-500">
             <tr>
@@ -21,10 +21,10 @@ async function ListeCommunes({user, visited}: DetailsProps) {
           <tbody>
             {departements.map((departement: any)  => (
               <>
-              <tr key={departement.code} className={visitedCommunes.filter(function(commune: commune){
+              <tr key={departement.code} className={visitedCommunes.filter(function(commune){
                   return commune?.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
                   <th colSpan={3} className="whitespace-nowrap px-6 py-4">{departement.nom} ({departement.code})</th>
-                  <th colSpan={1} className="whitespace-nowrap px-6 py-4">{visitedCommunes.filter(function(commune: commune){
+                  <th colSpan={1} className="whitespace-nowrap px-6 py-4">{visitedCommunes.filter(function(commune){
                   return commune?.departement?.code === departement.code }).length} {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? "🏛️" : ""}</th>
               </tr>
               {visitedCommunes.map( commune => (

@@ -21,7 +21,7 @@ export default function RootLayout({
       <AuthProvider>
         <body>
           <Header />
-          <main className="flex min-h-screen flex-col p-8 mt-12">
+          <main className="flex min-h-screen flex-col p-8 mt-12 xs:p-2">
             {children}
           </main>
           {/* allow safari users to log in https://itnext.io/fixing-focus-for-safari-b5916fef1064 */}

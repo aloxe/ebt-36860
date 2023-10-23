@@ -23,34 +23,34 @@ const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
 
   return (
     <>
-      <nav className="flex place-items-center justify-around sm:flex-row px-2 mx-5">
+      <nav className="flex place-items-center justify-around sm:flex-row  sm:p-4 sm:m-4 xs:p-2 xs:m-2 md:text-md sm:text-sm xs:text-xs">
         <button 
           id="is36860"
-          className={`${is36860 ? "border-b-2 border-blue-900" : ""} text-gray-600 py-4 px-6 block hover:text-blue-900`}
+          className={`${is36860 ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900 md:py-4 md:px-6 sm:py-2 sm:px-4 xs:py-2`}
           onClick={handleClick}>
             36860
         </button>
         <button 
         id="list"
-          className={`${list ? "border-b-2 border-blue-900" : ""} text-gray-600 py-4 px-6 block hover:text-blue-900`}
+          className={`${list ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900`}
         onClick={handleClick}>
             list
         </button>
         <button 
           id="map"
-          className={`${map ? "border-b-2 border-blue-900" : ""} text-gray-600 py-4 px-6 block hover:text-blue-900`}
+          className={`${map ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900`}
           onClick={handleClick}>
             map
         </button>
         <button 
           id="tour"
-          className={`${tour ? "border-b-2 border-blue-900" : ""} text-gray-600 py-4 px-6 block hover:text-blue-900`}
+          className={`${tour ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900`}
           onClick={handleClick}>
             tour de France
         </button>
         <button 
           id="pref"
-          className={`${pref ? "border-b-2 border-blue-900" : ""} text-gray-600 py-4 px-6 block hover:text-blue-900`}
+          className={`${pref ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900`}
           onClick={handleClick}>
             préfectures
         </button>

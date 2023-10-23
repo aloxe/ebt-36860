@@ -4,12 +4,12 @@ import './tourDeFrance.css';
 
 function TourDeFrance({user, visited}: DetailsProps) {
 
-  const regionsWithDomTom: region[] = require('@etalab/decoupage-administratif/data/regions.json')
-  const departementsWithDomTom: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
+  const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
+  const departementsWithDomTom: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const regions = regionsWithDomTom.filter(el => el.zone === "metro")
   const departements = departementsWithDomTom.filter(el => el.zone === "metro")
 
-  let visitedDepartementCities: city[] = removeDuplicateDepartements(visited.visitedCities);
+  let visitedDepartementCities: City[] = removeDuplicateDepartements(visited.visitedCities);
   const visitedDepartements: string[] = visitedDepartementCities.map(city => city.departement);
 
   let visitedRegions: {name: string, deps: {code: string, visited: boolean}[]}[] = []
@@ -31,7 +31,7 @@ function TourDeFrance({user, visited}: DetailsProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold text-center">
             Tour de France de {user.username}

@@ -8,7 +8,7 @@ function  Profile({user, handleRefreshUser, className, requestRefresh}: {user: U
   const isLoggedIn = !!user.sessionid;
   return (
     <>
-      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left p-4 m-4`}>
+      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left sm:p-4 sm:m-4 xs:p-2 xs:m-2`}>
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold">
             {user.username}
@@ -25,7 +25,7 @@ function  Profile({user, handleRefreshUser, className, requestRefresh}: {user: U
           {isLoggedIn && <><br />📧 : {user.email}</>}
           <br />🏠 : {user.my_city}, {getUserFlag(user.my_country)} {user.my_country}
         </div>
-        <div className="flex justify-around">
+        <div className="flex justify-around mt-2">
           <ScoreCard icon="💶" score={user?.totalbills} label="banknote" />
           <ScoreCard icon="🏆" score={user?.totalhits} label="hit" />
         </div></>}
