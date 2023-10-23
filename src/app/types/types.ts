@@ -21,6 +21,7 @@ interface DbUser {
   "user_id": string
   "user": string
   "username"?: string
+  "country"?: string
   "content"?: string
   "polygon"?: string
   "visited"?: Visited

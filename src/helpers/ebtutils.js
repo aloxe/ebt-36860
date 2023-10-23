@@ -12,7 +12,6 @@ export const getPublicUser = async (id) => {
       });
 
     const publicUser = await response?.json();
-    console.log(publicUser.data);
     return remapPublicUser(publicUser.data);
   }
 

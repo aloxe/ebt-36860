@@ -1,17 +1,22 @@
 import { getUsers } from "@/helpers/dbutils";
+import { getPublicUser } from "@/helpers/ebtutils";
 import { compareScore, formatDate, getUserFlag, isJson } from "@/helpers/strings";
 
 const List = async () => {
 
-  const players: DbUser[] = await getUsers()
+  const barePlayers: DbUser[] = await getUsers()
 
-  players.map( async p => {
+  var players: DbUser[] = await Promise.all(barePlayers.map(async (p): Promise<DbUser> => {
     p.score = JSON.parse(p.content || "{}").communes.length;
     // TODO keep only parsing when all users are recorded again
     p.username = isJson(p.user) ? JSON.parse(p.user).username : p.user;
-  })
+    let pu = await getPublicUser(p.user_id)
+    p.country = isJson(p.user) ? JSON.parse(p.user).my_country : pu.my_country
+    return p;
+}));
 
-  players.sort( compareScore );
+
+players.sort( compareScore );
 
   return (
     <>
@@ -38,7 +43,7 @@ const List = async () => {
                 <td className="whitespace-nowrap px-6 py-4 text-blue-900">
                   <a href={`/stats/${p.user_id}`} className="border-b dark:border-blue-900">
                     {/* @ts-ignore */}
-                    {await getUserFlag(p.user_id)} {p.username}
+                    {await getUserFlag(p.country)} {p.username}
                   </a>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 md:flex md:justify-between">
