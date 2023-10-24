@@ -61,7 +61,7 @@ export function Cities() {
       callback={handleCityRequest}
       />}
       { step > 0 &&
-      <div className="group bg-white rounded-lg border border-blue-200 text-left  p-4 m-4">
+      <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <div className="flex justify-between">
           <h2>Your locations</h2>
           { step > 2 && <div className="text-right text-stone-400 text-sm">{date} 

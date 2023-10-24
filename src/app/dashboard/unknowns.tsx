@@ -104,7 +104,7 @@ export function Unknowns() {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <div className="flex justify-between">
           <h2>Unknown commune you visited</h2>
           {myVisited?.date && <div className="text-right text-stone-400 text-sm">

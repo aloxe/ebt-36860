@@ -23,7 +23,7 @@ async function ListeCommunes({user, visited}: DetailsProps) {
               <>
               <tr key={departement.code} className={visitedCommunes.filter(function(commune){
                   return commune?.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
-                  <th colSpan={3} className="whitespace-nowrap px-6 py-4">{departement.nom} ({departement.code})</th>
+                  <th colSpan={2} className="whitespace-nowrap px-6 py-4">{departement.nom} ({departement.code})</th>
                   <th colSpan={1} className="whitespace-nowrap px-6 py-4">{visitedCommunes.filter(function(commune){
                   return commune?.departement?.code === departement.code }).length} {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? "🏛️" : ""}</th>
               </tr>
