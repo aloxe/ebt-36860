@@ -1,10 +1,14 @@
 'use client'
 import Spinner from "@/components/common/spinner";
-import { MyMapComponent } from "@/components/maps/map";
 import { useAuth } from "@/context/authcontext";
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
+
+const DynamicMyMapComponent = dynamic(() =>
+  import('@/components/maps/map').then((module) => module.MyMapComponent)
+)
 
 type Feature = GeoJsonTypes.Feature
 
@@ -92,7 +96,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
         {polygons && (
-          <MyMapComponent departements={visited?.departements} dataCommunes={polygons} showDep={showDep} showCom={showCom} />
+          <DynamicMyMapComponent departements={visited?.departements} dataCommunes={polygons} showDep={showDep} showCom={showCom} />
         )}
       </div>
     </div>
