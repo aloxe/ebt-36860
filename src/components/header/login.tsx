@@ -58,7 +58,7 @@ export function Login() {
     return (
       <div className="flex items-center justify-center">
         <div className=" relative inline-block text-left dropdown">
-          <button className="inline-flex justify-center w-full px-4 py-2 text-lg font-medium leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
+          <button className="inline-flex justify-center w-full px-4 py-2 leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
             type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
             <span><svg width="28px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path> <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="#292D32" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg></span>
             <svg className="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
@@ -84,7 +84,7 @@ export function Login() {
   return (
     <div className="flex items-center justify-center">
       <div className=" relative inline-block text-left dropdown">
-        <button className="inline-flex justify-center w-full px-4 py-2 text-lg font-medium leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
+        <button className="inline-flex justify-center w-full px-4 py-2 text-md md:text-lg font-medium leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
           type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
             <span>Login</span>
           <svg className="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>

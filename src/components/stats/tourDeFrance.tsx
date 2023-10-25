@@ -40,9 +40,9 @@ function TourDeFrance({user, visited}: DetailsProps) {
         <div className="text-left text-md mb-4">
           <>
           {visitedRegions.map(region => {
-            return <div key={region.name}><b 
-              className={region.deps.filter(d => d.visited).length === region.deps.length ? "font-semibold text-blue-800" : region.deps.filter(d => d.visited).length === 0 ? "opacity-30" : "opacity-60"}>
-                {region.name}</b> ({region.deps.filter(d => d.visited).length}/{region.deps.length})<b>:</b>
+            return <div key={region.name}>
+              <span className={`block font-thin text-lg mt-2 ${region.deps.filter(d => d.visited).length === 0 ? "opacity-30" : region.deps.filter(d => d.visited).length === region.deps.length ? "opacity-100" : "opacity-60"}`}>{region.name} {region.deps.filter(d => d.visited).length === region.deps.length && <>🏆</>} ({region.deps.filter(d => d.visited).length}/{region.deps.length}) :
+              </span>
                 {region.deps.map(dep => {
                   return <span key={dep.code} className={dep.visited ? "font-semibold text-blue-800" : "opacity-30"}> {dep.code}</span>
                 })}

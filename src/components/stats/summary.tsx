@@ -17,7 +17,7 @@ async function  Summary({user, visited, className}: DetailsProps) {
             last updated: {date}
           </div>
         </div>
-        <div className="flex justify-between mt-2">
+        <div className="flex flex-wrap justify-between mt-2 ">
           <ScoreCard icon="📍" score={visited?.visitedCities?.length} label="location" />
           <ScoreCard icon="🏘️" score={visited?.communes?.length} label="commune" />
           <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />
