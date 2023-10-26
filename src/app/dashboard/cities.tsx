@@ -1,41 +1,40 @@
 'use client'
 import Spinner from "@/components/common/spinner";
+import TitleButton from "@/components/common/titleButton";
+import { ScoreCard } from "@/components/stats/scoreCard";
+import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
-import { useAuth } from "@/hooks/authprovider";
 import { useCallback, useEffect, useState } from "react";
 
 export function Cities() {
   const { user, logout, cities, setCities, visited, setVisited } = useAuth();
-  const [request, setRequest] = useState<any>(undefined);
+  const [step, setStep] = useState<number>(0);
 
   const countFrenchCommunes = useCallback( async () => {
-    const citiesFrance = cities.data.filter((city: city) => city.country == "France");
+    const citiesFrance = cities.data.filter((city: City) => city.country == "France");
     const visitedlocations = [].concat(citiesFrance);
     const communes = require('@etalab/decoupage-administratif/data/communes.json')
     const EBTLocations = await getEBTlocation();
-    const visited = await matchCommunes(visitedlocations, communes, EBTLocations)
+    const visited: Visited = await matchCommunes(visitedlocations, communes, EBTLocations)
     sessionStorage.setItem('visited', JSON.stringify(visited));
+    // await savePlayerData({user, visited, polygon: null})
+    // visited.userId = user.id
     setVisited(visited);
-  }, [cities, setVisited]);
+    setStep(3)
+  }, [cities, setVisited, setStep]);
 
   useEffect(() => {
-    if (cities?.france > 0 && !visited) {
-      countFrenchCommunes();
-    }
-  }, [cities, visited, countFrenchCommunes])
+    cities && countFrenchCommunes();
+}, [cities, countFrenchCommunes])
 
   var d = new Date(cities?.date);
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    setRequest(true);
-    sessionStorage.removeItem('cities');
-    setCities(undefined);
-    sessionStorage.removeItem('visited');
-    setVisited(undefined);
+    setStep(1);
     const cities = await getCities(user);
     if (!cities) {
       // TODO manage better error message
@@ -43,54 +42,54 @@ export function Cities() {
       logout();
       return
     }
+
     const citiesWorld = await addPostcodes(user, cities.data);
-    const citiesFrance = citiesWorld.filter((city: city) => city.country == "France");
+    const citiesFrance = citiesWorld.filter((city: City) => city.country == "France");
     cities.france = citiesFrance.length;
-    // TODO sort all countries alike
+    // TODO check other countries
     cities.date = Date.now();
     setCities(cities)
     sessionStorage.setItem('cities', JSON.stringify(cities));
-    setRequest(false);
+    setStep(2)
   }
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
+      { step === 0 && 
+      <TitleButton
+      label={"Load your locations from EBT"}
+      callback={handleCityRequest}
+      />}
+      { step > 0 &&
+      <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <div className="flex justify-between">
-          {!request && !cities && <a
-            onClick={handleCityRequest}
-            href="#cities"
-            className="px-5 py-4"
-          >
-            <h2 className={`mb-3 text-lg font-semibold`}>
-              Load your locations from EBT{' '}
-              <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                -&gt;
-              </span>
-            </h2>
-          </a>}
-          { ((request && !cities) || cities) && <h2>Locations where you found notes</h2>}
-          { cities && <div className="text-right text-stone-400 text-sm">{date} 
-            <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span></div> }
+          <h2>Your locations</h2>
+          { step > 2 && <div className="text-right text-stone-400 text-sm">{date} 
+            <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span>
+          </div> }
         </div>
-            { request && !cities && <><br/><br/><Spinner /> loading locations from eurobilltracker</> }
-            { cities && <>
-            🌍 : {cities.rows} locations worldwide
+        <div>
+          { step === 1 && <><br/><br/><Spinner /> loading locations from eurobilltracker</>}
+          { step > 1 && <>
+            <div>🌍 : { cities.rows } locations worldwide</div>
             {cities?.france > 0 && !visited && <div>🇫🇷 : {cities.france} locations in France</div>}
             {cities?.france == 0 && <div>🇫🇷 : You didn&apos;t reccord euro bank notes in France</div>}
+          </>}
             {/* {TODO: why don't you start to collect? } */}
-            {cities && !visited && <><br/><br/><Spinner /> finding french communes</>}
-            {visited && <h2 className="mt-2">Your french statistics</h2>}
-            {visited && <>
-            📍 : {cities.france} locations in France
-            <br/>🏘️ : <b>{visited.communes.length} french communes</b>
-            <br/>🇫🇷 : {visited.departements.length} départements
-            <br/>🏛️ : {visited.prefectures?.length} préfectures
-            </>
-            }
-            {visited && visited.unknown > 0 && <><br/><br/>you have {visited.unknown} unidentified locations</>}
-          </> }
+            { step === 2 && <><br/><br/><Spinner /> finding french communes</>}
+            { step > 2 && <>
+              <h2 className="mt-2">Your french statistics</h2>
+              <div className="flex justify-between">
+                <ScoreCard icon="📍" score={visited?.visitedCities?.length} label="location" />
+                <ScoreCard icon="🏘️" score={visited?.communes?.length} label="commune" />
+                <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />
+                <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label="préfecture" />
+              </div>
+              {visited.unknown > 0 && <><br/>you have {visited.unknown} unidentified locations</>}
+            </>}
+        </div>
       </div>
+      }
     </>
   )
 }

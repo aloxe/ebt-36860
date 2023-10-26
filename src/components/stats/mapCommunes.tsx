@@ -2,14 +2,14 @@ import { getUserPolygons } from "@/helpers/dbutils";
 import { MyMapComponent } from "../maps/map";
 
 async function MapCommunes({user, visited}: DetailsProps) {
-  const polygons = await getUserPolygons(user.user_id.toString());
+  const polygons = await getUserPolygons(user.id.toString());
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <div className="">
           <h2 className="mb-3 text-lg font-semibold text-center">
-            ▤ {user.user_name} communes  map ▥
+            ▤ {user.username} communes  map ▥
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">

@@ -1,27 +1,29 @@
 'use client'
 import Spinner from "@/components/common/spinner";
-import { MyMapComponent } from "@/components/maps/map";
-import { savePolygons } from "@/helpers/dbutils";
-import { useAuth } from "@/hooks/authprovider";
+import { useAuth } from "@/context/authcontext";
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
 
+const DynamicMyMapComponent = dynamic(() =>
+  import('@/components/maps/map').then((module) => module.MyMapComponent)
+)
+
 type Feature = GeoJsonTypes.Feature
 
 export function UserMap() {
-  const { user, visited } = useAuth();
+  const { visited, polygons, setPolygons } = useAuth();
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
-  const [ dataCommunes, setDataCommunes ] = useState<Feature[]>([]);
-  const [ fetching, setFetching ] = useState<Boolean>(false);
-  const [ disabled, setDisabled ] = useState<Boolean>(true);
+  const [ fetching, setFetching ] = useState<boolean>(false);
+  const [ disabled, setDisabled ] = useState<boolean>(true);
 const { communes } = visited;
 
-  const regionsWithDomTom: region[] = require('@etalab/decoupage-administratif/data/regions.json')
+  const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
 
-const fetchData = async (codeRegion:string) => {
+const fetchPolygonsPerRegion = async (codeRegion:string) => {
   const response = await fetch(
       `https://geo.api.gouv.fr/communes?codeRegion=${codeRegion}&format=geojson&geometry=contour`
     )
@@ -32,32 +34,20 @@ const fetchData = async (codeRegion:string) => {
   const handlefetchData = useCallback( async () => {
     let communesToDisplay = new Array();
     let regionToDisplay = [];
-    // console.log("handlefetchData" + new Date().toLocaleTimeString());
+
     setFetching(true);
     regionCodes.map( async (regionCode) => {
-      // console.log(new Date().toLocaleTimeString());
-      // TODO make this fetch quicker
-      const regionCommunes = await fetchData(regionCode);
-      const regionUserCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
-      // keeping nice example with Saints => asset.properties.code.includes("Saint"));
-      communesToDisplay = communesToDisplay.concat(regionUserCommunes)
+      // TODO try to make this fetch quicker
+      const regionCommunes = await fetchPolygonsPerRegion(regionCode);
+      const regionVisitedCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
+      communesToDisplay = communesToDisplay.concat(regionVisitedCommunes)
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
-        // console.log("****** set communes data ******* " + new Date().toLocaleTimeString());
-        setDataCommunes(communesToDisplay);
+        setPolygons(communesToDisplay);
         setDisabled(false);
       }
     });
-}, [communes, regionCodes])
-
-  const handlesavePolygons = useCallback( async () => {
-    const objectToSave = {
-      userId: user.id,
-      username: user.username,
-      polygons: dataCommunes
-    }
-    savePolygons(objectToSave);
-}, [user, dataCommunes])
+}, [communes, regionCodes, setPolygons])
 
   useEffect(() => {
     if (!fetching) {
@@ -65,16 +55,17 @@ const fetchData = async (codeRegion:string) => {
     }
   }, [fetching, handlefetchData])
 
-  useEffect(() => {
-    if (dataCommunes) {
-      handlesavePolygons()
+    useEffect(() => {
+    if (visited) {
+      setDisabled(true)
+      setFetching(false)
     }
-  }, [dataCommunes, handlesavePolygons])
+  }, [visited])
 
   return (
-    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
+    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
       <div className="flex justify-between">
-        <h2>{user.username}&apos;s map</h2>
+        <h2>Your map</h2>
       </div>
       <div className="flex justify-around">
         <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
@@ -98,14 +89,14 @@ const fetchData = async (codeRegion:string) => {
              />
           <label
             className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
-            htmlFor="com"> communes ({dataCommunes.length})
+            htmlFor="com"> communes {!disabled && polygons && `(${polygons.length})`}
           </label> 
           {disabled && <Spinner />}
         </div>
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
-        {typeof window !== 'undefined' && (
-          <MyMapComponent departements={visited?.departements} dataCommunes={dataCommunes} showDep={showDep} showCom={showCom} />
+        {polygons && (
+          <DynamicMyMapComponent departements={visited?.departements} dataCommunes={polygons} showDep={showDep} showCom={showCom} />
         )}
       </div>
     </div>

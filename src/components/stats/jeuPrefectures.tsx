@@ -2,15 +2,15 @@ import { removeNotPrefecture } from "@/helpers/cityutils";
 
 function JeuPrefectures({user, visited}: DetailsProps) {
   const prefectures = removeNotPrefecture(visited.communes);
-  const departementsWithDomTom: departement[] = require('@etalab/decoupage-administratif/data/departements.json')
+  const departementsWithDomTom: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const departements = departementsWithDomTom.filter(el => el.zone === "metro")
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-4 m-5">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
         <div className="flex justify-between">
           <h2 className="mb-3 text-lg font-semibold text-center">
-            Les préfectures de {user.user_name}
+            Les préfectures de {user.username}
           </h2>
         </div>
         <div className="text-left text-md mb-4">

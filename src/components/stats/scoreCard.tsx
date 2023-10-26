@@ -1,11 +1,11 @@
 import { addSauPluriel } from "@/helpers/strings";
 
-export function ScoreCard({icon = "▥", score, label}:{icon: string, score: number, label: string}) {
+export function ScoreCard({icon = "▥", score, label}:{icon: string, score: number | undefined, label: string}) {
     return (
-          <div className="text-center text-lg font-bold leading-5 bg-white rounded-lg border border-blue-900 p-1 px-3">
+          <div className="text-center text-lg font-bold leading-5 bg-white rounded-lg border border-blue-900 p-1 w-24 m-2">
             {icon}<br/>
             {score ? score : "‽"}<br/>
-            <span className="text-sm font-normal">{label}{addSauPluriel(score)}</span>
+            <span className="text-xs sm:text-sm font-normal m-0">{label}{addSauPluriel(score)}</span>
           </div>
       );
     }

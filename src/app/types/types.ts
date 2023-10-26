@@ -1,7 +1,9 @@
-interface user {
-  "user_id": string
+interface User {
+  "id": number
   "sessionid"?: string
-  "username": string
+  "username"?: string
+  "url"?: string
+  "user"?: string | User
   "my_city"?: string[]
   "my_country"?: string
   "my_flag"?: string
@@ -12,35 +14,33 @@ interface user {
   "email"?: string
   "date"?: string | Date
   "content"?: string;
-  "visited"?: visited;
+  "visited"?: Visited;
 }
 
-interface visited {
-  "visitedCities": city[]
+interface DbUser {
+  "user_id": string
+  "user": string
+  "username"?: string
+  "country"?: string
+  "content"?: string
+  "polygon"?: string
+  "visited"?: Visited
+  "date"?: string | Date
+  "score"?: number
+}
+
+interface Visited {
+  "visitedCities": City[]
   "communes": string[]
   "departements": string[]
   "prefectures": string[]
   "unknown": number
-  "date"?: string
+  "date"?: string | number | Date
+  "userId"?: string | number
 }
 
 // API eurobilltracker
-
-interface publicUser {
-  "user_id": number
-  "user_name": string
-  "join_date"?: string
-  "home_city_name"?: string
-  "home_location_name"?: string
-  "home_country_name": string
-  "home_city_latitude"?: number
-  "home_city_longitude"?: number
-  "url"?: string
-  "total_notes": number
-  "total_hits": number
-}
-
-interface city {
+interface City {
   "code"?: string;
   "commune"?: string;
   "city": string,
@@ -50,12 +50,12 @@ interface city {
   "postcodes": string[],
   "departement": string,
   "samePostcode"?: string[]
-  "possible"?: commune[];
+  "possible"?: Commune[];
   "pref"?: ""
 }
 
 // API découpage administratif
-interface commune {
+interface Commune {
     "code": string;
     "nom": string;
     "surface"?: number;
@@ -64,11 +64,11 @@ interface commune {
     "centre"?: { type: 'Point', coordinates: Array<string> };
     "contour"?: { type: 'Polygon', coordinates: Array<string> };
     "zone": 'metro' | 'com' | 'drom';
-    "departement"?: { code: string, nom: string; }; //   "departement": string;
+    "departement"?: { code: string, nom: string; };
     "region"?: { code: string, nom: string; };
   }
 
-interface departement {
+interface Departement {
     "code": string;
     "region": string;
     "chefLieu": string;
@@ -77,7 +77,7 @@ interface departement {
     "zone": 'metro' | 'com' | 'drom';
 }
 
-interface region {
+interface Region {
     "code": string;
     "chefLieu": string;
     "nom": string;
