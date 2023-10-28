@@ -4,7 +4,7 @@ import { AuthProvider } from '../context/authcontext';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Eurobilltracker ▤ 36860 ▥',
+  title: 'Eurobilltracker ▤ 36680 ▥',
   description: 'Map your eurobilltracker trips in France',
 }
 

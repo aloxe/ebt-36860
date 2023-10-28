@@ -6,22 +6,22 @@ interface Props {
   callback?: MouseEventHandler
 }
 
-function TitleButton({label, href, callback}: Props) {
+function LinkButton({label, href, callback}: Props) {
 
 return (
   <a
     onClick={callback}
     href={href ?? "#"}
-    className="group bg-white rounded-lg border border-blue-200 text-left  p-4 m-4 hover:border-blue-900"
+    className="group block text-right p-2 mr-4 hover:border-dashed"
   >
-    <h2 className={`text-blue-900 text-lg font-semibold`}>
+    <div className="font-semibold text-sm text-blue-900 underline">
       {label} 
     <span className="inline-block transition-transform group-hover:translate-x-3 motion-reduce:transform-none">
         →
     </span>
-    </h2>
+    </div>
   </a>
   );
 };
 
-export default TitleButton;
+export default LinkButton;

@@ -1,7 +1,8 @@
-# ebt-36860
+# ebt-36680
+
 ### How well do you cover France with your eurobilltracker collection
 
-This allows [eurobilltracker](https://fr.eurobilltracker.com/?referer=31378) users to see where they obtained euro bank notes in France, how many administrative division did they visit within the 95 districts (or départements) and 36860 municipalities (or communes). They can also use the site to plan their trip in France and see how much they still need to travel to complete the whole french territory.
+This allows [eurobilltracker](https://fr.eurobilltracker.com/?referer=31378) users to see where they obtained euro bank notes in France, how many administrative division did they visit within the 95 districts (or départements) and 36680 municipalities (or communes). They can also use the site to plan their trip in France and see how much they still need to travel to complete the whole french territory.
 
 ![detail of the map with some visited municipalities in colour](https://github.com/aloxe/ebt-36860/blob/.jpg?raw=true)
 

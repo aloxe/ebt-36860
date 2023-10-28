@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 const StatsMenu = ({ children }: {children: JSX.Element[] }) => {
-const [is36860, setIs36860] = useState(true)
+const [is36680, setIs36680] = useState(true)
 const [list, setList] = useState(false)
 const [map, setMap] = useState(false)
 const [tour, setTour] = useState(false)
@@ -10,7 +10,7 @@ const [pref, setPref] = useState(false)
 
 const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
   // @ts-ignore
-  setIs36860(event.target.id === "is36860")
+  setIs36680(event.target.id === "is36680")
   // @ts-ignore
   setList(event.target.id === "list")
   // @ts-ignore
@@ -25,10 +25,10 @@ const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
     <>
       <nav className="flex place-items-center justify-around sm:flex-row  sm:p-4 sm:m-4 xs:p-2 xs:m-2 md:text-md sm:text-sm xs:text-xs">
         <button 
-          id="is36860"
-          className={`${is36860 ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900 md:py-4 md:px-6 sm:py-2 sm:px-4 xs:py-2`}
+          id="is36680"
+          className={`${is36680 ? "border-b-2 border-blue-900" : ""} text-gray-600 block hover:text-blue-900 md:py-4 md:px-6 sm:py-2 sm:px-4 xs:py-2`}
           onClick={handleClick}>
-            36860
+            36680
         </button>
         <button 
         id="list"
@@ -55,7 +55,7 @@ const handleClick = (event : React.MouseEvent<HTMLButtonElement>) => {
             préfectures
         </button>
       </nav>
-      {is36860 && children[0]}
+      {is36680 && children[0]}
       {list && children[1]}
       {map && children[2]}
       {tour && children[3]}

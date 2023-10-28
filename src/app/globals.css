@@ -33,6 +33,14 @@ h2 {
   color: #15141A;;
 }
 
+a {
+  @apply text-blue-900 underline underline-offset-4
+}
+
+li {
+  @apply list-inside list-disc ml-4
+}
+
 @layer components {
   .dropdown:focus-within .dropdown-menu {
     opacity: 1;
@@ -90,5 +98,8 @@ h2 {
 
   .btn-secondary {
     @apply py-1 px-2 bg-white hover:bg-stone-100 text-stone-700 border-2 border-stone-700 rounded-full disabled:text-stone-300 disabled:border-stone-300
+  }
+  .fill-cell {
+    @apply block w-full h-full px-3 md:px-6 py-4 text-slate-800 no-underline cursor-default
   }
 }
