@@ -58,6 +58,7 @@ export function Cities() {
       { step === 0 && 
       <TitleButton
       label={"Load your locations from EBT"}
+      href={"#cities"}
       callback={handleCityRequest}
       />}
       { step > 0 &&

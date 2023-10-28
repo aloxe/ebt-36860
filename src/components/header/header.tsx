@@ -6,7 +6,7 @@ export default function Header() {
     <div className='grid grid-cols-4 gap-4 top-0 p-0 m-0 h-12 bg-sky-200 border-b-2 border-black fixed w-full z-1001'>
       <div className='col-span-3 p-2 text-black text-sm md:text-xl font-semibold'>
         <a
-          className="pointer-events-auto m-0"
+          className="pointer-events-auto m-0 no-underline text-black font-bold"
           href="/"
         >
           <Image
