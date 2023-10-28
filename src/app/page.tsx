@@ -10,7 +10,7 @@ const Home = async () => {
   return (
     <>
       <div className="relative flex place-items-center mb-2 before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <h1>Travel in France, collect euros bank notes with eurobilltracker and map your your trips</h1>
+        <h1>Travel in France, collect euros and map your your trips</h1>
       </div>
 
       <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
@@ -24,12 +24,12 @@ const Home = async () => {
           How to play?
         </h2>
         <ol>
-          <li>Register on <a href="https://fr.eurobilltracker.com/">eurobilltracker</a></li>
+          <li>Register on <a href="https://fr.eurobilltracker.com/?referer=31378">eurobilltracker</a></li>
           <li>Record your euro bank notes</li>
           <li>Travel to France find euros there</li>
           <li>Generate your map here</li>
         </ol>
-        <LinkButton label={"Get to know more"} href="#"/>
+        <LinkButton label={"Get to know more"} href="/faq"/>
       </div>
 
       <TitleButton
