@@ -15,7 +15,7 @@ export default function Header() {
             height={48}
             className='m-1 inline-block'
           />
-          Eurobilltracker ▤ 36860 ▥
+          Eurobilltracker ▤ 36680 ▥
         </a>
       </div>
       <div className='p-2 text-black md:text-xl font-semibold'>
