@@ -15,10 +15,10 @@ export default function Header() {
             height={48}
             className='m-1 inline-block'
           />
-          Eurobilltracker ▤ 36680 ▥
+          <span className='inline-block text-center w-[120px] xs:w-[200px] sm:text-left'>Eurobilltracker ▤ 36680 ▥</span>
         </a>
       </div>
-      <div className='p-2 text-black md:text-xl font-semibold'>
+      <div className='mr-2 p-2 text-black'>
         <Login />
       </div>
 		</div>

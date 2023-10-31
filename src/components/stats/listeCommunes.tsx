@@ -11,11 +11,11 @@ async function ListeCommunes({user, visited}: DetailsProps) {
   
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
         <table className="w-full text-left text-md font-light">
           <thead className="border-b font-medium dark:border-neutral-500">
             <tr>
-              <th colSpan={3} className="whitespace-nowrap p-4 text-center">{user.username} list of communes</th>
+              <th colSpan={3}><h2>{user.username} list of communes</h2></th>
             </tr>
           </thead>
           <tbody>

@@ -7,17 +7,17 @@ async function  Summary({user, visited, className}: DetailsProps) {
 
   return (
     <>
-      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left sm:p-4 sm:m-4 xs:p-2 xs:m-2`}>
+      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left p-2 m-2 sm:p-4 sm:m-4`}>
         <div className="sm:flex sm:justify-between">
-          <h2 className="text-lg font-semibold">
+          <h2>
             {user.username} in France
           </h2>
           <div className={`text-right text-stone-400 text-sm ${className && "md:h-[88px] md:min-h-full"}`}>
           {/* hack to push down score cards */}
-            last updated: {date}
+            last updated: <span className="whitespace-nowrap">{date}</span>
           </div>
         </div>
-        <div className="flex flex-wrap justify-between mt-2 ">
+        <div className="flex flex-wrap justify-between mt-2 sm:max-w-none max-w-[300px]">
           <ScoreCard icon="📍" score={visited?.visitedCities?.length} label="location" />
           <ScoreCard icon="🏘️" score={visited?.communes?.length} label="commune" />
           <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />

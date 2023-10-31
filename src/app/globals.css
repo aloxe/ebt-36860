@@ -27,10 +27,7 @@ body {
 }
 
 h2 {
-  font-weight: 600;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: #15141A;;
+  @apply text-amber-800 text-xl font-bold font-sans mb-3
 }
 
 a {

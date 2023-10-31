@@ -13,14 +13,14 @@ const Home = async () => {
         <h1>Travel in France, collect euros and map your your trips</h1>
       </div>
 
-      <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
-        <h2 className="text-blue-900 text-lg">Current leaders</h2>
+      <div className="group bg-white rounded-lg border border-blue-200 text-left mx-0 p-2 my-2 sm:p-4 sm:m-4">
+        <h2>Current leaders</h2>
         <LeaderTable players={players} />
         <LinkButton label={"All players"} href="/leaderboard"/>
       </div>
 
-      <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
-        <h2 className={`text-blue-900 text-lg font-semibold`}>
+      <div className="group bg-white rounded-lg border border-blue-200 text-left p-2 m-2 sm:p-4 sm:m-4">
+        <h2>
           How to play?
         </h2>
         <ol>

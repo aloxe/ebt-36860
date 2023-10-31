@@ -62,7 +62,7 @@ export function Cities() {
       callback={handleCityRequest}
       />}
       { step > 0 &&
-      <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+      <div className="group bg-white rounded-lg border border-blue-200 text-left  p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>Your locations</h2>
           { step > 2 && <div className="text-right text-stone-400 text-sm">{date} 
@@ -79,8 +79,8 @@ export function Cities() {
             {/* {TODO: why don't you start to collect? } */}
             { step === 2 && <><br/><br/><Spinner /> finding french communes</>}
             { step > 2 && <>
-              <h2 className="mt-2">Your french statistics</h2>
-              <div className="flex justify-between">
+              <h2>Your french statistics</h2>
+              <div className="flex flex-wrap justify-between mt-2 sm:max-w-none max-w-[300px]">
                 <ScoreCard icon="📍" score={visited?.visitedCities?.length} label="location" />
                 <ScoreCard icon="🏘️" score={visited?.communes?.length} label="commune" />
                 <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />

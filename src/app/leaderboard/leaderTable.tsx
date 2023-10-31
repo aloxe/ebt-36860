@@ -38,7 +38,7 @@ const LeaderTable = ({ players }: {players: DbUser[]}) => {
           <td className="h-full">
             <a href={!!p.country ? `/stats/${p.user_id}` : undefined} className={`fill-cell ${!!p.country && "cursor-pointer"} sm:flex sm:justify-between`}>
               {p.score}
-              <div className="text-right text-xs ">
+              <div className="text-right text-xs whitespace-nowrap truncate">
                 {!!p.country && formatDate(p.content ? JSON.parse(p.content).date : p.date)}
                 {!p.country && !!p.date && (<i>{formatDate(p.date)}</i>)}
               </div>

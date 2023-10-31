@@ -63,11 +63,11 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
   }, [visited])
 
   return (
-    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
         <h2>Your map</h2>
       </div>
-      <div className="flex justify-around">
+      <div className="md:flex md:justify-around">
         <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
         <label 
           className="inline-block pl-[0.15rem] hover:cursor-pointer"
