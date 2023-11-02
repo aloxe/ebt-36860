@@ -1,6 +1,6 @@
 import { getUsers } from "./dbutils";
 import { getPublicUser } from "./ebtutils";
-import { compareScore, isJson } from "./strings";
+import { compareScore, getUserFlag, isJson } from "./strings";
 
 const getOldPlayers = () => {
   const oldJsonPlayers = require("@/data/players/leaderboard_old.json");
@@ -14,7 +14,7 @@ const getOldPlayers = () => {
   return oldPlayers;
 }
 
-const getNewPlayers = async () => {
+export const getNewPlayers = async () => {
   const barePlayers: DbUser[] = await getUsers()
   let newPlayers = await Promise.all(barePlayers.map(async (p): Promise<DbUser> => {
     p.score = JSON.parse(p.content || "{}").communes.length;
@@ -22,6 +22,8 @@ const getNewPlayers = async () => {
     p.username = isJson(p.user) ? JSON.parse(p.user).username : p.user;
     let pu = await getPublicUser(p.user_id)
     p.country = isJson(p.user) ? JSON.parse(p.user).my_country : pu.my_country
+    p.flag = getUserFlag(p.country)
+    if (p.content) p.visited = JSON.parse(p.content)
     return p;
   }));
   return newPlayers;
