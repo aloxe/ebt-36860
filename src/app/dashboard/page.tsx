@@ -1,12 +1,12 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import { Cities } from './cities';
-import { Unknowns } from "./unknowns";
 import UserDetails from "./userdetails";
-import { UserMap } from "./usermap";
+import { UserMapView } from "./usermapView";
+import { UnknownsView } from "./unknownsView";
 
 export default function Dashboard() {
-  const { user, visited } = useAuth();
+  const { visited, user, setVisited, setPolygons} = useAuth();
 
   return (
       <>
@@ -18,8 +18,16 @@ export default function Dashboard() {
       </div>
       {user?.username && <UserDetails />}
       {user?.username && <Cities />}
-      {user?.username && visited && <UserMap />}
-      {user?.username && visited?.unknown > 0 && <Unknowns />}
+      {user?.username && visited && <UserMapView 
+        visited={visited}
+        user={user} 
+        savePolygons={setPolygons} 
+      />}
+      {user?.username && visited?.unknown > 0 && <UnknownsView 
+        visited={visited}
+        user={user}
+        saveVisited={setVisited} 
+      />}
       </>
     )
 }
