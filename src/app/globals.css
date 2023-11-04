@@ -27,10 +27,7 @@ body {
 }
 
 h2 {
-  font-weight: 600;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: #15141A;;
+  @apply text-amber-800 text-xl font-bold font-sans mb-3
 }
 
 a {
@@ -42,6 +39,12 @@ li {
 }
 
 @layer components {
+  .anchor {
+    display:block;
+    height:64px;
+    margin-top:-64px;
+    visibility:hidden;
+  }
   .dropdown:focus-within .dropdown-menu {
     opacity: 1;
     transform: translate(0) scale(1);

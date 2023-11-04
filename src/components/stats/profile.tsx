@@ -8,9 +8,9 @@ function  Profile({user, handleRefreshUser, className, requestRefresh}: {user: U
   const isLoggedIn = !!user.sessionid;
   return (
     <>
-      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left sm:p-4 sm:m-4 xs:p-2 xs:m-2`}>
+      <div className={`${className} bg-white rounded-lg border border-blue-200 text-left p-2 m-2 sm:p-4 sm:m-4`}>
         <div className="flex justify-between">
-          <h2 className="mb-3 text-lg font-semibold">
+          <h2>
             {user.username}
           </h2>
           {isLoggedIn && !requestRefresh && <div className="text-right text-stone-400 text-sm">{formatDayDate(user.date)}

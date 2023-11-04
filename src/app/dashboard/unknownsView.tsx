@@ -1,14 +1,20 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
-import { useAuth } from "@/context/authcontext";
 import { refreshVisited } from "@/helpers/cityutils";
 import { saveEBTlocation } from "@/helpers/dbutils";
+import Link from "next/link";
 import { useMemo } from "react";
 
-export function Unknowns() {
-  const { visited, user, setVisited} = useAuth();
+interface UnknownsViewProps {
+    visited: Visited, 
+    user: User, 
+    saveVisited: any
+}
+
+export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
+//   const { visited, user, setVisited} = useAuth();
   let myVisited = {...visited};
-  var d = new Date(myVisited?.date);
+  var d = new Date(myVisited?.date || Date());
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   const visitedUnknown = useMemo(() => myVisited.visitedCities.filter((city: City) => !city.code),
@@ -84,7 +90,7 @@ export function Unknowns() {
               "code_commune": city.code,
               "nom_ebt": city.city,
               "nom_commune": city.commune,
-              "ref_user": user.id
+              "ref_user": user?.username || user?.id || user
             };
             const response = await saveEBTlocation(newEBTlocation)
             if (!response) {
@@ -97,22 +103,30 @@ export function Unknowns() {
         }
       });
       // visitedCities has changed we need to update all visited
-      const myFreshVisited= await refreshVisited(myVisited.visitedCities)
-      setVisited(myFreshVisited)
+      const myFreshVisited= await refreshVisited(myVisited.visitedCities)    
+      saveVisited(myFreshVisited)
       // TODO do we still use storage for Visited?
   }
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+      <span id="unknown" className="anchor"></span>
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
-          <h2>Unknown commune you visited</h2>
+          <h2>Places with unknown municipalities</h2>
           {myVisited?.date && <div className="text-right text-stone-400 text-sm">
             {date}
           </div>}
         </div>
         <div className="text-sm text-stone-600 my-1">
-          Find out in which commune is the location you visited with the map. Choose it in the list of possible communes and save this choice for next time.
+          Find out in which municipality is the location you visited. You can get help by searching for the location on Openstreetmap. Sometinmes 
+          searching for the postcode only helps too. Choose the right municipality from the list and save this choice for next time. 
+        </div>
+        <div className="text-sm text-stone-600 my-1">
+          If not yet counted this new municipality will be added to your total score. 
+        </div>
+        <div className="text-sm text-stone-600 my-1">
+          When the municipality is not available in the list, you can <Link href="https://forum.eurobilltracker.com/viewtopic.php?f=20&t=57328" target="_blank">tell me on the forum</Link>. 
         </div>
         <div className="table w-full">
           {visitedUnknown.map((city: City) => {
@@ -126,15 +140,18 @@ export function Unknowns() {
                 <input type="hidden" value="" name="code"  id="code" />
                 <input type="hidden" value="" name="commune" id="commune" />
                 </div>
-                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-2 xs:hidden block">
+                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-2 hidden">
                   is in
                 </div>
                 <div className="table-cell float-left">
                   {dropdownCommunes(city.possible || [])}
                   <br/><span id="error" className="error float-left"></span>
                 </div>
-                <div className="table-cell ">
-                  <button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4" id="save" disabled>Save</button>
+                <div className="table-cell">
+                  <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer" id="save" disabled>
+                    <span className="sm:hidden">💾</span>
+                    <span className="hidden sm:inline-block">Save</span>
+                  </button>
                 </div>
             </form>
           })}

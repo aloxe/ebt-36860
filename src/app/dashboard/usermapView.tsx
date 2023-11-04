@@ -9,16 +9,21 @@ import { GeoJsonTypes } from 'react-leaflet';
 const DynamicMyMapComponent = dynamic(() =>
   import('@/components/maps/map').then((module) => module.MyMapComponent)
 )
-
 type Feature = GeoJsonTypes.Feature
 
-export function UserMap() {
-  const { visited, polygons, setPolygons } = useAuth();
+type UserMapViewProps = {
+  visited: Visited, 
+  user: User, 
+  savePolygons: any
+}
+
+export function UserMapView({ visited, user, savePolygons }: UserMapViewProps) {
+  const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
   const [ fetching, setFetching ] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
-const { communes } = visited;
+  const { communes } = visited;
 
   const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
@@ -43,11 +48,13 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
       communesToDisplay = communesToDisplay.concat(regionVisitedCommunes)
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
-        setPolygons(communesToDisplay);
+        // save polygones of the user
+        savePolygons(communesToDisplay);
+        setMapPolygons(communesToDisplay)
         setDisabled(false);
       }
     });
-}, [communes, regionCodes, setPolygons])
+}, [communes, regionCodes, savePolygons])
 
   useEffect(() => {
     if (!fetching) {
@@ -63,11 +70,11 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
   }, [visited])
 
   return (
-    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
-        <h2>Your map</h2>
+        <h2><>{user?.username ?? user}</>&apos;s map</h2>
       </div>
-      <div className="flex justify-around">
+      <div className="md:flex md:justify-around">
         <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
         <label 
           className="inline-block pl-[0.15rem] hover:cursor-pointer"
@@ -89,14 +96,14 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
              />
           <label
             className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
-            htmlFor="com"> communes {!disabled && polygons && `(${polygons.length})`}
+            htmlFor="com"> communes {!disabled && mapPolygons && `(${mapPolygons.length})`}
           </label> 
           {disabled && <Spinner />}
         </div>
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
-        {polygons && (
-          <DynamicMyMapComponent departements={visited?.departements} dataCommunes={polygons} showDep={showDep} showCom={showCom} />
+        {mapPolygons && (
+          <DynamicMyMapComponent departements={visited?.departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} />
         )}
       </div>
     </div>
