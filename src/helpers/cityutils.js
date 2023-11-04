@@ -6,7 +6,8 @@ import { sansAccent } from "@/helpers/strings";
   
 export const fetchAllCommunes = async () => {
   const response = await fetch(
-      `https://geo.api.gouv.fr/communes?fields=code,nom`
+      `https://geo.api.gouv.fr/communes?fields=code,nom`,
+      { cache: 'force-cache' }
     )
   const communes = await response.json()
   return communes;
@@ -14,7 +15,8 @@ export const fetchAllCommunes = async () => {
 
 export const fetchAllComplete = async () => {
   const response = await fetch(
-      `https://geo.api.gouv.fr/communes?fields=code,nom,surface,population,codesPostaux,departement,zone`
+      `https://geo.api.gouv.fr/communes?fields=code,nom,surface,population,codesPostaux,departement,zone`,
+      { cache: 'force-cache' }
     )
   const communes = await response.json()
   return communes;
@@ -22,7 +24,8 @@ export const fetchAllComplete = async () => {
 
 export const fetchComplete = async (code) => {
     const response = await fetch(
-      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,surface,population,codesPostaux,departement,region,zone`
+      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,surface,population,codesPostaux,departement,region,zone`,
+      { cache: 'force-cache' }
     )
   const communes = await response.json()
     // console.log("fetch complete", code, communes[0]);
@@ -31,7 +34,8 @@ export const fetchComplete = async (code) => {
 
 export const fetchPolygon = async (code) => {
     const response = await fetch(
-      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,departement,region,centre,contour`
+      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,departement,region,centre,contour`,
+      { cache: 'force-cache' }
     )
   const communes = await response.json()
   return communes[0];
@@ -151,14 +155,16 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 export function addPostcodes(user, citiesArray) {
   return Promise.all(
   citiesArray.map(async (city) => {
+    // add departement: useful french division
+    if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     if (city.nrlocations > 1) {
     var postcodesArray = await getPostcodes(user, city);
+    // some cities with homonyms might return parasite postcode
+    postcodesArray.filter((postcode) => postcode.substring(0,2) === city.departement)
     city.postcodes = postcodesArray;
     } else {
     city.postcodes = [city.top_zipcode];
     }
-    // add departement: useful french division
-    if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     return city
   })
   );

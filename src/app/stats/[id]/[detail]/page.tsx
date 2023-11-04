@@ -12,7 +12,7 @@ import StatsMenu from "./../menu";
 const UserDataDetail = async ({ params }: { params: { id: string, detail: string } }) => {
   const publicUser = await getPublicUser(params.id);
   const visited = await getUserVisited(params.id);
-  const {id, detail } = params;
+  const { id, detail } = params;
 
   return (
     <>

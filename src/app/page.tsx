@@ -3,6 +3,9 @@ import TitleButton from "@/components/common/titleButton";
 import { getAllPlayers } from "@/helpers/leaderutils";
 import LeaderTable from "./leaderboard/leaderTable";
 
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+export const revalidate = 600
+
 const Home = async () => {
   const allPlayers = await getAllPlayers();
   const players = allPlayers.slice(0,4);

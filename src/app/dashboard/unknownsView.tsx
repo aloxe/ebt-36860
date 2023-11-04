@@ -12,7 +12,6 @@ interface UnknownsViewProps {
 }
 
 export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
-//   const { visited, user, setVisited} = useAuth();
   let myVisited = {...visited};
   var d = new Date(myVisited?.date || Date());
   const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
