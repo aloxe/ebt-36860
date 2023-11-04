@@ -6,6 +6,7 @@ import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 export function Cities() {
@@ -86,7 +87,9 @@ export function Cities() {
                 <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />
                 <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label="préfecture" />
               </div>
-              {visited.unknown > 0 && <><br/>you have {visited.unknown} unidentified locations</>}
+              {visited.unknown > 0 && <>
+              <br/>you have {visited.unknown} unidentified locations. <br/>
+              <Link href="#unknown">Identify their municipality</Link> to increase your score.</>}
             </>}
         </div>
       </div>

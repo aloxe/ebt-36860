@@ -2,6 +2,7 @@
 import { Dropdown } from "@/components/common/dropdown";
 import { refreshVisited } from "@/helpers/cityutils";
 import { saveEBTlocation } from "@/helpers/dbutils";
+import Link from "next/link";
 import { useMemo } from "react";
 
 interface UnknownsViewProps {
@@ -109,15 +110,23 @@ export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
 
   return (
     <>
+      <span id="unknown" className="anchor"></span>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
-          <h2>Unknown commune you visited</h2>
+          <h2>Places with unknown municipalities</h2>
           {myVisited?.date && <div className="text-right text-stone-400 text-sm">
             {date}
           </div>}
         </div>
         <div className="text-sm text-stone-600 my-1">
-          Find out in which commune is the location you visited with the map. Choose it in the list of possible communes and save this choice for next time.
+          Find out in which municipality is the location you visited. You can get help by searching for the location on Openstreetmap. Sometinmes 
+          searching for the postcode only helps too. Choose the right municipality from the list and save this choice for next time. 
+        </div>
+        <div className="text-sm text-stone-600 my-1">
+          If not yet counted this new municipality will be added to your total score. 
+        </div>
+        <div className="text-sm text-stone-600 my-1">
+          When the municipality is not available in the list, you can <Link href="https://forum.eurobilltracker.com/viewtopic.php?f=20&t=57328" target="_blank">tell me on the forum</Link>. 
         </div>
         <div className="table w-full">
           {visitedUnknown.map((city: City) => {
@@ -139,7 +148,7 @@ export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
                   <br/><span id="error" className="error float-left"></span>
                 </div>
                 <div className="table-cell">
-                  <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px]" id="save" disabled>
+                  <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer" id="save" disabled>
                     <span className="sm:hidden">💾</span>
                     <span className="hidden sm:inline-block">Save</span>
                   </button>
