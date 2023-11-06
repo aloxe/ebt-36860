@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+h2 {
+  @apply text-amber-800 text-xl font-bold font-sans mb-3
+}
+
+a {
+  @apply text-blue-900 underline underline-offset-4
+}
+
+li {
+  @apply list-inside list-disc ml-4
+}
+
+@layer components {
+  .anchor {
+    display:block;
+    height:64px;
+    margin-top:-64px;
+    visibility:hidden;
+  }
+  .dropdown:focus-within .dropdown-menu {
+    opacity: 1;
+    transform: translate(0) scale(1);
+    visibility: visible;
+  }
+
+  .z-1001 {
+    z-index: 1001;
+  }
+
+  .form-row {
+    @apply block mb-3 text-left
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-slate-700
+  }
+
+  .form-input {
+      @apply mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+  }
+
+  .form-input:focus {
+    @apply outline-none border-sky-500 ring-1 ring-sky-500
+  }
+
+  .form-input:disabled {
+    @apply bg-slate-50 text-slate-500 border-slate-200 shadow-none
+  }
+  
+  .form-input:invalid {
+    @apply border-pink-500 text-pink-600
+  }
+  
+  .form-input:invalid {
+    @apply border-pink-500 ring-pink-500
+  }
+
+  .error {
+    @apply text-red-500 font-semibold text-sm
+  }
+
+    .message {
+    @apply text-green-500 font-semibold text-sm
+  }
+
+  .btn {
+  @apply py-2 px-4 font-semibold rounded-lg
+  }
+
+  .btn-primary {
+    @apply bg-blue-500 text-white hover:bg-blue-400 disabled:bg-blue-300
+  }
+
+  .btn-secondary {
+    @apply py-1 px-2 bg-white hover:bg-stone-100 text-stone-700 border-2 border-stone-700 rounded-full disabled:text-stone-300 disabled:border-stone-300
+  }
+  .fill-cell {
+    @apply block w-full h-full px-3 md:px-6 py-4 text-slate-800 no-underline cursor-default
+  }
+}
