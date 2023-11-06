@@ -3,10 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const res = await prisma.lieux.findMany();
-  return NextResponse.json({
-    res,
-    revalidate: 60,
-  })
+  return NextResponse.json(res)
 }
 
 export async function POST(request) {

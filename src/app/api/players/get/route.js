@@ -9,7 +9,5 @@ export async function POST(request) {
       user_id: req.toString(),
     },
   });
-  return NextResponse.json({
-    res
-  });
+  return NextResponse.json(res);
 }

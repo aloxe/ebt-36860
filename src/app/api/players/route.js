@@ -3,9 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   const res = await prisma.visited.findMany();
-  return NextResponse.json({
-    res
-  })
+  return NextResponse.json(res)
 }
 
 export async function POST(request) {

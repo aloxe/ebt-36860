@@ -23,7 +23,11 @@ export const getNewPlayers = async () => {
     let pu = await getPublicUser(p.user_id)
     p.country = isJson(p.user) ? JSON.parse(p.user).my_country : pu.my_country
     p.flag = getUserFlag(p.country)
-    if (p.content) p.visited = JSON.parse(p.content)
+    if (p.content) { 
+      p.visited = JSON.parse(p.content) 
+    } else {
+      p.visited = undefined
+    }
     return p;
   }));
   return newPlayers;
