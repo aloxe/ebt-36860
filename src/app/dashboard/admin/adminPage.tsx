@@ -27,9 +27,9 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
           <div className="text-center font-thin text-sm">{formatDate(p.date)}</div>
           </td>
           <td>
-          Locations: {p.visited?.visitedCities.length}<br/>
-          communes: {p.visited?.communes.length}<br/>
-          Dpt: {p.visited?.departements.length}<br/>
+          Locations: {p.visited?.visitedCities?.length}<br/>
+          communes: {p.visited?.communes?.length}<br/>
+          Dpt: {p.visited?.departements?.length}<br/>
           </td>
           <td>
           {!!p.visited?.unknown && 
