@@ -32,12 +32,20 @@ export const getUserPolygons = async (id) => {
 }
 
 export const getUsers = async () => {
-  const res = await prisma.visited.findMany();
-  // return {
-  //   users: res,
-  //   revalidate: 60,
-  // }
-  return res;
+  const res = await prisma.visited.findMany(
+    {
+    select: {
+      user_id: true,
+      user: true,
+      content:true,
+      }
+  }
+  );
+  return {
+    users: res,
+    revalidate: 900,
+  }
+  // return res;
 }
 
 // client side

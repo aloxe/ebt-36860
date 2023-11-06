@@ -15,7 +15,8 @@ const getOldPlayers = () => {
 }
 
 export const getNewPlayers = async () => {
-  const barePlayers: DbUser[] = await getUsers()
+  const { users: barePlayers }: { users: DbUser[] } = await getUsers()
+  // const barePlayers: DbUser[] = await getUsers()
   let newPlayers = await Promise.all(barePlayers.map(async (p): Promise<DbUser> => {
     p.score = JSON.parse(p.content || "{}").communes?.length;
     // TODO keep only parsing when all users are recorded again
