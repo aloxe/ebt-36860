@@ -10,8 +10,13 @@ export const getUserVisited = async (id) => {
     },
   });
   const visited = await JSON.parse(response?.content || "")
+  // return {
+  //   visited,
+  //   revalidate: 60,
+  // }
   return visited;
 }
+
 export const getUserPolygons = async (id) => {
   const response = await prisma.visited.findUnique({
     where: {
@@ -19,11 +24,19 @@ export const getUserPolygons = async (id) => {
     },
   });
   const polygons = await JSON.parse(response?.polygons || "")
+  // return {
+  //   polygons,
+  //   revalidate: 60,
+  // }
   return polygons;
 }
 
 export const getUsers = async () => {
   const res = await prisma.visited.findMany();
+  // return {
+  //   users: res,
+  //   revalidate: 60,
+  // }
   return res;
 }
 

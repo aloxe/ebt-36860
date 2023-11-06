@@ -2,7 +2,8 @@
 
 export const getPublicUser = async (id) => {
       const requestOptions = {
-      method: 'GET'
+      method: 'GET',
+      cache: 'force-cache'
     };
 
     const response = await fetch(`https://api.eurobilltracker.com/?m=globalstats_profile_user&v=1&user_id=${id}`, requestOptions)
@@ -55,7 +56,8 @@ export const EBTlogin = async (login, password) => {
 }
 
 export const getPostcodes = async (user, city) => {
-    const responsePostcodes = await fetch(`/api/eurobilltracker/?m=myzipcodes&v=1&PHPSESSID=${user.sessionid}&city=${city.city}&country=${city.country}`)
+    const responsePostcodes = await fetch(`/api/eurobilltracker/?m=myzipcodes&v=1&PHPSESSID=${user.sessionid}&city=${city.city}&country=${city.country}`,
+      { cache: 'force-cache' })
       .catch(function (err) {
         console.log('Fetch zipcode Error :-S', err);
         return null;
