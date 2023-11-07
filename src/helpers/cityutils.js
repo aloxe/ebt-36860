@@ -155,14 +155,16 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 export function addPostcodes(user, citiesArray) {
   return Promise.all(
   citiesArray.map(async (city) => {
+    // add departement: useful french division
+    if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     if (city.nrlocations > 1) {
     var postcodesArray = await getPostcodes(user, city);
+    // some cities with homonyms might return parasite postcode
+    postcodesArray.filter((postcode) => postcode.substring(0,2) === city.departement)
     city.postcodes = postcodesArray;
     } else {
     city.postcodes = [city.top_zipcode];
     }
-    // add departement: useful french division
-    if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
     return city
   })
   );
