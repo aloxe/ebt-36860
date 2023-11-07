@@ -1,6 +1,9 @@
 import { getAllPlayers } from "@/helpers/leaderutils";
 import LeaderTable from "./leaderTable";
 
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+export const revalidate = 600
+
 const LeaderBoard = async () => {
 
   const players = await getAllPlayers()

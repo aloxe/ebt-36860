@@ -41,11 +41,11 @@ export const getUsers = async () => {
       }
   }
   );
-  return {
-    users: res,
-    revalidate: 900,
-  }
-  // return res;
+  // return {
+  //   users: res,
+  //   revalidate: 300,
+  // }
+  return res;
 }
 
 // client side
