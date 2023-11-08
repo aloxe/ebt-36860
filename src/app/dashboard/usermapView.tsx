@@ -1,6 +1,5 @@
 'use client'
 import Spinner from "@/components/common/spinner";
-import { useAuth } from "@/context/authcontext";
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore

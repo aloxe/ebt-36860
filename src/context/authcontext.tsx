@@ -10,7 +10,6 @@ export const AuthContext = createContext<any>(null)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [cities, setCities] = useState<City[] | undefined>(undefined);
   const [visited, setVisited] = useState<Visited | undefined>(undefined);
   const [polygons, setPolygons] = useState<Feature[] | undefined>(undefined);
 
@@ -33,7 +32,6 @@ useEffect(() => {
 
   const logout = () => {
     sessionStorage.removeItem('user');
-    sessionStorage.removeItem('cities');
     sessionStorage.removeItem('visited');
     setUser(undefined)
     setVisited(undefined)
@@ -41,7 +39,7 @@ useEffect(() => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, cities, setCities, visited, setVisited, polygons, setPolygons, logout }}>
+    <AuthContext.Provider value={{ user, setUser, visited, setVisited, polygons, setPolygons, logout }}>
       { children }
     </AuthContext.Provider>
   )
