@@ -29,10 +29,10 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
           <td>
 
             {!p.visited?.communes && <>
-              communes non récupérées
+              <Link href={{ pathname: 'cities', query: { user_id: JSON.stringify(p.user_id) } }}>communes non récupérées</Link>
             </>}
             {p.visited?.communes && <>
-              Locations: {p.visited?.visitedCities?.length}<br/>
+              <Link href={{ pathname: 'cities', query: { user_id: JSON.stringify(p.user_id) } }}>Locations</Link>: {p.visited?.visitedCities?.length}<br/>
               communes: {p.visited?.communes?.length}<br/>
               Dpt: {p.visited?.departements?.length}<br/>
             </>}

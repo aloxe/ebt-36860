@@ -36,7 +36,7 @@ interface Visited {
   "departements": string[]
   "prefectures": string[]
   "unknown": number
-  "date"?: string | number | Date
+  "date"?: string | number
   "userId"?: string | number
 }
 

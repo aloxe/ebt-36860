@@ -1,7 +1,7 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
-import { Cities } from './cities';
 import UserDetails from "./userdetails";
+import { CitiesView } from "./citiesView";
 import { UserMapView } from "./usermapView";
 import { UnknownsView } from "./unknownsView";
 
@@ -17,7 +17,11 @@ export default function Dashboard() {
         </h1>
       </div>
       {user?.username && <UserDetails />}
-      {user?.username && <Cities />}
+      {user?.username && <CitiesView 
+        visited={visited}
+        user={user}
+        saveVisited={setVisited} 
+      />}
       {user?.username && visited && <UserMapView 
         visited={visited}
         user={user} 
