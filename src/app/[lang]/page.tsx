@@ -36,7 +36,7 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
       </div>
 
       <TitleButton
-      label={"Player's forum"}
+      label={t("players-forum")}
       href="https://forum.eurobilltracker.com/"
       />
     </>

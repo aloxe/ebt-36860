@@ -1,12 +1,12 @@
-export const fallbackLang = 'en'
-export const languages = [fallbackLang, 'fr', 'cs']
+export const fallbackLng = 'en'
+export const languages = [fallbackLng, 'fr', 'cs']
 export const defaultNS = 'translations'
 
-export function getLgOptions (lng = fallbackLang, ns = defaultNS) {
+export function getLgOptions (lng = fallbackLng, ns = defaultNS) {
   return {
     debug: true,
     supportedLngs: languages,
-    fallbackLang,
+    fallbackLng,
     lng,
     fallbackNS: defaultNS,
     defaultNS,
