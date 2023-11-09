@@ -1,4 +1,11 @@
 {
     "moto": "Travel in France, collect euros and map your your trips",
-    "current-leaders": "Current leaders"
+    "current-leaders": "Current leaders",
+    "signed-in-as": "Signed in as",
+    "sign-out": "Sign out",
+    "your-dashboard": "Your dashboard",
+    "login": "Login",
+    "use-your-credentials": "Use your eurobilltracker.com credentials",
+    "email": "Email",
+    "password": "Password"
   }
