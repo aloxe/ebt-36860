@@ -29,7 +29,7 @@ export default function RootLayout({
       </head>
       <AuthProvider>
         <body>
-          <Header />
+          <Header lang={lang}/>
           <main className="flex min-h-screen flex-col mt-12 p-2 pb-6 md:p-8">
             {children}
           </main>

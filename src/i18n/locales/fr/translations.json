@@ -1,4 +1,11 @@
 {
     "moto": "Voyagez en France, collectionnez les euros et suivez vos déplacements sur la carte",
-    "current-leaders": "Les champions"
+    "current-leaders": "Les champions",
+    "signed-in-as": "Connecté",
+    "sign-out": "Déconnexion",
+    "your-dashboard": "Tableau de bord",
+    "login": "Login",
+    "use-your-credentials": "Utilisez vos identifiants eurobilltracker.com",
+    "email": "Identifiant (mail)",
+    "password": "Mot de passe"
   }
