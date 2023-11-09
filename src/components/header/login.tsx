@@ -3,11 +3,15 @@ import { useAuth } from "@/context/authcontext";
 import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from '@/i18n/client'
 
-export function Login() {
+const Login = ({ lang}: {lang: string}) => {
   const { user, setUser, logout } = useAuth();
   const [userLogsIn, setUserLogsIn] = useState<boolean>(false);
   const { push } = useRouter();
+
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = useTranslation(lang, 'translations')
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +48,7 @@ export function Login() {
   }
 
     const handleRedirect = useCallback(() => {
-      push('/dashboard/');
+      push(`/${lang}/dashboard/`);
   }, [push])
 
   useEffect(() => {
@@ -66,14 +70,14 @@ export function Login() {
           <div className="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-2 scale-95">
             <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
               <div className="px-4 py-3">
-                <p className="text-sm leading-5">Signed in as</p>
+                <p className="text-sm leading-5">{t("signed-in-as")}</p>
                 <p className="text-sm font-medium leading-5 text-gray-900 truncate">{ user.username || "¿ʔ" }</p>
               </div>
               <div className="py-1">
-                <button onClick={handleLogout} className="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem" >Sign out</button>
+                <button onClick={handleLogout} className="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem" >{t("sign-out")}</button>
               </div>
               <div className="py-1">
-                <a href="/dashboard" className="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem" >Your dashboard</a>
+                <a href={`/${lang}/dashboard/`} className="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem" >{t("your-dashboard")}</a>
               </div>
             </div>
           </div>
@@ -86,27 +90,27 @@ export function Login() {
       <div className=" relative inline-block text-left dropdown">
         <button className="inline-flex justify-center w-full px-4 py-2 text-md md:text-lg font-medium leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
           type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-            <span>Login</span>
+            <span>{t("login")}</span>
           <svg className="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
           </button>
         <div className="opacity-0 invisible dropdown-menu transition-all duration-300 transform origin-top-right -translate-y-4 scale-95">
           <div className="absolute right-0 w-80 mt-1 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none" aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
             <div className="px-4 py-3">
               <div className="form-row font-extralight text-xs">
-                Use your eurobilltracker.com credentials
+              {t("use-your-credentials")}
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="form-row">
-                  <label className="form-label">Email</label>
+                  <label className="form-label">{t("email")}</label>
                   <input name="username" type="text" className="form-input" />
                 </div>
                 <div className="form-row">
-                  <label className="form-label">Password</label>
+                  <label className="form-label">{t("password")}</label>
                   <input name="password" type="password" className="form-input" />
                 </div>
                 <button disabled={false} className="btn btn-primary rounded-lg text-lg font-medium">
                   {false && <span className="spinner-border spinner-border-sm me-1"></span>}
-                  Login
+                  {t("login")}
                 </button>
               </form>
           </div>
@@ -116,3 +120,5 @@ export function Login() {
     </div>
     )
 }
+
+export default Login;
