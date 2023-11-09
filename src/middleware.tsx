@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import acceptLanguage from 'accept-language'
-import { fallbackLang, languages } from '@/i18n/settings'
+import { fallbackLng, languages } from '@/i18n/settings'
 
 acceptLanguage.languages(languages)
 
@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     lang = acceptLanguage.get(request.cookies.get(cookieName).value)
 }
   if (!lang) lang = acceptLanguage.get(request.headers.get('Accept-Language'))
-  if (!lang) lang = fallbackLang
+  if (!lang) lang = fallbackLng
 
   const pathnameIsMissingValidLocale = languages.every((l) => {
       return !pathname.startsWith(`/${l}`);
