@@ -3,7 +3,7 @@ import { formatDayDate, getUserFlag } from "@/helpers/strings";
 import { MouseEventHandler } from "react";
 import Spinner from "../common/spinner";
 
-function  Profile({user, handleRefreshUser, className, requestRefresh}: {user: User, handleRefreshUser?: MouseEventHandler, className?: string, requestRefresh?: boolean}) {
+function  Profile({lang, user, handleRefreshUser, className, requestRefresh}: {lang: string, user: User, handleRefreshUser?: MouseEventHandler, className?: string, requestRefresh?: boolean}) {
 
   const isLoggedIn = !!user.sessionid;
   return (
@@ -26,8 +26,8 @@ function  Profile({user, handleRefreshUser, className, requestRefresh}: {user: U
           <br />🏠 : {user.my_city}, {getUserFlag(user.my_country)} {user.my_country}
         </div>
         <div className="flex justify-around mt-2">
-          <ScoreCard icon="💶" score={user?.totalbills} label="banknote" />
-          <ScoreCard icon="🏆" score={user?.totalhits} label="hit" />
+          <ScoreCard lang={lang} icon="💶" score={user?.totalbills} label="banknote" />
+          <ScoreCard lang={lang} icon="🏆" score={user?.totalhits} label="hit" />
         </div></>}
       </div>
     </>

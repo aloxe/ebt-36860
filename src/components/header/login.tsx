@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 
-const Login = ({ lang}: {lang: string}) => {
+const Login = ({ lang }: {lang: string}) => {
   const { user, setUser, logout } = useAuth();
   const [userLogsIn, setUserLogsIn] = useState<boolean>(false);
   const { push } = useRouter();
@@ -49,7 +49,7 @@ const Login = ({ lang}: {lang: string}) => {
 
     const handleRedirect = useCallback(() => {
       push(`/${lang}/dashboard/`);
-  }, [push])
+  }, [lang, push])
 
   useEffect(() => {
    if (userLogsIn && user) {

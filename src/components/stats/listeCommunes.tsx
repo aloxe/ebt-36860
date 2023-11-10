@@ -1,13 +1,14 @@
 import { fetchAllComplete } from "@/helpers/cityutils";
+import { useTranslation } from '@/i18n'
 
-async function ListeCommunes({user, visited}: DetailsProps) {
-
+async function ListeCommunes({lang, user, visited}: DetailsProps) {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = await useTranslation(lang, 'stats')
+  const {username } = user;
   const departements: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const allcommunes: Commune[] = await fetchAllComplete();
   const visitedCommunes: Commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
   const visitedPrefectures: string[] = visited.prefectures;
-
-  console.log("ListeCommunes");
 
   return (
     <>
@@ -15,7 +16,11 @@ async function ListeCommunes({user, visited}: DetailsProps) {
         <table className="w-full text-left text-md font-light">
           <thead className="border-b font-medium dark:border-neutral-500">
             <tr>
-              <th colSpan={3} className="whitespace-nowrap p-4 text-center"><h2>{user.username} list of communes</h2></th>
+              <th colSpan={3}>
+                <h2>
+                  {t('list-municipalities', {"username": username})}
+                </h2>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -26,9 +31,9 @@ async function ListeCommunes({user, visited}: DetailsProps) {
                   <th colSpan={3} className="whitespace-nowrap p-4">
                     {departement.code === "984" ? <>TAAF (984)</> :
                     <>{departement.nom} ({departement.code})</>}
-                    <div className="float-right">
-                      {visitedCommunes.filter(function(commune){
-                      return commune?.departement?.code === departement.code }).length} {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? "🏛️" : ""}
+                    <div className="float-right font-thin">
+                      {visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length} {t('municipalities')} 
+                      {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? " (🏛️)" : ""}
                     </div>
                     </th>
               </tr>
@@ -47,8 +52,8 @@ async function ListeCommunes({user, visited}: DetailsProps) {
                     </td>
                   <td className="whitespace-nowrap p-2 md:p-4 text-right">
                     {commune?.surface && <>{Intl.NumberFormat('fr', {maximumFractionDigits: 2}).format((commune?.surface / 100 || 0))} km²<br /></>}
-                    {commune?.population && <>{Intl.NumberFormat('fr').format(commune?.population)} hab.</>}
-                    {typeof(commune?.population) !== "number" && <>UNDEF</>}
+                    {commune?.population && <>{Intl.NumberFormat('fr').format(commune?.population)} {t('inabitants')}</>}
+                    {typeof(commune?.population) !== "number" && <></>}
                   </td>
                 </tr>
               ))}

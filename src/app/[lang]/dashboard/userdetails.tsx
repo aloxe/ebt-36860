@@ -34,6 +34,7 @@ const  UserDetails = () => {
     <>
     {isAdmin && <Link href="admin" >admin page</Link>}
     <Profile
+      lang={"en"}
       user={user}
       handleRefreshUser={handleRefreshUser}
       requestRefresh={requestRefresh} />

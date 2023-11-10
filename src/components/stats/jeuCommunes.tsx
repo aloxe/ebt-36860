@@ -1,6 +1,10 @@
 import { fetchAllComplete } from "@/helpers/cityutils";
+import { useTranslation } from '@/i18n'
 
-async function JeuCommunes({user, visited}: DetailsProps) {
+async function JeuCommunes({lang, user, visited}: DetailsProps) {
+    /* eslint-disable react-hooks/rules-of-hooks */
+    const { t } = await useTranslation(lang, 'stats')
+
   const allCommunesWithDomTom: Commune[] = await fetchAllComplete();
   // we remove oversea municipalities
   const allCommunes = allCommunesWithDomTom.filter(el => el.zone === "metro")
@@ -50,34 +54,35 @@ const minAlt = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.altitude < current.altitude) ? prev : current
 })
 
+const { username } = user;
   return (
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>
-            {user.username} score in <span className="whitespace-nowrap">▤ 36680 communes ▥</span>
+            {t('36680-update', {"username": username})} <span className="whitespace-nowrap">▤ 36680 communes ▥</span>
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">
-          <span className="text-blue-600">{visited.communes.length}</span> communes soit <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> du nombre de communes<br />
-          <span className="text-red-600">{Intl.NumberFormat('fr').format(visitedPop)}</span> habitants soit <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> de la population<br />
-          <span className="text-green-500">{Intl.NumberFormat('fr', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² soit <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> de la superficie
+          <span className="text-blue-600">{visited.communes.length}</span> {t('municipality', {count: visited.communes.length})} {t('that-is')} <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> {t('of-the-total-municipalities')}<br />
+          <span className="text-red-600">{Intl.NumberFormat('fr').format(visitedPop)}</span> {t('inhabitant', {count: visitedPop })} {t('that-is')} <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> {t('of-the-total-population')}<br />
+          <span className="text-green-500">{Intl.NumberFormat('fr', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² {t('that-is')} <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> {t('of-the-total-surface')}
         </div>
         <div className="text-left mb-4">
-          la plus peuplée : {maxPop.nom} avec {Intl.NumberFormat('fr').format(maxPop.population)} habitants<br/>
-          la moins peuplée : {minPop.nom} avec {Intl.NumberFormat('fr').format(minPop.population)} habitants
+          {t('the-most-populated')} : {maxPop.nom} {t('with')} {Intl.NumberFormat('fr').format(maxPop.population)} {t('inhabitant', {count: maxPop.population })}<br/>
+          {t('the-less-populated')} : {minPop.nom} {t('with')} {Intl.NumberFormat('fr').format(minPop.population)} {t('inhabitant', {count: minPop.population })}
         </div>
         <div className="text-left mb-4">
-          la plus étendue : {maxSurf.nom} avec {Intl.NumberFormat('fr', {maximumFractionDigits: 2,}).format(maxPop.surface)} km²<br/>
-          la moins étendue : {minSurf.nom} avec {Intl.NumberFormat('fr', {maximumFractionDigits: 2,}).format(minPop.surface)} km²
+        {t('the-largest')} : {maxSurf.nom} {t('with')} {Intl.NumberFormat('fr', {maximumFractionDigits: 2,}).format(maxPop.surface)} km²<br/>
+        {t('the-smallest')} : {minSurf.nom} {t('with')} {Intl.NumberFormat('fr', {maximumFractionDigits: 2,}).format(minPop.surface)} km²
         </div>
         <div className="text-left mb-3">
-          la plus élevée : {maxAlt.nom} avec {Intl.NumberFormat('fr').format(maxAlt.altitude)} m<br/>
-          la moins élevée : {minAlt.nom} avec {Intl.NumberFormat('fr').format(minAlt.altitude)} m<br/>
-          altitude moyenne : {visitedAltMoyenne.toFixed(2)} m
+        {t('the-highest')} : {maxAlt.nom} {t('with')} {Intl.NumberFormat('fr').format(maxAlt.altitude)} m<br/>
+        {t('the-lowest')} : {minAlt.nom} {t('with')} {Intl.NumberFormat('fr').format(minAlt.altitude)} m<br/>
+        {t('mean-altitude')} : {visitedAltMoyenne.toFixed(2)} m
         </div>
         <div className="text-center text-xs mb-2">
-          calculations are made from metropolitan France
+        {t('calculation-note')}
         </div>
       </div>
     </>

@@ -1,7 +1,11 @@
 import { getUserPolygons } from "@/helpers/dbutils";
 import { MyMapComponent } from "../maps/map";
+import { useTranslation } from '@/i18n'
 
-async function MapCommunes({user, visited}: DetailsProps) {
+async function MapCommunes({lang, user, visited}: DetailsProps) {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = await useTranslation(lang, 'stats')
+  const {username } = user;
   const polygons = await getUserPolygons(user.id.toString());
 
   return (
@@ -9,7 +13,7 @@ async function MapCommunes({user, visited}: DetailsProps) {
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
         <div className="">
           <h2>
-            ▤ {user.username} communes  map ▥
+            {t('usermap', {"username": username})}
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">
