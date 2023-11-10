@@ -1,9 +1,12 @@
 import CarteDeFranceSvg from "@/assets/france-departements.svg";
 import { removeDuplicateDepartements } from "@/helpers/cityutils";
+import { useTranslation } from '@/i18n'
 import './tourDeFrance.css';
 
-function TourDeFrance({user, visited}: DetailsProps) {
-
+async function TourDeFrance({lang, user, visited}: DetailsProps) {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = await useTranslation(lang, 'stats')
+  const {username } = user;
   const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const departementsWithDomTom: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const regions = regionsWithDomTom.filter(el => el.zone === "metro")
@@ -34,7 +37,7 @@ function TourDeFrance({user, visited}: DetailsProps) {
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>
-            Tour de France de {user.username}
+          {t('tour-de-france', {"username": username})}
           </h2>
         </div>
         <div className="text-left text-md mb-4">
