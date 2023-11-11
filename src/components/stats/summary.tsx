@@ -1,4 +1,4 @@
-import { ScoreCard } from "@/components/stats/scoreCard";
+import { ScoreCard } from "@/components/common/scoreCard";
 import { useTranslation } from '@/i18n'
 
 async function Summary({ lang, user, visited, className }: DetailsProps) {
@@ -21,10 +21,10 @@ async function Summary({ lang, user, visited, className }: DetailsProps) {
           </div>
         </div>
         <div className="flex flex-wrap justify-around mt-2">
-          <ScoreCard icon="📍" score={visited?.visitedCities?.length} label="location" lang={lang} />
-          <ScoreCard icon="🏘️" score={visited?.communes?.length} label="municipality" lang={lang} />
-          <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="district" lang={lang} />
-          <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label="hq" lang={lang} />
+          <ScoreCard icon="📍" score={visited?.visitedCities?.length} label={t("location", {count: visited?.visitedCities?.length})} />
+          <ScoreCard icon="🏘️" score={visited?.communes?.length} label={t("municipality", {count: visited?.communes?.length})} />
+          <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label={t("district", {count: visited?.departements?.length})} />
+          <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label={t("hq", {count: visited?.prefectures?.length})} />
         </div>
       </div>
     </>

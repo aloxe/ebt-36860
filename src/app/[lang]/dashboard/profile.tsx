@@ -1,10 +1,10 @@
 import { MouseEventHandler } from "react";
-import { useTranslation } from '@/i18n'
+import { useTranslation } from '@/i18n/client'
 import ProfileView from "@/components/common/profileView";
 
-async function  Profile({lang, user, handleRefreshUser, className, requestRefresh}: {lang: string, user: User, handleRefreshUser?: MouseEventHandler, className?: string, requestRefresh?: boolean}) {
+function  Profile({lang, user, handleRefreshUser, className, requestRefresh}: {lang: string, user: User, handleRefreshUser?: MouseEventHandler, className?: string, requestRefresh?: boolean}) {
   /* eslint-disable react-hooks/rules-of-hooks */
-  const { t } = await useTranslation(lang, 'stats')
+  const { t } = useTranslation(lang, 'stats')
 
   return (
     <ProfileView

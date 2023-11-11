@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
+import { useTranslation } from '@/i18n/client'
 
 const DynamicMyMapComponent = dynamic(() =>
   import('@/components/maps/map').then((module) => module.MyMapComponent)
@@ -11,12 +12,15 @@ const DynamicMyMapComponent = dynamic(() =>
 type Feature = GeoJsonTypes.Feature
 
 type UserMapViewProps = {
+  lang?: string,
   visited: Visited,
   user: User,
   savePolygons: any
 }
 
-export function UserMapView({ visited, user, savePolygons }: UserMapViewProps) {
+export function UserMapView({lang, user, visited, savePolygons }: UserMapViewProps) {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = useTranslation(lang, 'dashboard');
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
@@ -71,7 +75,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
-        <h2><>{user?.username ?? user}</>&apos;s map</h2>
+        <h2>{t('your-map')}</h2>
       </div>
       <div className="md:flex md:justify-around">
         <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
@@ -81,7 +85,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
           <input
           className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
             id='dep' value='dep' type="checkbox" checked={showDep}
-            onChange={() => setShowDep(!showDep)} /> départements
+            onChange={() => setShowDep(!showDep)} /> {t('district', {count: 2})}
         </label>
         </div>
 
@@ -95,7 +99,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
              />
           <label
             className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
-            htmlFor="com"> communes {!disabled && mapPolygons && `(${mapPolygons.length})`}
+            htmlFor="com"> {t('municipality', {count: mapPolygons?.length})} {!disabled && mapPolygons && `(${mapPolygons.length})`}
           </label>
           {disabled && <Spinner />}
         </div>
