@@ -1,7 +1,7 @@
 'use client'
 import Spinner from "@/components/common/spinner";
 import TitleButton from "@/components/common/titleButton";
-import { ScoreCard } from "@/components/stats/scoreCard";
+import { ScoreCard } from "@/components/common/scoreCard";
 import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";

@@ -9,5 +9,18 @@
     "use-your-credentials": "Use your eurobilltracker.com credentials",
     "email": "Email",
     "password": "Password",
-    "help-translate": "help with translation"
+    "help-translate": "help with translation",
+    "loading-user": "loading user details from eurobilltracker",
+    "banknote": "banknote",
+    "banknote_other": "banknotes",
+    "hit": "hit",
+    "hit_other": "hits",
+    "location": "location",
+    "location_other": "locations",
+    "municipality": "municipality",
+    "municipality_other": "municipalities",
+    "district": "district",
+    "district_other": "districts",
+    "hq": "préfecture",
+    "hq_other": "préfectures"
   }
