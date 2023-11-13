@@ -1,7 +1,6 @@
 'use client'
 import { getPlayerData, savePlayerData } from "@/helpers/dbutils";
 import { useEffect, useState } from "react";
-import { UnknownsView } from "../../unknownsView";
 import Link from "next/link";
 import { CitiesView } from "../../citiesView";
 
