@@ -7,33 +7,33 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const res = await request.json();
-  if (!!res.dataToSave.id) {
-    await saveUserData(res);
-  } else if (!!res.dataToSave.communes) {
-    await saveVisited(res);
-  } else if (res.dataToSave[0].type === 'Feature') {
-    await savePolygons(res);
+  const req = await request.json();
+  if (!!req.dataToSave.id) {
+    await saveUserData(req);
+  } else if (!!req.dataToSave.communes) {
+    await saveVisited(req);
+  } else if (req.dataToSave[0].type === 'Feature') {
+    await savePolygons(req);
   } else {
     // TODO send correct error code
     console.log("ERROR not good data: can't save");
   }
-  return NextResponse.json(res);
+  return NextResponse.json(req);
 }
 
-async function saveUserData(res) {
+async function saveUserData(req) {
   const date = new Date().toISOString()
-  const userString = JSON.stringify(res.dataToSave)
+  const userString = JSON.stringify(req.dataToSave)
   await prisma.visited.upsert({
     where: {
-      user_id: `${res.userId}`,
+      user_id: `${req.userId}`,
     },
     update: {
       user: `${userString}`,
       date: date,
     },
     create: {
-      user_id: `${res.userId}`,
+      user_id: `${req.userId}`,
       user: `${userString}`,
       content: `{}`,
       polygons: `{}`,
@@ -42,12 +42,12 @@ async function saveUserData(res) {
   })
 }
 
-async function saveVisited(res) {
+async function saveVisited(req) {
   const date = new Date().toISOString()
-  const contentString = JSON.stringify(res.dataToSave)
+  const contentString = JSON.stringify(req.dataToSave)
   await prisma.visited.update({
   where: {
-    user_id: `${res.userId}`,
+    user_id: `${req.userId}`,
   },
   data: {
     content: `${contentString}`,
@@ -56,12 +56,12 @@ async function saveVisited(res) {
   })
 }
 
-async function savePolygons(res) {
+async function savePolygons(req) {
   const date = new Date().toISOString()
-  const polygonString = JSON.stringify(res.dataToSave)
+  const polygonString = JSON.stringify(req.dataToSave)
   await prisma.visited.update({
   where: {
-    user_id: `${res.userId}`,
+    user_id: `${req.userId}`,
   },
   data: {
     polygons: `${polygonString}`,

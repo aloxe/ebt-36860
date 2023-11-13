@@ -26,9 +26,8 @@ model lieux {
 }
 
 model translations {
-  id            Int      @id @default(autoincrement())
+  id            String      @id
   namespace     String
   key           String
-  en            String
   fr            String
 }
