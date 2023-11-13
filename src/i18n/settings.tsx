@@ -4,7 +4,7 @@ export const defaultNS = 'translations'
 
 export function getLgOptions (lng = fallbackLng, ns = defaultNS) {
   return {
-    debug: true,
+    debug: false,
     supportedLngs: languages,
     fallbackLng,
     lng,

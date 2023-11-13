@@ -30,6 +30,10 @@ h2 {
   @apply text-amber-800 text-xl font-bold font-sans mb-3
 }
 
+h3 {
+  @apply text-amber-700 text-lg font-light font-sans italic mb-1 text-center uppercase
+}
+
 a {
   @apply text-blue-900 underline underline-offset-4
 }

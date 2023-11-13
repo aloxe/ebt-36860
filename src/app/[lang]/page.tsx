@@ -8,7 +8,7 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
   const allPlayers = await getAllPlayers();
   const players = allPlayers.slice(0,4);
   /* eslint-disable react-hooks/rules-of-hooks */
-  const { t } = await useTranslation(lang, 'home')
+  const { t } = await useTranslation(lang, ['home', 'translations'])
   
   return (
     <>
