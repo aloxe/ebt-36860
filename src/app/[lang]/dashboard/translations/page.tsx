@@ -1,38 +1,49 @@
 'use client'
 
-import { getTranslations } from "@/helpers/dbutils";
-import { useEffect, useState } from "react";
+import { getTranslations, saveTranslation } from "@/helpers/dbutils";
+import { SyntheticEvent, useEffect, useState } from "react";
 
+interface FocusEvent<T = Element> extends SyntheticEvent {
+  relatedTarget: EventTarget | null;
+  target: EventTarget & T;
+}
 
+interface KeyboardEvent<T = Element> extends SyntheticEvent {
+  relatedTarget: EventTarget | null;
+  target: EventTarget & T;
+}
 
  const TranslationsAdmin = () => {
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
   const [dbTranslations, setDbTranslations] = useState(null)
 
-  let translationChains:any = { }
+  let translationChains: any = { }
   namespaces.map((ns) => {
-    console.log(ns);
     let english = require(`@/i18n/locales/en/${ns}.json`)
     let french = require(`@/i18n/locales/fr/${ns}.json`)
-    // translationChains.push({ [ns]: {en: [english]} })
     Object.assign(translationChains, { [ns]: {en: english, fr: french}});
-    // translationChains.push({ [ns]: {fr: french} })
-    // Object.assign(translationChains, { [ns]: {fr: french} });
   })
-  // const translationKeys = Object.keys(translationChains.dashboard.en)
 
-  console.log(translationChains);
-  
-  // const getFrTranslation = (key: string) => {
-  //   return translationChains.dashboard.fr[key]
-  //   // return dbTranslations && dbTranslations.find((row) => row.key === key) ;
-  // }
+  const handleKeyUp = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.target.defaultValue !== event.target.value) {
+      event.target.classList.add("bg-amber-50")
+    } else {
+      event.target.classList.remove("bg-amber-50")
+    }
+  }
+
+  const handleSaveOnBlur = async (e: FocusEvent<HTMLTextAreaElement>) => {
+    if (e.target.defaultValue !== e.target.value) {
+      const res = await saveTranslation(e.target.getAttribute('data-namespace'), e.target.name, "fr",  e.target.value)
+      // TODO why do we not get response object?
+        e.target.classList.remove("bg-amber-50")
+    }
+  }
 
   useEffect(() => {
     const fetchDbTrans = async () => {
       const trans = await getTranslations()
       setDbTranslations(trans)
-      console.log("trans", trans);
       
     }
     dbTranslations === null && fetchDbTrans()
@@ -43,27 +54,31 @@ import { useEffect, useState } from "react";
     <div className="text-stone-600 text-sm">
       <h2>Translations</h2>
       {namespaces.map((ns) => (
-        <>
+        <div key={ns}>
           <h3>{ns}</h3>
           {Object.keys(translationChains[ns].en).map( key => {
             /* @ts-ignore */
             let dbValue = dbTranslations && (dbTranslations?.find((row) => row.key === key)?.fr) || ""
             return (
-            <>
-            <div>
+            <div key={key}>
               <div className="pb-1 align-top pt-5 w-full">
                 <span className="text-xs text-zinc-300">{key}</span><br/>
                 <span className="font-bold w-full">{translationChains[ns].en[key]}</span>
               </div>
               <div className="float-left align-top pb-4 w-full">
-              <textarea className="border border-solid border-emerald-950 w-full"
-              name={key} rows={2} value={translationChains[ns].fr[key] || dbValue} />
+              <textarea 
+                name={key} rows={2} data-namespace={ns}
+                className="border border-solid border-emerald-950 w-full"
+                defaultValue={translationChains[ns].fr[key] || dbValue} 
+                onBlur={handleSaveOnBlur}
+                /* @ts-ignore */
+                onKeyUp={handleKeyUp}
+              />
                 {/* <input name={key} type="text" className="form-input" value={translationChains[ns].fr[key] || dbValue} /> */}
               </div>
             </div>
-            </>
           )})}
-        </>
+        </div>
       ))}
     </div>
   </div>

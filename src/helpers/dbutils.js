@@ -101,6 +101,32 @@ export const getTranslations = async (ns) => {
   return dataresult;
 }
 
+export const saveTranslation = async (ns, key, lang, string) => {
+  if (!string) {
+    console.log('saveTranslation Error :-S', key);
+    return null;
+  };
+  
+  const objectToSave = { ns, key, lang, string }
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+      await fetch(`/api/translations/`, requestOptions)
+      .then(
+        response => {
+          if (response.status !== 200) {
+            console.log("problème ", response.status);
+          }
+          return response;
+        })
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+}
+
 export const getAllVisited = async () => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/players`, requestOptions)
