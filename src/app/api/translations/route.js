@@ -7,19 +7,24 @@ export async function GET() {
 }
 
 export async function POST(request) {
-  const { nextUrl: { search } } = request;
-  const urlSearchParams = new URLSearchParams(search);
-  const params = Object.fromEntries(urlSearchParams.entries());
-  saveData(params)
-  return NextResponse.json(params)
+  const req = await request.json();
+  saveData(req)
+  return NextResponse.json({status: 200})
 }
 
-async function saveData(newLocation) {
-    // const newEntry = await prisma.lieux.create({
-    //     data: newLocation,
-    //     select: {
-    //        id: true
-    //     }
-    // });
-  // return newEntry;
+async function saveData(req) {
+  await prisma.translations.upsert({
+    where: {
+      id: `${req.ns}/${req.key}`,
+    },
+    update: {
+     [req.lang]: `${req.string}`,
+    },
+    create: {
+      id: `${req.ns}/${req.key}`,
+      namespace: `${req.ns}`,
+      key: `${req.key}`,
+      [req.lang]: `${req.string}`,
+    },
+  })
 }

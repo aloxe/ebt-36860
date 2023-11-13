@@ -9,11 +9,8 @@ import Profile from "./profile";
 const  UserDetails = ({ lang }: {lang: string}) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { user, setUser } = useAuth();
+  const { user, setUser, isAdmin, isTrans } = useAuth();
   const [requestRefresh, setRequestRefresh] = useState<boolean>(false);
-
-  const isAdmin = user.id === 31378;
-  const isTrans = isAdmin;
 
   const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     setRequestRefresh(true);

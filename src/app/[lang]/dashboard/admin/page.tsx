@@ -1,7 +1,6 @@
 import { getNewPlayers } from "@/helpers/leaderutils";
 import AdminPage from "./adminPage";
 
-
 const Admin = async () => {
   const players = await getNewPlayers()
 
