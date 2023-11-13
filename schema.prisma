@@ -10,7 +10,7 @@ generator client {
 
 model visited {
   user_id    String    @unique
-  user   String
+  user       String
   content    String
   polygons   String
   date       DateTime
@@ -23,4 +23,12 @@ model lieux {
   nom_ebt       String
   nom_commune   String
   ref_user      String
+}
+
+model translations {
+  id            Int      @id @default(autoincrement())
+  namespace     String
+  key           String
+  en            String
+  fr            String
 }

@@ -90,6 +90,17 @@ export const saveEBTlocation = async (newLocation) => {
   return dataresult;
 }
 
+export const getTranslations = async (ns) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/translations${ns ? '/'+ns : ''}`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
+}
+
 export const getAllVisited = async () => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/players`, requestOptions)
