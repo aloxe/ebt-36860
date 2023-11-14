@@ -1,8 +1,9 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import { getTranslations, saveTranslation } from "@/helpers/dbutils";
+import Link from "next/link";
 import { SyntheticEvent, useEffect, useState } from "react";
-
+import { useTranslation } from '@/i18n/client'
 interface FocusEvent<T = Element> extends SyntheticEvent {
   relatedTarget: EventTarget | null;
   target: EventTarget & T;
@@ -13,7 +14,9 @@ interface KeyboardEvent<T = Element> extends SyntheticEvent {
   target: EventTarget & T;
 }
 
-const TranslationsAdmin = () => {
+const TranslationsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = useTranslation(lang, 'dashboard')
   const { isAdmin } = useAuth()
   const [dbTranslations, setDbTranslations] = useState(null)
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
@@ -53,9 +56,11 @@ const TranslationsAdmin = () => {
   if (!isAdmin) return <></>
 
   return (
-    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
+  <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
     <div className="text-stone-600 text-sm">
-      <h2>Translations</h2>
+      {isAdmin && <Link href="/dashboard/admin" >{t('admin-page')}</Link>} | 
+      {isAdmin && <Link href="/dashboard/translations/jsonfiles" >Translation json</Link>}
+      <h2>{t('Translations')}</h2>
       {namespaces.map((ns) => (
         <div key={ns}>
           <h3>{ns}</h3>
