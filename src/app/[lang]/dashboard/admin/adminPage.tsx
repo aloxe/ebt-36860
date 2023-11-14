@@ -23,13 +23,13 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
         {!players &&
         <tr><td><Spinner /></td></tr>
         }
-        {players && players.map((p, index) => (
+        {players && players.map((p) => (
         <tr className="h-1 bg-slate-100 border-b dark:border-neutral-500 text-md hover:bg-amber-50"
         key={p.user_id}>
           <td>
           {p.user_id}<br />
           <>{p.flag} {p.username}</><br/>
-          <div className="text-center font-thin text-sm">{formatDate(p.date)}</div>
+          <div className="text-center font-thin text-sm">{formatDate(p.visited?.date)}</div>
           </td>
           <td>
 
