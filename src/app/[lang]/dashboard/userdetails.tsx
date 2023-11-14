@@ -9,7 +9,7 @@ import Profile from "./profile";
 const  UserDetails = ({ lang }: {lang: string}) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { user, setUser, isAdmin, isTrans } = useAuth();
+  const { user, setUser, isAdmin } = useAuth();
   const [requestRefresh, setRequestRefresh] = useState<boolean>(false);
 
   const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -34,7 +34,7 @@ const  UserDetails = ({ lang }: {lang: string}) => {
   return (
     <>
     {isAdmin && <Link href="admin" >{t('admin-page')}</Link>}
-    {isTrans && <Link href="translations" >{t('translations')}</Link>}
+    {isAdmin && <Link href="translations" >{t('translations')}</Link>}
     <Profile
       lang={lang}
       user={user} 

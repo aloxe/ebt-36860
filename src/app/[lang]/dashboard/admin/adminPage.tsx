@@ -1,11 +1,16 @@
 'use client'
+import { useAuth } from "@/context/authcontext";
 import Spinner from "@/components/common/spinner";
 import { formatDate } from "@/helpers/strings";
 import Link from "next/link";
 
 const  AdminPage = ({ players }: {players: DbUser[]}) => {
+  const { isAdmin } = useAuth()
+  if (!isAdmin) return <></>
+
   return (
     <>
+    <h2>Players</h2>
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
         <tr className="bg-sky-200">

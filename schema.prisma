@@ -31,3 +31,9 @@ model translations {
   key           String
   fr            String
 }
+
+model roles {
+  id            String      @id
+  admin         Boolean
+  trans         String
+}
