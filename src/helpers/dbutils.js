@@ -127,6 +127,25 @@ export const saveTranslation = async (ns, key, lang, string) => {
       });
 }
 
+export const getPlayerRole = async (userId) => {
+  // accept db keys from columns: user | content | polygons
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(userId),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+  const response = await fetch(`/api/roles`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch roll Error :-S', err);
+      return null;
+    });
+  if (!response) {
+    console.log('Fetch role no result Error :-S');
+    return undefined;
+  }
+    return await response?.json();
+}
+
 export const getAllVisited = async () => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/players`, requestOptions)

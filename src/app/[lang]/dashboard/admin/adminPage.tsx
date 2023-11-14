@@ -1,4 +1,5 @@
 'use client'
+import { useAuth } from "@/context/authcontext";
 import Spinner from "@/components/common/spinner";
 import Profile from "@/components/stats/profile";
 import { useAuth } from "@/context/authcontext";
@@ -9,15 +10,12 @@ import Link from "next/link";
 import { useState } from "react";
 
 const  AdminPage = ({ players }: {players: DbUser[]}) => {
-  // const { user } = useAuth();
-  // const isAdmin = user?.id === 31378;
+  const { isAdmin } = useAuth()
+  if (!isAdmin) return <></>
 
-  console.log(players[5].polygons);
-  console.log('👆 =============');
-
-  // if (!isAdmin) return <></>
   return (
     <>
+    <h2>Players</h2>
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
         <tr className="bg-sky-200">
