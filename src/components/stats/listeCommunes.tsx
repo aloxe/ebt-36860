@@ -32,7 +32,7 @@ async function ListeCommunes({lang, user, visited}: DetailsProps) {
                     {departement.code === "984" ? <>TAAF (984)</> :
                     <>{departement.nom} ({departement.code})</>}
                     <div className="float-right font-thin">
-                      {visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length} {t('municipalities')} 
+                      {visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length} {t('municipality', {count: visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length})} 
                       {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? " (🏛️)" : ""}
                     </div>
                     </th>

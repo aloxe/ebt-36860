@@ -1,9 +1,6 @@
-import Image from 'next/image';
-import Login from './login';
 import Link from 'next/link';
 import { useTranslation } from '@/i18n'
 import { languages } from '@/i18n/settings'
-import { Trans } from 'react-i18next';
 
 export default async function Footer({ lang }: {lang: string}) {
   /* eslint-disable react-hooks/rules-of-hooks */

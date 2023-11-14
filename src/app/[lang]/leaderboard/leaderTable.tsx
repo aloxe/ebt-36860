@@ -11,9 +11,9 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
         <tr className="bg-sky-200">
-          <th className="px-3 md:px-6 py-4 hidden sm:table-cell text-center">{t("rank")}</th>
-          <th className="px-3 md:px-6 py-2 text-center">{t("name")}</th>
-          <th className="px-3 md:px-6 py-2 text-center">{t("score")}</th>
+          <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{t("rank")}</th>
+          <th className="px-3 md:px-6 py-2">{t("name")}</th>
+          <th className="px-3 md:px-6 py-2">{t("score")}</th>
           {/* <th className="whitespace-nowrap px-6 py-4">map</th> */}
         </tr>
       </thead>
@@ -22,7 +22,7 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
         <tr><td><Spinner /></td></tr>
         }
         {players && players.map( async (p, index) => (
-        <tr className={`h-1 bg-slate-100 border-b dark:border-neutral-500 text-md ${!!p.country ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`}
+        <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${!!p.country ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`}
         key={p.user_id}>
 
           <td className="hidden sm:table-cell">

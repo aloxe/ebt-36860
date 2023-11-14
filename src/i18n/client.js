@@ -16,6 +16,8 @@ i18next
   .use(LanguageDetector)
   .use(resourcesToBackend((language, namespace) => import(`./locales/${language}/${namespace}.json`)))
   .init({
+    // TODO use https://github.com/i18next/i18next-chained-backend 
+    // with DB translations
     ...getLgOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
