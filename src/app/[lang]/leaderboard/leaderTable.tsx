@@ -22,17 +22,17 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
         <tr><td><Spinner /></td></tr>
         }
         {players && players.map( async (p, index) => (
-        <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${!!p.country ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`}
+        <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${p.complete ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`}
         key={p.user_id}>
 
           <td className="hidden sm:table-cell">
-            <a href={!!p.country ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${!!p.country && "cursor-pointer"}`}>
+            <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${p.complete && "cursor-pointer"}`}>
               { index + 1 }
             </a>
           </td>
           <td className="h-full">
-            <a href={!!p.country ? `/${lang}/stats/${p.user_id}` : undefined}
-            className={`fill-cell ${!!p.country && "text-blue-900 underline cursor-pointer"}`}>
+            <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined}
+            className={`fill-cell ${p.complete && "text-blue-900 underline cursor-pointer"}`}>
 
             {!!p.country && <>{await getUserFlag(p.country)} {p.username}</>}
             {/* @ts-ignore */}
@@ -40,11 +40,11 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
             </a>
           </td>
           <td className="h-full">
-            <a href={!!p.country ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${!!p.country && "cursor-pointer"} sm:flex sm:justify-between`}>
+            <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${p.complete && "cursor-pointer"} sm:flex sm:justify-between`}>
               {p.score}
               <div className="text-right text-xs whitespace-nowrap truncate">
-                {!!p.country && formatDate(p.content ? JSON.parse(p.content).date : p.date)}
-                {!p.country && !!p.date && (<i>{formatDate(p.date)}</i>)}
+                {p.complete && formatDate(p.content ? JSON.parse(p.content).date : p.date) }
+                {!p.complete && !!p.date && (<i>{formatDate(p.date)}…</i>)}
               </div>
             </a>
           </td>
