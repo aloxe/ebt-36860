@@ -1,2 +1,10 @@
 {
-}
+    "dashboard": "Tableau de bord de {{username}}",
+    "admin-page": "Page d'admin",
+    "load-locations": "Chargement des lieux EBT",
+    "loading-locations": "chargement des lieux depuis eurobilltracker",
+    "your-locations": "Vos lieux",
+    "locations-worldwide": "{{cities}} $t(location, {\"count\": {{cities}}) dans le monde",
+    "locations-in-france": "{{cities}} $t(location, {\"count\": {{cities}}) en France",
+    "didnt-reccord-in-France": "Vous n'avez pas enregistré de billets en France"
+  }
