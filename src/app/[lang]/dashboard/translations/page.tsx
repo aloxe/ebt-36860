@@ -1,5 +1,5 @@
 'use client'
-
+import { useAuth } from "@/context/authcontext";
 import { getTranslations, saveTranslation } from "@/helpers/dbutils";
 import { SyntheticEvent, useEffect, useState } from "react";
 
@@ -13,9 +13,10 @@ interface KeyboardEvent<T = Element> extends SyntheticEvent {
   target: EventTarget & T;
 }
 
- const TranslationsAdmin = () => {
-  const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
+const TranslationsAdmin = () => {
+  const { isAdmin } = useAuth()
   const [dbTranslations, setDbTranslations] = useState(null)
+  const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
 
   let translationChains: any = { }
   namespaces.map((ns) => {
@@ -48,6 +49,8 @@ interface KeyboardEvent<T = Element> extends SyntheticEvent {
     }
     dbTranslations === null && fetchDbTrans()
   }, [dbTranslations])
+
+  if (!isAdmin) return <></>
 
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
