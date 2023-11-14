@@ -9,6 +9,7 @@ const getOldPlayers = () => {
     score: el.nombre,
     username: el.username,
     flag: el.userflag,
+    complete: false,
     date: el.date * 1000 || el.filedate * 1000
   }))
   return oldPlayers;
@@ -17,17 +18,14 @@ const getOldPlayers = () => {
 export const getNewPlayers = async () => {
   const barePlayers: DbUser[] = await getUsers()
   let newPlayers = await Promise.all(barePlayers.map(async (p): Promise<DbUser> => {
-    p.score = JSON.parse(p.content || "{}")?.communes?.length;
+    p.score = JSON.parse(p.content || "{}")?.communes?.length || 0;
     // TODO keep only parsing when all users are recorded again
     p.username = isJson(p.user) ? JSON.parse(p.user).username : p.user;
     let pu = await getPublicUser(p.user_id)
     p.country = isJson(p.user) ? JSON.parse(p.user).my_country : pu.my_country
     p.flag = getUserFlag(p.country)
-    if (p.content) { 
-      p.visited = JSON.parse(p.content) 
-    } else {
-      p.visited = undefined
-    }
+    p.visited = p.content ? JSON.parse(p.content) : undefined
+    p.complete = !!p.score && !!p.visited
     return p;
   }));
   return newPlayers;

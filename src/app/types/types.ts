@@ -28,6 +28,7 @@ interface DbUser {
   "date"?: string | Date
   "score"?: number
   "flag"?: string
+  "complete"?: boolean
 }
 
 interface Visited {
