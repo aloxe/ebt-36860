@@ -11,16 +11,18 @@ type ProfileViewProps = {
     loadingUser: string,
     banknoteLabel: string,
     hitLabel: string, 
+    lang: string,
   }
 
-function  ProfileView({
+function ProfileView({
     user, 
     handleRefreshUser, 
     className, 
     requestRefresh,
     loadingUser,
     banknoteLabel,
-    hitLabel
+    hitLabel,
+    lang
 }: ProfileViewProps) {
 
   const isLoggedIn = !!user.sessionid;
@@ -44,8 +46,8 @@ function  ProfileView({
           <br />🏠 : {user.my_city}, {getUserFlag(user.my_country)} {user.my_country}
         </div>
         <div className="flex justify-around mt-2">
-          <ScoreCard icon="💶" score={user?.totalbills} label={banknoteLabel} />
-          <ScoreCard icon="🏆" score={user?.totalhits} label={hitLabel} />
+          <ScoreCard icon="💶" score={user?.totalbills} label={banknoteLabel} lang={lang} />
+          <ScoreCard icon="🏆" score={user?.totalhits} label={hitLabel} lang={lang} />
         </div></>}
       </div>
     </>
