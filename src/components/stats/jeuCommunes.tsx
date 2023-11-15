@@ -65,20 +65,20 @@ const { username } = user;
         </div>
         <div className="text-left text-lg font-bold mb-4">
           <span className="text-blue-600">{visited.communes.length}</span> {t('municipality', {count: visited.communes.length})} {t('that-is')} <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> {t('of-the-total-municipalities')}<br />
-          <span className="text-red-600">{Intl.NumberFormat('fr').format(visitedPop)}</span> {t('inhabitant', {count: visitedPop })} {t('that-is')} <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> {t('of-the-total-population')}<br />
-          <span className="text-green-500">{Intl.NumberFormat('fr', {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² {t('that-is')} <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> {t('of-the-total-surface')}
+          <span className="text-red-600">{Intl.NumberFormat(lang).format(visitedPop)}</span> {t('inhabitant', {count: visitedPop })} {t('that-is')} <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> {t('of-the-total-population')}<br />
+          <span className="text-green-500">{Intl.NumberFormat(lang, {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² {t('that-is')} <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> {t('of-the-total-surface')}
         </div>
         <div className="text-left mb-4">
-          {t('the-most-populated')} : {maxPop.nom} {t('with')} {Intl.NumberFormat('fr').format(maxPop.population)} {t('inhabitant', {count: maxPop.population })}<br/>
-          {t('the-less-populated')} : {minPop.nom} {t('with')} {Intl.NumberFormat('fr').format(minPop.population)} {t('inhabitant', {count: minPop.population })}
+          {t('the-most-populated')} : {maxPop.nom} {t('with')} {Intl.NumberFormat(lang).format(maxPop.population)} {t('inhabitant', {count: maxPop.population })}<br/>
+          {t('the-less-populated')} : {minPop.nom} {t('with')} {Intl.NumberFormat(lang).format(minPop.population)} {t('inhabitant', {count: minPop.population })}
         </div>
         <div className="text-left mb-4">
-        {t('the-largest')} : {maxSurf.nom} {t('with')} {Intl.NumberFormat('fr', {maximumFractionDigits: 2,}).format(maxPop.surface)} km²<br/>
-        {t('the-smallest')} : {minSurf.nom} {t('with')} {Intl.NumberFormat('fr', {maximumFractionDigits: 2,}).format(minPop.surface)} km²
+        {t('the-largest')} : {maxSurf.nom} {t('with')} {Intl.NumberFormat(lang, {maximumFractionDigits: 2,}).format(maxPop.surface)} km²<br/>
+        {t('the-smallest')} : {minSurf.nom} {t('with')} {Intl.NumberFormat(lang, {maximumFractionDigits: 2,}).format(minPop.surface)} km²
         </div>
         <div className="text-left mb-3">
-        {t('the-highest')} : {maxAlt.nom} {t('with')} {Intl.NumberFormat('fr').format(maxAlt.altitude)} m<br/>
-        {t('the-lowest')} : {minAlt.nom} {t('with')} {Intl.NumberFormat('fr').format(minAlt.altitude)} m<br/>
+        {t('the-highest')} : {maxAlt.nom} {t('with')} {Intl.NumberFormat(lang).format(maxAlt.altitude)} m<br/>
+        {t('the-lowest')} : {minAlt.nom} {t('with')} {Intl.NumberFormat(lang).format(minAlt.altitude)} m<br/>
         {t('mean-altitude')} : {visitedAltMoyenne.toFixed(2)} m
         </div>
         <div className="text-center text-xs mb-2">

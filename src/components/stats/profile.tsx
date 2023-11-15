@@ -15,6 +15,7 @@ async function  Profile({lang, user, handleRefreshUser, className, requestRefres
     loadingUser={t("loading-user")}
     banknoteLabel={t("banknote", {count: user?.totalbills})}
     hitLabel={t("hit", {count: user?.totalbills})}
+    lang={lang}
     />
   )
 }
