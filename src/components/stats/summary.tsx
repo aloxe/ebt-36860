@@ -1,12 +1,13 @@
 import { ScoreCard } from "@/components/common/scoreCard";
 import { useTranslation } from '@/i18n'
+import moment from "moment";
+import 'moment/min/locales';
 
 async function Summary({ lang, user, visited, className }: DetailsProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'stats')
   const { username } = user;
-    var d = new Date(visited?.date || '');
-  const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  moment.locale(lang === 'en' ? 'en-gb' : lang);
 
   return (
     <>
@@ -17,7 +18,7 @@ async function Summary({ lang, user, visited, className }: DetailsProps) {
           </h2>
           <div className={`text-right text-stone-400 text-sm ${className && "md:h-[88px] md:min-h-full"}`}>
           {/* hack to push down score cards */}
-            {t("last-updated")}: <span className="whitespace-nowrap">{date}</span>
+            {t("last-updated")}: <span className="whitespace-nowrap">{moment(visited.date).format('LLL')}</span>
           </div>
         </div>
         <div className="flex flex-wrap justify-around mt-2">

@@ -46,19 +46,6 @@ export function isJson(str) {
     return true;
 }
 
-// dates
-export function formatDate(date) {
-  var d = new Date(date);
-  return d.toLocaleString("en-GB", { year: 'numeric', month: 'long', day: 'numeric' })
-}
-
-export function formatDayDate(date) {
-  var d = new Date(date);
-  return d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) +
-  " " + 
-  d.toLocaleTimeString("fr-FR")
-}
-
 // results
   export function compareScore( a, b ) {
   if ( a.score > b.score ){

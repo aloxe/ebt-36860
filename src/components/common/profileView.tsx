@@ -1,7 +1,9 @@
 import { ScoreCard } from "@/components/common/scoreCard";
-import { formatDayDate, getUserFlag } from "@/helpers/strings";
+import { getUserFlag } from "@/helpers/strings";
 import { MouseEventHandler } from "react";
 import Spinner from "./spinner";
+import moment from "moment";
+import 'moment/min/locales';
 
 type ProfileViewProps = {
     user: User, 
@@ -25,7 +27,9 @@ function ProfileView({
     lang
 }: ProfileViewProps) {
 
+  moment.locale(lang === 'en' ? 'en-gb' : lang);
   const isLoggedIn = !!user.sessionid;
+
   return (
     <>
       <div className={`${className} bg-white rounded-lg border border-blue-200 text-left p-2 m-2 sm:p-4 sm:m-4`}>
@@ -33,7 +37,7 @@ function ProfileView({
           <h2>
             {user.username}
           </h2>
-          {isLoggedIn && !requestRefresh && <div className="text-right text-stone-400 text-sm">{formatDayDate(user.date)}
+          {isLoggedIn && !requestRefresh && <div className="text-right text-stone-400 text-sm">{moment(user.date).format('LLL')}
             <span className="text-right text-blue-900 text-lg cursor-pointer" onClick={handleRefreshUser}> ⟳ </span>
         </div>}
         </div>
