@@ -94,10 +94,10 @@ const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => 
           { step > 2 && !!citiesInFrance && <>
             <h2>{t('your-french-stats')}</h2>
             <div className="flex flex-wrap justify-between mt-2 sm:max-w-none max-w-[300px]">
-              <ScoreCard icon="📍" score={visited?.visitedCities?.length} label={t("location", {count: visited?.visitedCities?.length})} />
-              <ScoreCard icon="🏘️" score={visited?.communes?.length} label={t("municipality", {count: visited?.communes?.length})} />
-              <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label={t("district", {count: visited?.departements?.length})} />
-              <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label={t("hq", {count: visited?.prefectures?.length})} />
+              <ScoreCard icon="📍" score={visited?.visitedCities?.length} label={t("location", {count: visited?.visitedCities?.length})} lang={lang} />
+              <ScoreCard icon="🏘️" score={visited?.communes?.length} label={t("municipality", {count: visited?.communes?.length})} lang={lang}/ >
+              <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label={t("district", {count: visited?.departements?.length})} lang={lang} />
+              <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label={t("hq", {count: visited?.prefectures?.length})} lang={lang} />
             </div>
             {visited.unknown > 0 &&
             <>
