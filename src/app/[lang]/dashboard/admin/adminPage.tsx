@@ -1,16 +1,14 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import Spinner from "@/components/common/spinner";
-import Profile from "@/components/stats/profile";
-import { useAuth } from "@/context/authcontext";
-import { refreshUser } from "@/helpers/ebtutils";
-import { getNewPlayers } from "@/helpers/leaderutils";
-import { formatDate, getUserFlag } from "@/helpers/strings";
 import Link from "next/link";
-import { useState } from "react";
+import moment from "moment";
+import 'moment/min/locales';
 
 const  AdminPage = ({ players }: {players: DbUser[]}) => {
   const { isAdmin } = useAuth()
+  moment.locale('en-gb');
+
   if (!isAdmin) return <></>
 
   return (
@@ -35,7 +33,7 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
           <td>
           {p.user_id}<br />
           <>{p.flag} {p.username}</><br/>
-          <div className="text-center font-thin text-sm">{formatDate(p.visited?.date)}</div>
+          <div className="text-center font-thin text-sm">{moment(p.visited?.date).format('DD/MM/YYYY HH:mm')}</div>
           </td>
           <td>
 
