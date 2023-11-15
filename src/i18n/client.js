@@ -14,10 +14,13 @@ const runsOnServerSide = typeof window === 'undefined'
 i18next
   .use(initReactI18next)
   .use(LanguageDetector)
-  .use(resourcesToBackend((language, namespace) => import(`./locales/${language}/${namespace}.json`)))
+  .use(resourcesToBackend((language, namespace) => {
+    return {
+      ...require(`./locales/${language}/${namespace}.json`),
+      ...require(`./locales/${language}/translations.json`) //commons
+    }
+  }))
   .init({
-    // TODO use https://github.com/i18next/i18next-chained-backend 
-    // with DB translations
     ...getLgOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
@@ -25,7 +28,9 @@ i18next
     },
     preload: runsOnServerSide ? languages : []
   })
-
+  // TODO use https://github.com/i18next/i18next-chained-backend 
+  // with DB translations
+    
 export function useTranslation(lng, ns, options) {
   const [cookies, setCookie] = useCookies(['i18next'])
   const ret = useTranslationOrg(ns, options)

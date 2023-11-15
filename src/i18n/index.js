@@ -7,7 +7,12 @@ const initI18next = async (lng, ns) => {
   const i18nInstance = createInstance()
     await i18nInstance
         .use(initReactI18next)
-        .use(resourcesToBackend((language, namespace) => import(`./locales/${language}/${namespace}.json`)))
+        .use(resourcesToBackend((language, namespace) => {
+          return {
+            ...require(`./locales/${language}/${namespace}.json`),
+            ...require(`./locales/${language}/translations.json`) //commons
+          }
+        }))
         .init(getLgOptions(lng, ns))
     return i18nInstance
 }

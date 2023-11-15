@@ -52,7 +52,7 @@ async function ListeCommunes({lang, user, visited}: DetailsProps) {
                     </td>
                   <td className="whitespace-nowrap p-2 md:p-4 text-right">
                     {commune?.surface && <>{Intl.NumberFormat('fr', {maximumFractionDigits: 2}).format((commune?.surface / 100 || 0))} km²<br /></>}
-                    {commune?.population && <>{Intl.NumberFormat('fr').format(commune?.population)} {t('inabitants')}</>}
+                    {commune?.population && <>{Intl.NumberFormat('fr').format(commune?.population)} {t('inhab.', {count: commune?.population})}</>}
                     {typeof(commune?.population) !== "number" && <></>}
                   </td>
                 </tr>

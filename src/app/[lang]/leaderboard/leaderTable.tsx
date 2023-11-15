@@ -44,7 +44,8 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
               {p.score}
               <div className="text-right text-xs whitespace-nowrap truncate">
                 {p.complete && formatDate(p.content ? JSON.parse(p.content).date : p.date) }
-                {!p.complete && !!p.date && (<i>{formatDate(p.date)}…</i>)}
+                {!p.complete && !!p.date && (<i>{formatDate(p.date)}</i>)}
+                {!p.complete && !p.date && (<i>{formatDate(JSON.parse(p.user).date)}</i>)}
               </div>
             </a>
           </td>
