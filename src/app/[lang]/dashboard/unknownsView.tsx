@@ -5,13 +5,14 @@ import { saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTranslation } from '@/i18n/client'
+import moment from "moment";
+import 'moment/min/locales';
 
 export function UnknownsView({lang, user, visited, saveVisited}: DashboardCardProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
   let myVisited = {...visited};
-  var d = new Date(myVisited?.date || Date());
-  const date = d.toLocaleString("en-GB", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  moment.locale(lang === 'en' ? 'en-gb' : lang);
 
   const visitedUnknown = useMemo(() => myVisited.visitedCities.filter((city: City) => !city.code),
 [myVisited.visitedCities]);
@@ -111,7 +112,7 @@ export function UnknownsView({lang, user, visited, saveVisited}: DashboardCardPr
         <div className="flex justify-between">
           <h2>{t('places-unknown')}</h2>
           {myVisited?.date && <div className="text-right text-stone-400 text-sm">
-            {date}
+          {moment(visited.date).format('LLL')}
           </div>}
         </div>
         <div className="text-sm text-stone-600 my-1">

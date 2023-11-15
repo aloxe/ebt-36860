@@ -1,11 +1,14 @@
 import Spinner from "@/components/common/spinner";
-import { formatDate, getUserFlag } from "@/helpers/strings";
+import { getUserFlag } from "@/helpers/strings";
 import { useTranslation } from '@/i18n'
+import moment from "moment";
+import 'moment/min/locales';
 
 const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string}) => {
 
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
+  moment.locale(lang === 'en' ? 'en-gb' : lang);
 
   return (
     <table className="min-w-full text-left text-md font-light">
@@ -43,9 +46,9 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
             <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${p.complete && "cursor-pointer"} sm:flex sm:justify-between`}>
               {p.score}
               <div className="text-right text-xs whitespace-nowrap truncate">
-                {p.complete && formatDate(p.content ? JSON.parse(p.content).date : p.date) }
-                {!p.complete && !!p.date && (<i>{formatDate(p.date)}</i>)}
-                {!p.complete && !p.date && (<i>{formatDate(JSON.parse(p.user).date)}</i>)}
+                {!!p.complete && p.content && moment(JSON.parse(p.content).date).format('LL')}
+                {!p.complete && !!p.date && (<i>{moment(p.date).format('LL')}</i>)}
+                {!p.complete && !p.date && (<i>{moment(JSON.parse(p.user).date).format('LL')}</i>)}
               </div>
             </a>
           </td>
