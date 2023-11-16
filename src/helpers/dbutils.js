@@ -210,3 +210,60 @@ export const savePlayerData = async (userId, dataToSave) => {
       });
 }
 
+export const saveVisits = async (userId, dataToSave) => {
+  if (!userId) {
+    console.log('savePlayerData Error :-S', dataToSave);
+    return null;
+  };
+
+  const objectToSave = { userId, data: dataToSave }
+  console.log("saveVisits objectToSave", objectToSave);
+
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+
+      await fetch(`/api/visits/`, requestOptions)
+      .then(
+        response => {
+          if (response.status !== 200) {
+            console.log("problème ", response.status);
+          }
+        })
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+}
+
+export const saveCounts = async (userId, dataToSave) => {
+  if (!userId) {
+    console.log('savePlayerData Error :-S', dataToSave);
+    return null;
+  };
+
+  const objectToSave = { userId, data: dataToSave }
+  console.log("objectToSave", objectToSave);
+
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+
+      await fetch(`/api/counts/`, requestOptions)
+      .then(
+        response => {
+          if (response.status !== 200) {
+            console.log("problème ", response.status);
+          }
+        })
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+}
+
+

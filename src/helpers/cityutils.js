@@ -43,6 +43,11 @@ export const fetchPolygon = async (code) => {
 
 // operations
 
+export const getDepartement = (postcode) => (
+  parseInt(postcode.substring(0,2)) < 96 ? postcode.substring(0,2) : postcode.substring(0,3)
+)
+
+
 export const hasSamePostcode = (cp1, cp2) => cp1.filter(cp => cp2.includes(cp)).length > 0;
 
 export const removeDuplicateCommunes = (cities) => {
@@ -78,8 +83,7 @@ const getChefLieu = (code, communes) => {
 }
 
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
-
-  visitedCities.map(function (city) {
+  visitedCities.map((city) => {
     // check same name + dept
     var foundCommune = communes.find((commune) => city.city == commune.nom
       && city.departement == commune.departement)
@@ -90,7 +94,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       city.commune = foundCommune ? foundCommune.nom : undefined;
   });
 
-  visitedCities.map(function (city) {
+  visitedCities.map((city) => {
     if (!city.code) {
       // check same name no diacritics + dept
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
@@ -149,25 +153,69 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       }
     }
   });
-  return refreshVisited(visitedCities)
+  return visitedCities;
+  // return refreshVisited(visitedCities)
 }
 
-export function addPostcodes(user, citiesArray) {
-  return Promise.all(
-  citiesArray.map(async (city) => {
-    // add departement: useful french division
-    if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
+// export async function addPostcodes(user, citiesArray) {
+//   return Promise.all(
+//   citiesArray.map(async (city) => {
+//     // add departement: useful french division
+//     if (city.country == "France") city.departement = city.top_zipcode.substring(0,2)
+//     if (city.nrlocations > 1) {
+//     var postcodesArray = await getPostcodes(user, city);
+//     // some cities with homonyms might return parasite postcode
+//     postcodesArray.filter((postcode) => postcode.substring(0,2) === city.departement)
+//     city.postcodes = postcodesArray;
+//     } else {
+//     city.postcodes = [city.top_zipcode];
+//     }
+//     return city
+//   })
+//   );
+// }
+
+export const processPostcodes = async (user, citiesArray) => {
+  const extraCities = []
+  const newCities = await Promise.all(citiesArray.map(async (city) => {
+    // if there are more postcodes we fetch the others
     if (city.nrlocations > 1) {
-    var postcodesArray = await getPostcodes(user, city);
-    // some cities with homonyms might return parasite postcode
-    postcodesArray.filter((postcode) => postcode.substring(0,2) === city.departement)
-    city.postcodes = postcodesArray;
+      var postcodesArray = await getPostcodes(user, city);
+      // we sort postcodes by departements ins an array
+      let sort = []
+      postcodesArray.forEach((postcode) => { 
+        let dep = getDepartement(postcode)
+        if (!sort.find(o => o.dep === dep)) {
+          let zips = postcodesArray.filter(postcode => getDepartement(postcode) == dep)
+          sort = [...sort, {dep, zips}];
+        }
+      })
+
+      if (sort.length > 1) {
+        sort.forEach((obj) => {
+          if (getDepartement(top_zipcode) !== obj.dep) {
+            extraCities.push(extracity = {
+              city: city.city,
+              country: city.country,
+              top_zipcode: obj.zips[0],
+              postcodes: obj.zips
+            })
+          } else {
+            city.postcodes = obj.zips;
+          }
+        });
+      } else {
+        // only one departement
+        city.postcodes = postcodesArray;
+      }
     } else {
-    city.postcodes = [city.top_zipcode];
+      // only one postcode
+      city.postcodes = [city.top_zipcode];
     }
-    return city
-  })
-  );
+  }));
+  console.log(newCities);
+  console.log(extraCities);
+  return [...newCities, ...extraCities]
 }
 
 export const refreshVisited = (visitedCities) =>  {

@@ -12,7 +12,7 @@ return (
   <a
     onClick={callback}
     href={href ?? "#"}
-    className="group bg-white rounded-lg border border-blue-200 text-left p-2 m-2 md:p-4 md:m-4 hover:border-blue-900 no-underline"
+    className="group bg-white rounded-lg border border-blue-200 text-left p-2 m-2 sm:p-4 sm:m-4 hover:border-blue-900 no-underline"
   >
     <h2 className="mb-1">
       {label} 
