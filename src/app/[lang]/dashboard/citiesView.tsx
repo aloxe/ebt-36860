@@ -3,8 +3,8 @@ import Spinner from "@/components/common/spinner";
 import TitleButton from "@/components/common/titleButton";
 import { ScoreCard } from "@/components/common/scoreCard";
 import { useAuth } from "@/context/authcontext";
-import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
-import { getEBTlocation } from "@/helpers/dbutils";
+import { matchCommunes, processPostcodes, removeDuplicateCommunes, removeDuplicateDepartements, removeNotPrefecture } from "@/helpers/cityutils";
+import { getEBTlocation, saveCounts, saveVisits } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -25,14 +25,32 @@ export function CitiesView({ lang, user, visited, saveVisited }: DashboardCardPr
     const citiesFrance = cities && cities.filter((city: City) => city.country == "France");
     if (citiesFrance && citiesFrance?.length > 0) {
       setCitiesInFrance(citiesFrance?.length)
-      const visitedlocations = [...citiesFrance];
+      // split homonyms, add found postcodes
+      const visitedlocations = await processPostcodes(user, citiesFrance);
+      // we could save this intermediary step
+      // saveVisits(user.id, { fr: visitedlocations })
       const communes = require('@etalab/decoupage-administratif/data/communes.json')
       const EBTLocations = await getEBTlocation();
-      const visited: Visited = await matchCommunes(visitedlocations, communes, EBTLocations)
-      // sessionStorage.setItem('visited', JSON.stringify(visited));
-      // await savePlayerData({user, visited, polygon: null})
-      // visited.userId = user.id
-      saveVisited(visited);
+      const visitedCities: City[] = await matchCommunes(visitedlocations, communes, EBTLocations)
+      // we save all fr locations with communes info
+      saveVisits(user.id, { fr: visitedCities })
+
+      const visitedKnown = visitedCities.filter(city => city.code)
+      const visitedCommunes = removeDuplicateCommunes(visitedKnown);
+      const visitedCommuneCodes = visitedCommunes.map((el: City) => el.code)
+
+      const visitedDepartements = removeDuplicateDepartements(visitedCities);
+      const visiteddepartementCodes = visitedDepartements.map((el: City) => el.departement)
+
+      const visitedPrefectureCodes = removeNotPrefecture(visitedCommuneCodes);
+
+      const visitedUnknown = visitedCities.filter(city => !city.code);
+      saveCounts(user.id, { 
+        communes: visitedCommuneCodes,
+        departements: visiteddepartementCodes,
+        prefectures: visitedPrefectureCodes,
+        unknown: visitedUnknown
+       })
       setStep(3)
     } else {
       setCitiesInFrance(0)
@@ -40,7 +58,7 @@ export function CitiesView({ lang, user, visited, saveVisited }: DashboardCardPr
     }
   }, [cities, saveVisited, setStep]);
 
-  useEffect(() => {
+useEffect(() => {
     cities && countFrenchCommunes();
 }, [cities, countFrenchCommunes])
 
@@ -54,12 +72,11 @@ const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => 
     logout();
     return
   }
-
-  const citiesWorld = await addPostcodes(user, response.data);
-  setCities(citiesWorld)
+  setCities(response.data)
+  saveVisits(user.id, { cities: response.data })
   setStep(2)
+  // saving all world locations as is
 }
-
 
   return (
     <>
@@ -74,7 +91,7 @@ const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => 
         <div className="flex justify-between">
           <h2>{t('your-locations')}</h2>
           { step > 2 && 
-            <div className="text-right text-stone-400 text-sm">{moment(visited.date).format('LLL')} 
+            <div className="text-right text-stone-400 text-sm">{moment(visited?.date).format('LLL')} 
               <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span>
             </div> 
           }

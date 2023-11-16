@@ -8,6 +8,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model players {
+  id         String    @unique
+  user       String
+  content    String
+  polygons   String
+  date       DateTime
+}
+
 model visited {
   user_id    String    @unique
   user       String
@@ -23,6 +31,22 @@ model lieux {
   nom_ebt       String
   nom_commune   String
   ref_user      String
+}
+
+model visits {
+  user_id       String      @id
+  date          DateTime
+  cities        String
+  fr            String
+}
+
+model counts {
+  user_id       String      @id
+  date          DateTime
+  communes      String
+  departements  String
+  prefectures   String
+  unknowns      String
 }
 
 model translations {

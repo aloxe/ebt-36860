@@ -49,7 +49,7 @@ export function UnknownsView({lang, user, visited, saveVisited}: DashboardCardPr
 
   const dropdownCommunes = (possibleCommunes: Commune[]) => {
     possibleCommunes.map((item:any) => {
-      item.label = item.nom,
+      item.label = `${item.nom} (${item.code.substring(0,2)})`,
       item.url = item.code,
       item.action = handleDropdownChoice
     })
