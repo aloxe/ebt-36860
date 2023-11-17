@@ -13,7 +13,7 @@ interface MouseEvent<T = Element> extends SyntheticEvent {
 const JsonTranslations = ({ params: { lang } }: { params: { lang: string } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { isAdmin } = useAuth()
+  const { isTrans, isAdmin } = useAuth()
   const [langTranslations, setLangTranslations] = useState(null)
   const [dbTranslations, setDbTranslations] = useState(null)
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
@@ -61,7 +61,7 @@ const JsonTranslations = ({ params: { lang } }: { params: { lang: string } }) =>
   <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
     <div className="text-stone-600 text-sm">
       {isAdmin && <Link href="/dashboard/admin" >{t('admin-page')}</Link>} | 
-      {isAdmin && <Link href="/dashboard/translations" >{t('translations')}</Link>}
+      {isTrans && <Link href="/dashboard/translations" >{t('translations')}</Link>}
       <h2>Translation JSON</h2>
       {langTranslations && namespaces.map((ns) => (
         <div key={ns}>

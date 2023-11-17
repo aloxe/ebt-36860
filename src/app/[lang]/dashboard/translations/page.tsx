@@ -17,7 +17,7 @@ interface KeyboardEvent<T = Element> extends SyntheticEvent {
 const TranslationsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { isAdmin } = useAuth()
+  const { isAdmin, isTrans } = useAuth()
   const [dbTranslations, setDbTranslations] = useState(null)
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
 
@@ -53,7 +53,7 @@ const TranslationsAdmin = ({ params: { lang } }: { params: { lang: string } }) =
     dbTranslations === null && fetchDbTrans()
   }, [dbTranslations])
 
-  if (!isAdmin) return <></>
+  if (!isTrans) return <></>
 
   return (
   <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
