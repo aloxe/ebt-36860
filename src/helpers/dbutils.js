@@ -143,7 +143,22 @@ export const getPlayerRole = async (userId) => {
     console.log('Fetch role no result Error :-S');
     return undefined;
   }
-    return await response?.json();
+  return await response?.json();
+}
+
+export const getvisits = async (userId, field) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/visits/${userId}${field ? "/"+field : ""}`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  console.log(response);
+  console.log(dataresult);
+  console.log(dataresult[field]);
+  console.log(JSON.parse(dataresult[field]));
+  return JSON.parse(dataresult[field]);
 }
 
 export const getAllVisited = async () => {
@@ -164,6 +179,7 @@ export const getPlayerData = async (key, userId) => {
     body: JSON.stringify(userId),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
+  console.log("request", key, userId);
   const response = await fetch(`/api/players/get`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
@@ -181,6 +197,7 @@ export const getPlayerData = async (key, userId) => {
     // response ok
     return JSON.parse(dataresult[key]);
   }
+  console.log("return ", dataresult[key]);
   return dataresult[key]
 }
 
@@ -210,15 +227,13 @@ export const savePlayerData = async (userId, dataToSave) => {
       });
 }
 
-export const saveVisits = async (userId, dataToSave) => {
+export const saveVisits = async (userId, isNew, dataToSave) => {
   if (!userId) {
     console.log('savePlayerData Error :-S', dataToSave);
     return null;
   };
 
-  const objectToSave = { userId, data: dataToSave }
-  console.log("saveVisits objectToSave", objectToSave);
-
+  const objectToSave = { userId, isNew, data: dataToSave }
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(objectToSave),
@@ -245,25 +260,22 @@ export const saveCounts = async (userId, dataToSave) => {
   };
 
   const objectToSave = { userId, data: dataToSave }
-  console.log("objectToSave", objectToSave);
-
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(objectToSave),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
-
-      await fetch(`/api/counts/`, requestOptions)
-      .then(
-        response => {
-          if (response.status !== 200) {
-            console.log("problème ", response.status);
-          }
-        })
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
+  await fetch(`/api/counts/`, requestOptions)
+  .then(
+    response => {
+      if (response.status !== 200) {
+        console.log("problème ", response.status);
+      }
+    })
+  .catch(function (err) {
+    console.log('Fetch Error :-S', err);
+    return null;
+  });
 }
 
 

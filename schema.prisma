@@ -47,6 +47,7 @@ model counts {
   departements  String
   prefectures   String
   unknowns      String
+  count         String
 }
 
 model translations {

@@ -37,22 +37,22 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
           <td>
 
             {!p.visited?.communes && <>
-              <Link href={{ pathname: 'cities', query: { user_id: JSON.stringify(p.user_id) } }}>communes non récupérées</Link>
+              <Link href={{ pathname: 'cities', query: { user_id: p.user_id } }}>communes non récupérées</Link>
             </>}
             {p.visited?.communes && <>
-              <Link href={{ pathname: 'cities', query: { user_id: JSON.stringify(p.user_id) } }}>Locations</Link>: {p.visited?.visitedCities?.length}<br/>
+              <Link href={{ pathname: 'cities', query: { user_id: p.user_id } }}>Locations</Link>: {p.visited?.visitedCities?.length}<br/>
               communes: {p.visited?.communes?.length}<br/>
               Dpt: {p.visited?.departements?.length}<br/>
             </>}
           </td>
           <td>
-          {!!p.visited?.unknown && 
+          {!!p.visited?.unknowns && 
           <>
-            <Link href={{ pathname: 'unknowns', query: { user_id: JSON.stringify(p.user_id) } }}>unknown: {p.visited?.unknown?.toString()}</Link>
+            <Link href={{ pathname: 'unknowns', query: { user_id: p.user_id } }}>unknowns: {p.visited?.unknowns?.toString()}</Link>
             <br/>
           </>}
-          {!p.visited?.unknown && <>All known<br/></>}
-          <Link href={{ pathname: 'usermap', query: { user_id: JSON.stringify(p.user_id) } }}>Carte: {p.polygons === "{}" ? "☐" : "☑"}</Link>
+          {!p.visited?.unknowns && <>All known<br/></>}
+          <Link href={{ pathname: 'usermap', query: { user_id: p.user_id } }}>Carte: {p.polygons === "{}" ? "☐" : "☑"}</Link>
           <br/>
           </td>
         </tr>

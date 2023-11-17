@@ -1,6 +1,4 @@
-interface DashboardCardProps {
+interface DashboardProps {
     lang?: string,
-    user: User, 
-    visited: Visited, 
-    saveVisited: any
-  }
+    user: User
+}
