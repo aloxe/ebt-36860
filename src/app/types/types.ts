@@ -15,6 +15,7 @@ interface User {
   "date"?: string | Date
   "content"?: string;
   "visited"?: { content: Visited | string }
+  "isFake"?: boolean;
 }
 
 interface DbUser {
@@ -36,7 +37,7 @@ interface Visited {
   "communes": string[]
   "departements": string[]
   "prefectures": string[]
-  "unknown": number
+  "unknowns": string[]
   "date"?: string | number
   "userId"?: string | number
 }
@@ -47,7 +48,7 @@ interface City {
   "commune"?: string;
   "city": string,
   "country": string,
-  "top_zipcode": string,
+  "top_zipcode"?: string,
   "nrlocations": number,
   "postcodes": string[],
   "departement": string,

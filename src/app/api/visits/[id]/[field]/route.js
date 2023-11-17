@@ -6,6 +6,9 @@ export async function GET(req, { params }) {
     where: {
       user_id: params.id,
     },
+    select: {
+      [params.field]: true,
+    },
   });
   return NextResponse.json(res)
 }
