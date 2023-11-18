@@ -36,7 +36,24 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
       // we save all fr locations with communes info
       saveVisits(user.id, !user.isFake, { fr: visitedCities })
 
-      const visited = refreshVisited(visitedCities)       
+      const visited = refreshVisited(visitedCities)
+      console.log("save counts");
+      let countz = { 
+        communes: visited.communes,
+        departements: visited.departements,
+        prefectures: visited.prefectures,
+        unknowns: visited.unknowns,
+        count: { 
+          all: cities.length, 
+          fr: citiesFrance?.length || 0,
+          communes: visited.communes.length,
+          departements: visited.departements.length,
+          prefectures: visited.prefectures.length,
+          unknowns: visited.unknowns.length, 
+        }
+      }
+           console.log(countz);
+           
       saveCounts(user.id, { 
         communes: visited.communes,
         departements: visited.departements,
