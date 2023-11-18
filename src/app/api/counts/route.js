@@ -31,6 +31,7 @@ async function saveData(req) {
       departements: `${req.data.departements ? JSON.stringify(req.data.departements) : undefined}`,
       prefectures: `${req.data.prefectures ? JSON.stringify(req.data.prefectures) : undefined}`,
       unknowns: `${req.data.unknowns ? JSON.stringify(req.data.unknowns) : undefined}`,
+      count: `${req.data.count ? JSON.stringify(req.data.count) : undefined}`,
     },
     create: {
       user_id: `${req.userId}`,
@@ -39,6 +40,7 @@ async function saveData(req) {
       departements: `${JSON.stringify(req.data.departements)}`,
       prefectures: `${JSON.stringify(req.data.prefectures)}`,
       unknowns: `${JSON.stringify(req.data.unknowns)}`,
+      count: `${JSON.stringify(req.data.count)}`,
     },
   })
 }
