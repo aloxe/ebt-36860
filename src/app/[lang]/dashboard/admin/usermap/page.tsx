@@ -1,51 +1,38 @@
 'use client'
-import { getPlayerData, savePlayerData } from "@/helpers/dbutils";
+import { UserMapView } from "@/app/[lang]/dashboard/usermapView";
+import { useTranslation } from '@/i18n/client'
+import AdminLinks from "@/components/common/adminLinks";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { UserMapView } from "../../usermapView";
 
-interface UnknownsAdmin {
-  searchParams?: { [key: string]: string | undefined };
-}
-
- const UserMapAdmin = ({searchParams}: UnknownsAdmin) => {
-  const [visited, setVisited] = useState<Visited | undefined>(undefined)
-  const [user, setUser] = useState<User | undefined>(undefined)
-  const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
+export default function UserMapAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = useTranslation(lang, 'dashboard')
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    const fetchContent = async () => {
-      const content = await getPlayerData("content", user_id)
-      setVisited(content)
+    if (!user) {
+      const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
+      setUser({
+        id: parseInt(user_id),
+        username: "Essai Toto",
+        isFake: true
+      })
     }
-    fetchContent()
-  }, [user_id])
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      const user = await getPlayerData("user", user_id)
-      setUser(user)
-    }
-    fetchContent()
-  }, [user_id])
-
-  const savePolygons = (polygons: any) => {
-    savePlayerData(user_id, polygons)
-  }
+  }, [user, searchParams?.user_id])
 
   return (
-  <>
-    {!user_id && <>Hello,</>}
-    {user_id && <h1>
-      Hello <>{user?.username || user}</> {user_id}
-      </h1>}
-      {user && <div><Link href="/dashboard/admin/">« back to admin</Link></div>}
-    {user && visited &&
-    <UserMapView visited={visited} user={user} savePolygons={savePolygons} />
-    }
-
-
-  </>)
+    <>
+      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
+        <h1>
+          {!user && `No user yet`}
+          {user && t('user-data', {"username": user.username})}
+        </h1>
+      </div>
+        <AdminLinks lang={lang} />
+        {user?.username && <UserMapView
+        lang={lang}
+        user={user}
+      />}
+    </>
+  )
 }
-
-export default UserMapAdmin;

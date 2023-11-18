@@ -146,7 +146,7 @@ export const getPlayerRole = async (userId) => {
   return await response?.json();
 }
 
-export const getvisits = async (userId, field) => {
+export const getVisits = async (userId, field) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/visits/${userId}${field ? "/"+field : ""}`, requestOptions)
     .catch(function (err) {
@@ -154,11 +154,18 @@ export const getvisits = async (userId, field) => {
       return null;
     });
   const dataresult = await response?.json();
-  console.log(response);
-  console.log(dataresult);
-  console.log(dataresult[field]);
-  console.log(JSON.parse(dataresult[field]));
   return JSON.parse(dataresult[field]);
+}
+
+export const getCounts = async (userId, field) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/counts/${userId}${field ? "/"+field : ""}`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
 }
 
 export const getAllVisited = async () => {
@@ -229,7 +236,7 @@ export const savePlayerData = async (userId, dataToSave) => {
 
 export const saveVisits = async (userId, isNew, dataToSave) => {
   if (!userId) {
-    console.log('savePlayerData Error :-S', dataToSave);
+    console.log('save Visits Error :-S', dataToSave);
     return null;
   };
 
@@ -255,7 +262,7 @@ export const saveVisits = async (userId, isNew, dataToSave) => {
 
 export const saveCounts = async (userId, dataToSave) => {
   if (!userId) {
-    console.log('savePlayerData Error :-S', dataToSave);
+    console.log('save Counts Error :-S', dataToSave);
     return null;
   };
 
@@ -278,4 +285,29 @@ export const saveCounts = async (userId, dataToSave) => {
   });
 }
 
+
+export const savePolygons = async (userId, dataToSave) => {
+  if (!userId) {
+    console.log('save Polygons Error :-S', dataToSave);
+    return null;
+  };
+
+  const objectToSave = { userId, data: dataToSave }
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+  await fetch(`/api/polygons/`, requestOptions)
+  .then(
+    response => {
+      if (response.status !== 200) {
+        console.log("problème ", response.status);
+      }
+    })
+  .catch(function (err) {
+    console.log('Fetch Error :-S', err);
+    return null;
+  });
+}
 

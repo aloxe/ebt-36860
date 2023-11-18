@@ -53,7 +53,7 @@ li {
     opacity: 1;
     transform: translate(0) scale(1);
     visibility: visible;
-    overflow: auto;
+    /* overflow: auto; */
   }
 
   .z-1001 {

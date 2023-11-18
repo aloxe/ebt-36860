@@ -27,20 +27,11 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
       />}
       {user?.username && visited && <UserMapView
         lang={lang}
-        visited={visited}
         user={user}
-        savePolygons={setPolygons}
       />}
       {user?.username && visited?.unknowns.length > 0 && <UnknownsView
         lang={lang}
-        visited={visited}
         user={user}
-        savePolygons={setPolygons}
-      />}
-      {user?.username && visited?.unknown > 0 && <UnknownsView
-        visited={visited}
-        user={user}
-        saveVisited={setVisited}
       />}
       </>
     )

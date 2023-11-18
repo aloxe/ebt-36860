@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET(req, { params }) {
   const res = await prisma.counts.findUnique({
     where: {
-      id: params.id,
+      user_id: params.id,
     },
   });
   return NextResponse.json(res)

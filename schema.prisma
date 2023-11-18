@@ -50,6 +50,12 @@ model counts {
   count         String
 }
 
+model polygons {
+  user_id       String      @id
+  date          DateTime
+  polygons      String
+}
+
 model translations {
   id            String      @id
   namespace     String
