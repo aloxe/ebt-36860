@@ -4,7 +4,7 @@ import { useTranslation } from '@/i18n/client'
 import { useEffect, useState } from "react";
 import AdminLinks from "@/components/common/adminLinks";
 
-export default function Dashboard({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) {
+export default function CitesAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);

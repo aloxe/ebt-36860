@@ -1,16 +1,18 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
 import { refreshVisited } from "@/helpers/cityutils";
-import { saveEBTlocation } from "@/helpers/dbutils";
+import { getCounts, saveCounts, saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
+import { useAuth } from "@/context/authcontext";
 
-export function UnknownsView({lang, user, visited, saveVisited}: DashboardCardProps) {
+export function UnknownsView({lang, user}: DashboardProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
+  const { visited, setVisited } = useAuth();
   let myVisited = {...visited};
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
@@ -99,9 +101,25 @@ export function UnknownsView({lang, user, visited, saveVisited}: DashboardCardPr
           }
         }
       });
-      // visitedCities has changed we need to update all visited
-      const myFreshVisited= await refreshVisited(myVisited.visitedCities)    
-      saveVisited(myFreshVisited)
+      // visitedCities has changed we need to update all depending data
+      const myFreshVisited = await refreshVisited(myVisited.visitedCities)    
+      const count = await getCounts(user.id, "count")
+      saveCounts(user.id, { 
+        communes: myFreshVisited.communes,
+        departements: myFreshVisited.departements,
+        prefectures: myFreshVisited.prefectures,
+        unknowns: myFreshVisited.unknowns,
+        count: { 
+          all: count.all, 
+          fr: myFreshVisited.visitedCities.length,
+          communes: myFreshVisited.communes.length,
+          departements: myFreshVisited.departements.length,
+          prefectures: myFreshVisited.prefectures.length,
+          unknowns: myFreshVisited.unknowns.length, 
+        }
+      })
+
+      setVisited(myFreshVisited)
       // TODO do we still use storage for Visited?
   }
 

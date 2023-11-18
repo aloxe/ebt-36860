@@ -4,7 +4,7 @@ import TitleButton from "@/components/common/titleButton";
 import { ScoreCard } from "@/components/common/scoreCard";
 import { useAuth } from "@/context/authcontext";
 import { matchCommunes, processPostcodes, refreshVisited, removeDuplicateCommunes, removeDuplicateDepartements, removeNotPrefecture } from "@/helpers/cityutils";
-import { getEBTlocation, getvisits, saveCounts, saveVisits } from "@/helpers/dbutils";
+import { getEBTlocation, getVisits, saveCounts, saveVisits } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -37,23 +37,7 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
       saveVisits(user.id, !user.isFake, { fr: visitedCities })
 
       const visited = refreshVisited(visitedCities)
-      console.log("save counts");
-      let countz = { 
-        communes: visited.communes,
-        departements: visited.departements,
-        prefectures: visited.prefectures,
-        unknowns: visited.unknowns,
-        count: { 
-          all: cities.length, 
-          fr: citiesFrance?.length || 0,
-          communes: visited.communes.length,
-          departements: visited.departements.length,
-          prefectures: visited.prefectures.length,
-          unknowns: visited.unknowns.length, 
-        }
-      }
-           console.log(countz);
-           
+
       saveCounts(user.id, { 
         communes: visited.communes,
         departements: visited.departements,
@@ -97,7 +81,7 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
       setStep(2)
     } else {
       // Admin user only has user.id, we fetch existing data
-      const visitedCities = await getvisits(user.id, 'fr')
+      const visitedCities = await getVisits(user.id, 'fr')
       setCities(visitedCities)
       setStep(2)
     }

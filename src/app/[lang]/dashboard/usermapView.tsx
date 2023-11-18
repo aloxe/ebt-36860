@@ -5,28 +5,25 @@ import { useCallback, useEffect, useState } from "react";
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
 import { useTranslation } from '@/i18n/client'
+import { useAuth } from "@/context/authcontext";
+import { getCounts, savePolygons } from "@/helpers/dbutils";
 
 const DynamicMyMapComponent = dynamic(() =>
   import('@/components/maps/map').then((module) => module.MyMapComponent)
 )
 type Feature = GeoJsonTypes.Feature
 
-type UserMapViewProps = {
-  lang?: string,
-  visited: Visited, 
-  user: User, 
-  savePolygons: any
-}
-
-export function UserMapView({lang, user, visited, savePolygons }: UserMapViewProps) {
+export function UserMapView({ lang, user }: DashboardProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
+  const { visited } = useAuth();
+  const [communes, setCommunes] = useState<any>(visited?.communes || undefined);
+  const [departements, setDepartements] = useState<any>(visited?.communes || undefined);
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
   const [ fetching, setFetching ] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
-  const { communes } = visited;
 
   const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
@@ -52,12 +49,12 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
       regionToDisplay.push(regionCode)
       if (regionToDisplay.length == regionCodes.length) {
         // save polygones of the user
-        savePolygons(communesToDisplay);
+        savePolygons(user.id, communesToDisplay);
         setMapPolygons(communesToDisplay)
         setDisabled(false);
       }
     });
-}, [communes, regionCodes, savePolygons])
+}, [communes, regionCodes])
 
   useEffect(() => {
     if (!fetching) {
@@ -65,12 +62,19 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
     }
   }, [fetching, handlefetchData])
 
-    useEffect(() => {
-    if (visited) {
+  useEffect(() => {
+    if (!communes) {
+      const fetchCommunes = async () => {
+        const resp = await getCounts(user.id, "communes,departements")
+        setCommunes(resp.communes)
+        setDepartements(resp.departements)
+      }
+      fetchCommunes()
+    } else {
       setDisabled(true)
       setFetching(false)
     }
-  }, [visited])
+  }, [communes])
 
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
@@ -106,7 +110,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
       </div>
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
         {mapPolygons && (
-          <DynamicMyMapComponent departements={visited?.departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} />
+          <DynamicMyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} />
         )}
       </div>
     </div>
