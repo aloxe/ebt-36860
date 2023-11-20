@@ -3,22 +3,26 @@ import { removeDuplicateDepartements } from "@/helpers/cityutils";
 import { useTranslation } from '@/i18n'
 import './tourDeFrance.css';
 
-async function TourDeFrance({lang, user, visited}: DetailsProps) {
+interface TourDeFranceProps {
+  lang: string
+  user: User
+  departements: string[]
+}
+
+async function TourDeFrance({lang, user, departements}: TourDeFranceProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'stats')
   const {username } = user;
+  const visitedDepartements: string[] = departements;
   const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
   const departementsWithDomTom: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
-  const regions = regionsWithDomTom.filter(el => el.zone === "metro")
-  const departements = departementsWithDomTom.filter(el => el.zone === "metro")
-
-  let visitedDepartementCities: City[] = removeDuplicateDepartements(visited.visitedCities);
-  const visitedDepartements: string[] = visitedDepartementCities.map(city => city.departement);
+  const regionsMetro = regionsWithDomTom.filter(el => el.zone === "metro")
+  const departementsMetro = departementsWithDomTom.filter(el => el.zone === "metro")
 
   let visitedRegions: {name: string, deps: {code: string, visited: boolean}[]}[] = []
-  regions.map(region => {
+  regionsMetro.map(region => {
     let deps: {code: string, visited: boolean}[] = []
-    departements.map(departement => {
+    departementsMetro.map(departement => {
       if (departement.region === region.code) {
         deps.push({
           code: departement.code,
