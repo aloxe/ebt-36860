@@ -9,6 +9,8 @@ const LeaderBoard = async ({ params: { lang } }: { params: { lang: string}}) => 
 
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
+  console.log("LeaderBoard");
+  
   const players = await getAllPlayers()
 
   return (

@@ -19,25 +19,25 @@ interface User {
 }
 
 interface DbUser {
-  "user_id": string
+  "id": string
   "user": string
   "username"?: string
   "country"?: string
   "content"?: string
   "polygons"?: string
   "visited"?: Visited
+  "count"?: any
   "date"?: string | Date
   "score"?: number
   "flag"?: string
-  "complete"?: boolean
 }
 
 interface Visited {
-  "visitedCities": City[]
+  "visitedCities"?: City[]
   "communes": string[]
   "departements": string[]
-  "prefectures": string[]
-  "unknowns": string[]
+  "prefectures"?: string[]
+  "unknowns"?: string[]
   "date"?: string | number
   "userId"?: string | number
 }
