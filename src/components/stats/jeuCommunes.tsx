@@ -1,17 +1,23 @@
 import { fetchAllComplete } from "@/helpers/cityutils";
 import { useTranslation } from '@/i18n'
 
-async function JeuCommunes({lang, user, visited}: DetailsProps) {
+interface JeuCommunesProps {
+  lang: string
+  user: User
+  communes: string[]
+}
+
+async function JeuCommunes({lang, user, communes}: JeuCommunesProps) {
     /* eslint-disable react-hooks/rules-of-hooks */
     const { t } = await useTranslation(lang, 'stats')
 
   const allCommunesWithDomTom: Commune[] = await fetchAllComplete();
   // we remove oversea municipalities
   const allCommunes = allCommunesWithDomTom.filter(el => el.zone === "metro")
-  const firstPourcent = visited.communes.length * 100 / allCommunes.length;
+  const firstPourcent = communes.length * 100 / allCommunes.length;
 
   const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
-  const visitedCommunes = allCommunes.filter(c => visited.communes.includes(c.code) ).map(c => ({
+  const visitedCommunes = allCommunes.filter(c => communes.includes(c.code) ).map(c => ({
     code: c.code,
     nom: c.nom,
     population: c.population || 0,
@@ -64,7 +70,7 @@ const { username } = user;
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">
-          <span className="text-blue-600">{visited.communes.length}</span> {t('municipality', {count: visited.communes.length})} {t('that-is')} <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> {t('of-the-total-municipalities')}<br />
+          <span className="text-blue-600">{communes.length}</span> {t('municipality', {count: communes.length})} {t('that-is')} <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> {t('of-the-total-municipalities')}<br />
           <span className="text-red-600">{Intl.NumberFormat(lang).format(visitedPop)}</span> {t('inhabitant', {count: visitedPop })} {t('that-is')} <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> {t('of-the-total-population')}<br />
           <span className="text-green-500">{Intl.NumberFormat(lang, {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² {t('that-is')} <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> {t('of-the-total-surface')}
         </div>

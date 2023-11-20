@@ -1,13 +1,18 @@
-import { removeNotPrefecture } from "@/helpers/cityutils";
 import { useTranslation } from '@/i18n'
 
-async function JeuPrefectures({lang, user, visited}: DetailsProps) {
+interface JeuPrefecturesProps {
+  lang: string
+  user: User
+  prefectures: string[]
+  cities: City[]
+}
+
+async function JeuPrefectures({lang, user, prefectures, cities}: JeuPrefecturesProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'stats')
   const {username } = user;
-  const prefectures = removeNotPrefecture(visited.communes);
   const departementsWithDomTom: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
-  const departements = departementsWithDomTom.filter(el => el.zone === "metro")
+  const departementsMetro = departementsWithDomTom.filter(el => el.zone === "metro")
 
   return (
     <>
@@ -19,9 +24,9 @@ async function JeuPrefectures({lang, user, visited}: DetailsProps) {
         </div>
         <div className="text-left text-md mb-4">
           <>
-          {departements.map(departement => {
+          {departementsMetro.map(departement => {
             if (prefectures.includes(departement.chefLieu)) {
-              const pref = visited.visitedCities.find(city => city.code === departement.chefLieu)
+              const pref = cities.find(city => city.code === departement.chefLieu)
               return pref && <div><b key={pref.code}>{departement.code}</b> {pref.commune || pref.city}</div>
             }
           })}

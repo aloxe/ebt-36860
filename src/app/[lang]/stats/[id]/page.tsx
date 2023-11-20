@@ -1,19 +1,18 @@
 import Profile from "@/components/stats/profile";
-import Summary from "@/components/stats/summary";
-import { getUserVisited } from "@/helpers/dbutils";
-import { getPublicUser } from "@/helpers/ebtutils";
+import StatsHeader from "./header";
 import StatsMenu from "./menu";
+import { getCountsServer } from "@/helpers/dbutils";
+import { getPublicUser } from "@/helpers/ebtutils";
 
 const UserData = async ({ params }: { params: { lang: string, id: string } }) => {
   const { lang, id } = params;
   const publicUser = await getPublicUser(id);
-  const visited = await getUserVisited(id);
+  const counts = await getCountsServer(id, "date,communes,departements,prefectures,count");
 
   return (
     <>
       <div className="md:table border-spacing-x-4">
-        <Profile lang={lang} user={publicUser} className="md:basis-1/4 md:table-cell"/>
-        <Summary lang={lang} user={publicUser} visited={visited}  className="md:basis-1/4 md:table-cell space-x-3"/>
+        <StatsHeader lang={lang} id={id} user={publicUser} date={counts ? counts.date : undefined} count={counts ? JSON.parse(counts.count) : undefined} />
       </div>
       <StatsMenu lang={lang} id={id} />
     </>

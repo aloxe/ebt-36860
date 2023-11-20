@@ -52,7 +52,7 @@ export const getUsers = async () => {
 
 export const getVisitsServer = async (id, field) => {
   const fields = field.split(',');
-  const res = await prisma.counts.findUnique({
+  const res = await prisma.visits.findUnique({
     where: {
       user_id: id,
     },

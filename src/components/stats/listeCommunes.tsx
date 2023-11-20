@@ -1,14 +1,21 @@
 import { fetchAllComplete } from "@/helpers/cityutils";
 import { useTranslation } from '@/i18n'
 
-async function ListeCommunes({lang, user, visited}: DetailsProps) {
+interface ListeCommunesProps {
+  lang: string
+  user: User
+  communes: string[]
+  prefectures: string[]
+}
+
+async function ListeCommunes({lang, user, communes, prefectures}: ListeCommunesProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'stats')
   const {username } = user;
   const departements: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
   const allcommunes: Commune[] = await fetchAllComplete();
-  const visitedCommunes: Commune[] = allcommunes.filter(c => visited.communes.includes(c.code))
-  const visitedPrefectures: string[] = visited.prefectures;
+  const visitedCommunes: Commune[] = allcommunes.filter(c => communes.includes(c.code))
+  const visitedPrefectures: string[] = prefectures;
 
   return (
     <>

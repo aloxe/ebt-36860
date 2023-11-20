@@ -2,7 +2,14 @@ import { getUserPolygons } from "@/helpers/dbutils";
 import { MyMapComponent } from "../maps/map";
 import { useTranslation } from '@/i18n'
 
-async function MapCommunes({lang, user, visited}: DetailsProps) {
+interface MapCommunesProps {
+  lang: string
+  user: User
+  communes: string[]
+  departements: string[]
+}
+
+async function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'stats')
   const {username } = user;
@@ -18,7 +25,7 @@ async function MapCommunes({lang, user, visited}: DetailsProps) {
         </div>
         <div className="text-left text-lg font-bold mb-4">
       <div className="w-full h-90 bg-orange-200 overflow-hidden">
-        {polygons && <MyMapComponent departements={visited.departements} dataCommunes={polygons} showDep={true} showCom={true} tiles={"carto"} />}
+        {polygons && <MyMapComponent departements={departements} dataCommunes={polygons} showDep={true} showCom={true} tiles={"carto"} />}
       </div>
         </div>
       </div>
