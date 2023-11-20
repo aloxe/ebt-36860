@@ -25,17 +25,17 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
         <tr><td><Spinner /></td></tr>
         }
         {players && players.map( async (p, index) => (
-        <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${p.complete ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`} 
-        key={p.user_id}>
+        <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${p.count ? " hover:bg-amber-50" : "opacity-60 border-stone-800"}`} 
+        key={p.id}>
 
           <td className="hidden sm:table-cell">
-            <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${p.complete && "cursor-pointer"}`}>
+            <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell ${p.count && "cursor-pointer"}`}>
               { index + 1 }
             </a>
           </td>
           <td className="h-full">
-            <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined} 
-            className={`fill-cell ${p.complete && "text-blue-900 underline cursor-pointer"}`}>
+            <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} 
+            className={`fill-cell ${p.count && "text-blue-900 underline cursor-pointer"}`}>
 
             {!!p.country && <>{await getUserFlag(p.country)} {p.username}</>}
             {/* @ts-ignore */}
@@ -43,12 +43,11 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
             </a>
           </td>
           <td className="h-full">
-            <a href={p.complete ? `/${lang}/stats/${p.user_id}` : undefined} className={`fill-cell ${p.complete && "cursor-pointer"} sm:flex sm:justify-between`}>
+            <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
               {p.score}
               <div className="text-right text-xs whitespace-nowrap truncate">
-                {!!p.complete && p.content && moment(JSON.parse(p.content).date).format('LL')}
-                {!p.complete && !!p.date && (<i>{moment(p.date).format('LL')}</i>)}
-                {!p.complete && !p.date && (<i>{moment(JSON.parse(p.user).date).format('LL')}</i>)}
+                {!!p.date && (<i>{moment(p.date).format('LL')}</i>)}
+                {!p.date && (<i>{moment(JSON.parse(p.user).date).format('LL')}</i>)}
               </div>
             </a>
           </td>

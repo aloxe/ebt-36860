@@ -8,7 +8,7 @@ export async function POST(request) {
 }
 
 async function saveData(req) {
-  const date = req.userId ? new Date().toISOString() : undefined;
+  const date = req.isNew ? new Date().toISOString() : undefined;
   if (Object.keys(req.data)[0] === "fr") { // TODO evolve for each [country]
     await prisma.visits.update({
       where: {

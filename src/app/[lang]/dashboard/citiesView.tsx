@@ -38,7 +38,7 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
 
       const visited = refreshVisited(visitedCities)
 
-      saveCounts(user.id, { 
+      saveCounts(user.id, !user.isFake, { 
         communes: visited.communes,
         departements: visited.departements,
         prefectures: visited.prefectures,

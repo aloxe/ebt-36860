@@ -32,12 +32,13 @@ export const getUserPolygons = async (id) => {
 }
 
 export const getUsers = async () => {
-  const res = await prisma.visited.findMany(
+  const res = await prisma.players.findMany(
     {
     select: {
-      user_id: true,
-      user: true,
-      content:true,
+      id: true,
+      user: true, 
+      date: true,
+      // content:true,
       }
   }
   );
@@ -46,6 +47,41 @@ export const getUsers = async () => {
   //   revalidate: 300,
   // }
   return res;
+}
+
+
+export const getVisitsServer = async (id, field) => {
+  const fields = field.split(',');
+  const res = await prisma.counts.findUnique({
+    where: {
+      user_id: id,
+    },
+    select: {
+      date: fields.includes("date"),
+      cities: fields.includes("cities"),
+      fr: fields.includes("fr"),
+    },
+  });
+  return res
+}
+
+export const getCountsServer = async (id, field) => {
+  const fields = field.split(',');
+  const res = await prisma.counts.findUnique({
+    where: {
+      user_id: id,
+    },
+    select: {
+      user_id: fields.includes("user_id"),
+      date: fields.includes("date"),
+      communes: fields.includes("communes"),
+      departements: fields.includes("departements"),
+      prefectures: fields.includes("prefectures"),
+      unknowns: fields.includes("unknowns"),
+      count: fields.includes("count"),
+    },
+  });
+  return res
 }
 
 // client side
@@ -260,13 +296,13 @@ export const saveVisits = async (userId, isNew, dataToSave) => {
       });
 }
 
-export const saveCounts = async (userId, dataToSave) => {
+export const saveCounts = async (userId, isNew, dataToSave) => {
   if (!userId) {
     console.log('save Counts Error :-S', dataToSave);
     return null;
   };
 
-  const objectToSave = { userId, data: dataToSave }
+  const objectToSave = { userId, isNew, data: dataToSave }
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(objectToSave),
