@@ -1,4 +1,4 @@
-import Profile from "../../dashboard/profile";
+import Profile from "@/components/stats/profile";
 import Summary from "@/components/stats/summary";
 
 interface HeaderProps {

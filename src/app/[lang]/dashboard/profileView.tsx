@@ -1,5 +1,6 @@
+'use client'
 import { MouseEventHandler } from "react";
-import { useTranslation } from '@/i18n'
+import { useTranslation } from '@/i18n/client'
 import ProfileView from "@/components/common/profileView";
 
 interface ProfileProps {
@@ -10,9 +11,9 @@ interface ProfileProps {
   requestRefresh?: boolean
 }
 
-const Profile = async ({lang, user, handleRefreshUser, className, requestRefresh}: ProfileProps) => {
+const Profile = ({lang, user, handleRefreshUser, className, requestRefresh}: ProfileProps) => {
   /* eslint-disable react-hooks/rules-of-hooks */
-  const { t } = await useTranslation(lang, 'stats')
+  const { t } = useTranslation(lang, 'stats')
 
   return (
     <ProfileView

@@ -2,8 +2,6 @@ import JeuCommunes from "@/components/stats/jeuCommunes";
 import JeuPrefectures from "@/components/stats/jeuPrefectures";
 import ListeCommunes from "@/components/stats/listeCommunes";
 import MapCommunes from "@/components/stats/mapCommunes";
-import Profile from "@/components/stats/profile";
-import Summary from "@/components/stats/summary";
 import TourDeFrance from "@/components/stats/tourDeFrance";
 import { getCountsServer, getVisitsServer } from "@/helpers/dbutils";
 import { getPublicUser } from "@/helpers/ebtutils";

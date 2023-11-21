@@ -4,7 +4,7 @@ import { refreshUser } from "@/helpers/ebtutils";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from '@/i18n/client'
-import Profile from "./profile";
+import Profile from "./profileView";
 import AdminLinks from "@/components/common/adminLinks";
 
 const  UserDetails = ({ lang }: {lang: string}) => {
