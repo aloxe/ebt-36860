@@ -1,16 +1,12 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import { refreshUser } from "@/helpers/ebtutils";
-import Link from "next/link";
 import { useState } from "react";
-import { useTranslation } from '@/i18n/client'
 import Profile from "./profileView";
 import AdminLinks from "@/components/common/adminLinks";
 
 const  UserDetails = ({ lang }: {lang: string}) => {
-  /* eslint-disable react-hooks/rules-of-hooks */
-  const { t } = useTranslation(lang, 'dashboard')
-  const { user, setUser, isAdmin, isTrans } = useAuth();
+  const { user, setUser } = useAuth();
   const [requestRefresh, setRequestRefresh] = useState<boolean>(false);
 
   const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {

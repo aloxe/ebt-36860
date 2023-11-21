@@ -2,16 +2,14 @@
 import Spinner from "@/components/common/spinner";
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from "react";
-// @ts-ignore
-import { GeoJsonTypes } from 'react-leaflet';
 import { useTranslation } from '@/i18n/client'
 import { useAuth } from "@/context/authcontext";
 import { getCounts, savePolygons } from "@/helpers/dbutils";
+import { getUserPolygones } from "@/helpers/maputils";
 
 const DynamicMyMapComponent = dynamic(() =>
   import('@/components/maps/map').then((module) => module.MyMapComponent)
 )
-type Feature = GeoJsonTypes.Feature
 
 export function UserMapView({ lang, user }: DashboardProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -25,36 +23,15 @@ export function UserMapView({ lang, user }: DashboardProps) {
   const [ fetching, setFetching ] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
 
-  const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
-  const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
-
-const fetchPolygonsPerRegion = async (codeRegion:string) => {
-  const response = await fetch(
-      `https://geo.api.gouv.fr/communes?codeRegion=${codeRegion}&format=geojson&geometry=contour`
-    )
-  const results = await response.json()
-  return results;
-}
-
   const handlefetchData = useCallback( async () => {
-    let communesToDisplay = new Array();
-    let regionToDisplay = [];
-
     setFetching(true);
-    regionCodes.map( async (regionCode) => {
-      // TODO try to make this fetch quicker
-      const regionCommunes = await fetchPolygonsPerRegion(regionCode);
-      const regionVisitedCommunes = await regionCommunes.features.filter((asset:Feature) => communes?.includes(asset.properties.code));
-      communesToDisplay = communesToDisplay.concat(regionVisitedCommunes)
-      regionToDisplay.push(regionCode)
-      if (regionToDisplay.length == regionCodes.length) {
-        // save polygones of the user
-        savePolygons(user.id, communesToDisplay);
-        setMapPolygons(communesToDisplay)
-        setDisabled(false);
-      }
-    });
-}, [communes, regionCodes])
+
+    const communesToDisplay = await getUserPolygones(communes, departements)
+    savePolygons(user.id, communesToDisplay); // TODO do we still save it?
+    setMapPolygons(communesToDisplay)
+    setDisabled(false);
+
+}, [communes, departements])
 
   useEffect(() => {
     if (!fetching) {

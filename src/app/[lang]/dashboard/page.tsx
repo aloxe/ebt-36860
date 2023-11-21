@@ -9,7 +9,7 @@ import { useTranslation } from '@/i18n/client'
 export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { visited, user, setVisited, setPolygons} = useAuth();
+  const { visited, user } = useAuth();
   const username = user ? user.username : "";
 
   return (
