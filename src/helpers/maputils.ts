@@ -22,23 +22,16 @@ const fetchPolygonsPerDpt = async (dptCode:string) => {
 
 export const getUserPolygones = async (communes: string[], departements: string[]) => {
   var regions = getRegions(departements)
-  let communesToDisplay = new Array();
-  let regToDisplay = [];
 
-  regions.map( async (regCode) => {
-    console.log(regCode);
-    
-    const regCommunes = await fetchPolygonsPerRegion(regCode);
-    const regVisitedCommunes = regCommunes.features.filter((asset: Feature) => communes?.includes(asset.properties.code));
-    communesToDisplay = communesToDisplay.concat(regVisitedCommunes)
-    regToDisplay.push(regCode)
-    console.log(regToDisplay.length + " <=≤ ≥ >= " + regions.length);
-    console.log(regVisitedCommunes);
-    
-    if (regToDisplay.length == regions.length) {
-      console.log("return");
-      
-      return communesToDisplay;
-    }
-   })
+  let promissed = regions.map(regCode => {
+    return new Promise<Array<any[]>>( async (resolve, reject) => {
+      const regCommunes = await fetchPolygonsPerRegion(regCode);
+      const regVisitedCommunes = regCommunes.features.filter((asset: Feature) => communes?.includes(asset.properties.code));
+      resolve(regVisitedCommunes)
+    });
+  });
+
+  return Promise.all(promissed).then(values => {
+    return Array().concat(...values)
+  });
 }
