@@ -16,7 +16,7 @@ export function UserMapView({ lang, user }: DashboardProps) {
   const { t } = useTranslation(lang, 'dashboard');
   const { visited } = useAuth();
   const [communes, setCommunes] = useState<any>(visited?.communes || undefined);
-  const [departements, setDepartements] = useState<any>(visited?.communes || undefined);
+  const [departements, setDepartements] = useState<any>(visited?.departements || undefined);
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
@@ -27,6 +27,9 @@ export function UserMapView({ lang, user }: DashboardProps) {
     setFetching(true);
 
     const communesToDisplay = await getUserPolygones(communes, departements)
+    console.log("returned");
+    console.log(communesToDisplay);
+    
     savePolygons(user.id, communesToDisplay); // TODO do we still save it?
     setMapPolygons(communesToDisplay)
     setDisabled(false);
