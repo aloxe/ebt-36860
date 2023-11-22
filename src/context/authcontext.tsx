@@ -23,9 +23,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user && savePlayerData(user?.id, user)
   }, [user])
 
-  useEffect(() => {
-    visited && savePlayerData(user?.id, visited)
-  }, [visited, user?.id])
+
+useEffect(() => {
+  // we stop saving visited
+  // visited && savePlayerData(user?.id, visited)
+}, [visited, user?.id])
 
   useEffect(() => {
     polygons && savePlayerData(user?.id, polygons)

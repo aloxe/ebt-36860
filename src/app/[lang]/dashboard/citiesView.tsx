@@ -3,8 +3,8 @@ import Spinner from "@/components/common/spinner";
 import TitleButton from "@/components/common/titleButton";
 import { ScoreCard } from "@/components/common/scoreCard";
 import { useAuth } from "@/context/authcontext";
-import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
-import { getEBTlocation } from "@/helpers/dbutils";
+import { matchCommunes, processPostcodes, refreshVisited, removeDuplicateCommunes, removeDuplicateDepartements, removeNotPrefecture } from "@/helpers/cityutils";
+import { getEBTlocation, getVisits, saveCounts, saveVisits } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
@@ -12,10 +12,11 @@ import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
 
-export function CitiesView({ lang, user, visited, saveVisited }: DashboardCardProps) {
+const CitiesView = ({ lang, user }: DashboardProps) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
   const [step, setStep] = useState<number>(0);
+  const { visited, setVisited } = useAuth();
   const [cities, setCities] = useState<City[] | undefined>(undefined);
   const [citiesInFrance, setCitiesInFrance] = useState<number | undefined>(undefined);
   const { logout } = useAuth();
@@ -25,41 +26,66 @@ export function CitiesView({ lang, user, visited, saveVisited }: DashboardCardPr
     const citiesFrance = cities && cities.filter((city: City) => city.country == "France");
     if (citiesFrance && citiesFrance?.length > 0) {
       setCitiesInFrance(citiesFrance?.length)
-      const visitedlocations = [...citiesFrance];
+      // split homonyms, add found postcodes
+      const visitedLocations: City[] = await processPostcodes(user, citiesFrance);
+      // we could save this intermediary step
+      // saveVisits(user.id, { fr: visitedLocations })
       const communes = require('@etalab/decoupage-administratif/data/communes.json')
       const EBTLocations = await getEBTlocation();
-      const visited: Visited = await matchCommunes(visitedlocations, communes, EBTLocations)
-      // sessionStorage.setItem('visited', JSON.stringify(visited));
-      // await savePlayerData({user, visited, polygon: null})
-      // visited.userId = user.id
-      saveVisited(visited);
+      const visitedCities: City[] = await matchCommunes(visitedLocations, communes, EBTLocations)
+      // we save all fr locations with communes info
+      saveVisits(user.id, !user.isFake, { fr: visitedCities })
+
+      const visited = refreshVisited(visitedCities)
+
+      saveCounts(user.id, !user.isFake, { 
+        communes: visited.communes,
+        departements: visited.departements,
+        prefectures: visited.prefectures,
+        unknowns: visited.unknowns,
+        count: { 
+          all: cities.length, 
+          fr: citiesInFrance,
+          communes: visited.communes.length,
+          departements: visited.departements.length,
+          prefectures: visited.prefectures.length,
+          unknowns: visited.unknowns.length, 
+        }
+      })
+      setVisited(visited)
       setStep(3)
     } else {
       setCitiesInFrance(0)
       setStep(3)
     }
-  }, [cities, saveVisited, setStep]);
+  }, [cities]);
 
   useEffect(() => {
     cities && countFrenchCommunes();
-}, [cities, countFrenchCommunes])
+  }, [cities, countFrenchCommunes])
 
-const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
-  event.preventDefault();
-  setStep(1);
-  const response = await getCities(user);
-  if (!response) {
-    // TODO manage better error message
-    console.log("error couldn't get cities, please relog in" );
-    logout();
-    return
+  const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setStep(1);
+    if (!user.isFake) {
+      const response = await getCities(user.sessionid);
+      if (!response) {
+        // TODO manage better error message
+        console.log("error couldn't get cities, please relog in" );
+        logout();
+        return
+      }
+      setCities(response.data)
+      // saving all world locations as is
+      saveVisits(user.id, !user.isFake, { cities: response.data })
+      setStep(2)
+    } else {
+      // Admin user only has user.id, we fetch existing data
+      const visitedCities = await getVisits(user.id, 'fr')
+      setCities(visitedCities)
+      setStep(2)
+    }
   }
-
-  const citiesWorld = await addPostcodes(user, response.data);
-  setCities(citiesWorld)
-  setStep(2)
-}
-
 
   return (
     <>
@@ -74,7 +100,7 @@ const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => 
         <div className="flex justify-between">
           <h2>{t('your-locations')}</h2>
           { step > 2 && 
-            <div className="text-right text-stone-400 text-sm">{moment(visited.date).format('LLL')} 
+            <div className="text-right text-stone-400 text-sm">{moment(visited?.date).format('LLL')} 
               <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span>
             </div> 
           }
@@ -98,9 +124,9 @@ const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => 
               <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label={t("district", {count: visited?.departements?.length})} lang={lang} />
               <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label={t("hq", {count: visited?.prefectures?.length})} lang={lang} />
             </div>
-            {visited.unknown > 0 &&
+            {visited && visited.unknowns.length > 0 &&
             <>
-              <br/>{t("have-unidentified", {number: visited.unknown})}<br/>
+              <br/>{t("have-unidentified", {number: visited.unknowns.length})}<br/>
               <Link href="#unknown">{t('identify-municipality')}</Link> {t('to-increase-your-score')}</>}
             </>
           }
@@ -110,3 +136,5 @@ const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => 
     </>
   )
 }
+
+export default CitiesView;

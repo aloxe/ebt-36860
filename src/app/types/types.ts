@@ -15,28 +15,29 @@ interface User {
   "date"?: string | Date
   "content"?: string;
   "visited"?: { content: Visited | string }
+  "isFake"?: boolean;
 }
 
 interface DbUser {
-  "user_id": string
+  "id": string
   "user": string
   "username"?: string
   "country"?: string
   "content"?: string
   "polygons"?: string
   "visited"?: Visited
+  "count"?: any
   "date"?: string | Date
   "score"?: number
   "flag"?: string
-  "complete"?: boolean
 }
 
 interface Visited {
-  "visitedCities": City[]
+  "visitedCities"?: City[]
   "communes": string[]
   "departements": string[]
-  "prefectures": string[]
-  "unknown": number
+  "prefectures"?: string[]
+  "unknowns"?: string[]
   "date"?: string | number
   "userId"?: string | number
 }
@@ -47,7 +48,7 @@ interface City {
   "commune"?: string;
   "city": string,
   "country": string,
-  "top_zipcode": string,
+  "top_zipcode"?: string,
   "nrlocations": number,
   "postcodes": string[],
   "departement": string,

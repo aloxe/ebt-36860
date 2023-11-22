@@ -28,31 +28,31 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
         }
         {players && players.map((p) => (
         <tr className="h-1 bg-slate-100 border-b dark:border-neutral-500 text-md hover:bg-amber-50"
-        key={p.user_id}>
+        key={p.id}>
           <td>
-          {p.user_id}<br />
+          {p.id}<br />
           <>{p.flag} {p.username}</><br/>
-          <div className="text-center font-thin text-sm">{moment(p.visited?.date).format('DD/MM/YYYY HH:mm')}</div>
+          <div className="text-center font-thin text-sm">{moment(p.date).format('DD/MM/YYYY HH:mm')}</div>
           </td>
           <td>
 
-            {!p.visited?.communes && <>
-              <Link href={{ pathname: 'cities', query: { user_id: JSON.stringify(p.user_id) } }}>communes non récupérées</Link>
+            {p.count?.communes < 1 && <>
+              <Link href={{ pathname: 'cities', query: { user_id: p.id } }}>communes non récupérées</Link>
             </>}
-            {p.visited?.communes && <>
-              <Link href={{ pathname: 'cities', query: { user_id: JSON.stringify(p.user_id) } }}>Locations</Link>: {p.visited?.visitedCities?.length}<br/>
-              communes: {p.visited?.communes?.length}<br/>
-              Dpt: {p.visited?.departements?.length}<br/>
+            {p.count && p.count.communes > 1 && <>
+              <Link href={{ pathname: 'cities', query: { user_id: p.id } }}>Locations</Link>: {p.count?.all}<br/>
+              <b>communes: {p.count?.communes}</b><br/>
+              Dpt: {p.count?.departements}<br/>
             </>}
           </td>
           <td>
-          {!!p.visited?.unknown && 
+          {!!p.count?.unknowns && 
           <>
-            <Link href={{ pathname: 'unknowns', query: { user_id: JSON.stringify(p.user_id) } }}>unknown: {p.visited?.unknown?.toString()}</Link>
+            <Link href={{ pathname: 'unknowns', query: { user_id: p.id } }}>unknowns: {p.count?.unknowns}</Link>
             <br/>
           </>}
-          {!p.visited?.unknown && <>All known<br/></>}
-          <Link href={{ pathname: 'usermap', query: { user_id: JSON.stringify(p.user_id) } }}>Carte: {p.polygons === "{}" ? "☐" : "☑"}</Link>
+          {!p.count?.unknowns && <>All known<br/></>}
+          <Link href={{ pathname: 'usermap', query: { user_id: p.id } }}>Carte: {p.polygons === "{}" ? "☐" : "☑"}</Link>
           <br/>
           </td>
         </tr>

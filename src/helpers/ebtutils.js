@@ -16,7 +16,7 @@ export const getPublicUser = async (id) => {
     return remapPublicUser(publicUser.data);
   }
 
-
+  
   // client side
 
   function getRequestBody(body) {
@@ -64,23 +64,19 @@ export const getPostcodes = async (user, city) => {
       });
     const postcodes = await responsePostcodes?.json();
     // return array of postcodes instead of array or objects
-    var postcodesArray = postcodes.data.map(function (el) {
+    var postcodesArray = postcodes ? postcodes.data.map(function (el) {
       return el.zipcode;
-    })
+    }) : []
     return postcodesArray;
   }
 
-  export const getCities = async (user) => {
-      const requestOptions = {
-      method: 'GET'
-    };
-
-    const response = await fetch(`/api/eurobilltracker/?m=mycities&v=1&PHPSESSID=${user.sessionid}`, requestOptions)
+  export const getCities = async (sessionid) => {
+    const requestOptions = { method: 'GET' };
+    const response = await fetch(`/api/eurobilltracker/?m=mycities&v=1&PHPSESSID=${sessionid}`, requestOptions)
       .catch(function (err) {
         console.log('Fetch cities Error :-S', err);
         return null;
       });
-
     const cities = await response?.json();
     return cities;
   }

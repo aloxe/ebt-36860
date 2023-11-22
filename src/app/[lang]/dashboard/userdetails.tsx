@@ -4,7 +4,8 @@ import { refreshUser } from "@/helpers/ebtutils";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from '@/i18n/client'
-import Profile from "./profile";
+import Profile from "./profileView";
+import AdminLinks from "@/components/common/adminLinks";
 
 const  UserDetails = ({ lang }: {lang: string}) => {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -33,8 +34,7 @@ const  UserDetails = ({ lang }: {lang: string}) => {
 
   return (
     <>
-    {isAdmin && <Link href="admin" >{t('admin-page')}</Link>}
-    {isTrans && <Link href="translations" >{t('translations')}</Link>}
+    <AdminLinks lang={lang} />
     <Profile
       lang={lang}
       user={user} 

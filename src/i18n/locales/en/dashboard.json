@@ -26,6 +26,7 @@
     "commune-not": "commune missing, can't save",
     "commune-already": "commune already saved, can't save",
     "network-error": "network error, didn't save",
-    "saved": "saved"
+    "saved": "saved",
+    "user-data": "current data from {{username}}"
 }
 

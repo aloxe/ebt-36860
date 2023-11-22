@@ -1,14 +1,14 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import UserDetails from "./userdetails";
-import { CitiesView } from "./citiesView";
+import CitiesView from "./citiesView";
 import { UserMapView } from "./usermapView";
 import { UnknownsView } from "./unknownsView";
 import { useTranslation } from '@/i18n/client'
 
 export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
-    /* eslint-disable react-hooks/rules-of-hooks */
-    const { t } = useTranslation(lang, 'dashboard')
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = useTranslation(lang, 'dashboard')
   const { visited, user, setVisited, setPolygons} = useAuth();
   const username = user ? user.username : "";
 
@@ -23,21 +23,15 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
       {user?.username && <UserDetails lang={lang} />}
       {user?.username && <CitiesView 
         lang={lang}
-        visited={visited}
         user={user}
-        saveVisited={setVisited} 
       />}
       {user?.username && visited && <UserMapView 
         lang={lang}
-        visited={visited}
         user={user} 
-        savePolygons={setPolygons} 
       />}
-      {user?.username && visited?.unknown > 0 && <UnknownsView 
+      {user?.username && visited?.unknowns.length > 0 && <UnknownsView 
         lang={lang}
-        visited={visited}
         user={user}
-        saveVisited={setVisited} 
       />}
       </>
     )
