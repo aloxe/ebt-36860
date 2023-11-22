@@ -1,5 +1,6 @@
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
+import { getRegions } from './cityutils';
 type Feature = GeoJsonTypes.Feature
 
 const fetchPolygonsPerRegion = async (codeRegion:string) => {
@@ -10,6 +11,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
   return results;
 }
 
+// unused but useful to keep this url here
 const fetchPolygonsPerDpt = async (dptCode:string) => {
   const response = await fetch(
       `https://geo.api.gouv.fr/departements/${dptCode}/communes?format=geojson&geometry=contour`
@@ -19,43 +21,24 @@ const fetchPolygonsPerDpt = async (dptCode:string) => {
 }
 
 export const getUserPolygones = async (communes: string[], departements: string[]) => {
-console.log("getUserPolygones");
-
-  const deptsWithDomTom: any[] = require('@etalab/decoupage-administratif/data/departements.json')
-  deptsWithDomTom.filter(item => departements.includes(item.code))
-  console.log(deptsWithDomTom);
-  
-  const regionsdpt = deptsWithDomTom.map(item => item.codeRegion)
-console.log(regionsdpt);
-
-  var regions = regionsdpt.filter((reg, index, self) =>
-    index === self.findIndex((r) => (r === reg))
-  );
-
-  console.log(regions);
-  
-  const regionsWithDomTom: Region[] = require('@etalab/decoupage-administratif/data/regions.json')
-  const regionCodes: string[] = regionsWithDomTom.map(item => item.code)
+  var regions = getRegions(departements)
   let communesToDisplay = new Array();
   let regToDisplay = [];
 
-  
-  // const dptVisitedCommunes = await dptCommunes.features.filter((asset: Feature) => communes?.includes(asset.properties.code));
-  // communesToDisplay = communesToDisplay.concat(dptVisitedCommunes)
-  // console.log("=======================");
-  // console.log(dptVisitedCommunes);
-  // console.log("=======================");
-
-  // return communesToDisplay
-
-  // setFetching(true);
-  regionCodes.map( async (regCode) => {
-    // TODO try to make this fetch quicker
+  regions.map( async (regCode) => {
+    console.log(regCode);
+    
     const regCommunes = await fetchPolygonsPerRegion(regCode);
-    // const regCommunes = require(`@/data/regions/communes${regCode}.json`);
     const regVisitedCommunes = regCommunes.features.filter((asset: Feature) => communes?.includes(asset.properties.code));
     communesToDisplay = communesToDisplay.concat(regVisitedCommunes)
-    regToDisplay.push(regCode);
-  })
-  return communesToDisplay
+    regToDisplay.push(regCode)
+    console.log(regToDisplay.length + " <=≤ ≥ >= " + regions.length);
+    console.log(regVisitedCommunes);
+    
+    if (regToDisplay.length == regions.length) {
+      console.log("return");
+      
+      return communesToDisplay;
+    }
+   })
 }

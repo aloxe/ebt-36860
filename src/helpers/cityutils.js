@@ -43,6 +43,17 @@ export const fetchPolygon = async (code) => {
 
 // operations
 
+export const getRegions = (departements) => {
+  const deptsWithDomTom = require('@etalab/decoupage-administratif/data/departements.json')
+  const deptsWithDomTomUser = deptsWithDomTom.filter(item => departements.includes(item.code))
+  const regionsdpt = deptsWithDomTomUser.map(item => item.region)
+  // remove duplicates
+  var regions = regionsdpt.filter((reg, index, self) =>
+    index === self.findIndex((r) => (r === reg))
+  );
+  return regions
+}
+
 export const getDepartement = (postcode) => (
   parseInt(postcode.substring(0,2)) < 96 ? postcode.substring(0,2) : postcode.substring(0,3)
 )
