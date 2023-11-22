@@ -27,10 +27,8 @@ export function UserMapView({ lang, user }: DashboardProps) {
     setFetching(true);
 
     const communesToDisplay = await getUserPolygones(communes, departements)
-    console.log("returned");
-    console.log(communesToDisplay);
-    
-    savePolygons(user.id, communesToDisplay); // TODO do we still save it?
+    // TODO We still save it just to have a look
+    savePolygons(user.id, communesToDisplay);
     setMapPolygons(communesToDisplay)
     setDisabled(false);
 
