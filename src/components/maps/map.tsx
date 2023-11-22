@@ -54,9 +54,9 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
 
   deptLayer.style = (feature: Feature) => {
     return {
-      fillColor: departements?.includes(feature.properties.code) ? 'pink' : 'transparent', 
+      fillColor: departements?.includes(feature.properties.code) ? 'Salmon' : 'transparent', 
       dashArray: "3",
-      fillOpacity: 0.4,
+      fillOpacity: 0.1,
       color: 'black', 
       weight: 1,
       opacity: 1
@@ -70,10 +70,10 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
   // feature is used
   communesLayer.style = (feature: Feature) => {
     return {
-      fillColor: 'indigo', 
+      fillColor: 'navy', 
       dashArray: "3",
-      fillOpacity: 0.6,
-      color: 'indigo', 
+      fillOpacity: 0.5,
+      color: 'navy', 
       weight: 1,
       opacity: 1
     };
