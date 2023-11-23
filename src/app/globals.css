@@ -15,7 +15,9 @@
     --background-end-rgb: 0, 0, 0;
   }
 } */
-
+html {
+  @apply bg-sky-200
+}
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -42,6 +44,10 @@ li {
   @apply list-inside list-disc ml-4
 }
 
+main {
+  /* sticky footer calc not handled by min-h- in tailwind */
+  min-height: calc(100vh - 8rem);
+}
 @layer components {
   .anchor {
     display:block;
