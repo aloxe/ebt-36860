@@ -31,7 +31,7 @@ export default function RootLayout({
       <AuthProvider>
         <body>
           <Header lang={lang}/>
-          <main className="flex min-h-screen flex-col mt-12 p-2 pb-6 md:p-8">
+          <main className="flex flex-col mt-12 p-2 pb-6 md:p-8">
             {children}
           </main>
           <Footer lang={lang} />
