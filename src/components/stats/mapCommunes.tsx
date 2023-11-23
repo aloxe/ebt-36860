@@ -39,7 +39,7 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
   }, [fetching, handlefetchData])
 
   const defaultClass = "transition-{margin} duration-150 bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4"
-  const fullScreenClass = "transition-{margin} duration-150 fixed top-0 bottom-0 left-0 right-0 bg-white text-left p-0 pt-10 m-0 h-[100vh] w-[100vw]"
+  const fullScreenClass = "transition-{margin} duration-150 fixed top-0 bottom-0 left-0 right-0 bg-white text-left p-0 pt-[45px] m-0 h-[calc(100vh-45px)] w-[100vw] fullscreen"
   const defaultTitleClass = "transition-all duration-500 flex justify-between"
   const fullScreenTitleClass = "transition-all duration-500 flex justify-between absolute w-full px-14 pb-0 mt-4 text-xs z-[1000]"
 
