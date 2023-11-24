@@ -6,6 +6,7 @@ export function getLgOptions (lng = fallbackLng, ns = defaultNS) {
   return {
     debug: false,
     supportedLngs: languages,
+    interpolation: { escapeValue: false },
     fallbackLng,
     lng,
     fallbackNS: defaultNS,
@@ -13,4 +14,3 @@ export function getLgOptions (lng = fallbackLng, ns = defaultNS) {
     ns
   }
 }
-

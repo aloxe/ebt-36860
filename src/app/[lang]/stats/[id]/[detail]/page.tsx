@@ -13,6 +13,9 @@ const UserDataDetail = async ({ params }: { params: { lang: string, id: string, 
   const publicUser = await getPublicUser(id);
   const visits = await getVisitsServer(id, "fr");
   const counts = await getCountsServer(id, "date,communes,departements,prefectures,count");
+
+  console.log("publicUser", publicUser);
+  
   
   return (
     <>
