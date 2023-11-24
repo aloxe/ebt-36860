@@ -79,8 +79,8 @@ const { username } = user;
           {t('the-less-populated')} : {minPop.nom} {t('with')} {Intl.NumberFormat(lang).format(minPop.population)} {t('inhabitant', {count: minPop.population })}
         </div>
         <div className="text-left mb-4">
-        {t('the-largest')} : {maxSurf.nom} {t('with')} {Intl.NumberFormat(lang, {maximumFractionDigits: 2,}).format(maxPop.surface)} km²<br/>
-        {t('the-smallest')} : {minSurf.nom} {t('with')} {Intl.NumberFormat(lang, {maximumFractionDigits: 2,}).format(minPop.surface)} km²
+        {t('the-largest')} : {maxSurf.nom} {t('with')} {Intl.NumberFormat(lang, {maximumFractionDigits: 2,}).format(maxSurf.surface)} km²<br/>
+        {t('the-smallest')} : {minSurf.nom} {t('with')} {Intl.NumberFormat(lang, {maximumFractionDigits: 2,}).format(minSurf.surface)} km²
         </div>
         <div className="text-left mb-3">
         {t('the-highest')} : {maxAlt.nom} {t('with')} {Intl.NumberFormat(lang).format(maxAlt.altitude)} m<br/>
