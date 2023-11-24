@@ -61,6 +61,7 @@ model translations {
   namespace     String
   key           String
   fr            String
+  de            String
 }
 
 model roles {

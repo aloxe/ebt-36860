@@ -127,13 +127,16 @@ export const saveEBTlocation = async (newLocation) => {
 }
 
 export const getTranslations = async (ns) => {
+  console.log("getTranslations");
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/translations${ns ? '/'+ns : ''}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
     });
+
   const dataresult = await response?.json();
+  console.log("dataresult", dataresult);
   return dataresult;
 }
 
@@ -180,6 +183,17 @@ export const getPlayerRole = async (userId) => {
     return undefined;
   }
   return await response?.json();
+}
+
+export const getRoles = async (userId) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/roles/${userId}`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
 }
 
 export const getVisits = async (userId, field) => {
