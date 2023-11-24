@@ -1,28 +1,29 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import { getTranslations } from "@/helpers/dbutils";
-import Link from "next/link";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
+import AdminLinks from "@/components/common/adminLinks";
 
 interface MouseEvent<T = Element> extends SyntheticEvent {
   relatedTarget: EventTarget | null;
   target: EventTarget & T;
 }
 
-const JsonTranslations = ({ params: { lang } }: { params: { lang: string } }) => {
+const JsonTranslations = ({ params }: { params: { lang: string, transLang: string } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
-  const { t } = useTranslation(lang, 'dashboard')
+  // const { t } = useTranslation(lang, 'dashboard')
   const { isTrans, isAdmin } = useAuth()
   const [langTranslations, setLangTranslations] = useState(null)
   const [dbTranslations, setDbTranslations] = useState(null)
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
+  const { lang, transLang } = params;
 
   let translationChains: any = { }
   namespaces.map((ns) => {
     let english = require(`@/i18n/locales/en/${ns}.json`)
-    let french = require(`@/i18n/locales/fr/${ns}.json`)
-    Object.assign(translationChains, { [ns]: {en: english, fr: french}});
+    let nextLang = require(`@/i18n/locales/${transLang}/${ns}.json`)
+    Object.assign(translationChains, { [ns]: {en: english, [transLang]: nextLang}});
   })
 
   const selectAll = (event: MouseEvent<HTMLTextAreaElement>) => {
@@ -36,7 +37,7 @@ const JsonTranslations = ({ params: { lang } }: { params: { lang: string } }) =>
       lgTrans[ns] = {}
       Object.keys(translationChains[ns].en).map( key => {
         /* @ts-ignore */
-        let dbValue = dbTranslations && (dbTranslations?.find((row) => row.key === key)?.fr) || translationChains[ns].fr[key] || ""
+        let dbValue = dbTranslations && (dbTranslations?.find((row) => row.key === key)?.[transLang]) || translationChains[ns][transLang][key] || ""
         if (dbValue) { lgTrans[ns][key] = dbValue }
       })
     })
@@ -55,13 +56,12 @@ const JsonTranslations = ({ params: { lang } }: { params: { lang: string } }) =>
     }
   }, [dbTranslations])
 
-  if (!isAdmin) return <></>
+  if (!isAdmin && !isTrans) return <></>
 
   return (
   <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
     <div className="text-stone-600 text-sm">
-      {isAdmin && <Link href="/dashboard/admin" >{t('admin-page')}</Link>} | 
-      {isTrans && <Link href="/dashboard/translations" >{t('translations')}</Link>}
+      <AdminLinks lang={lang} />
       <h2>Translation JSON</h2>
       {langTranslations && namespaces.map((ns) => (
         <div key={ns}>
