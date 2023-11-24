@@ -118,6 +118,7 @@ export const getPostcodes = async (user, city) => {
 
   // utils
   const remapPublicUser = (publicUser) => {
+    console.log("public user: publicUser.user_name" + publicUser.user_name);
   const user  = {
     "id": publicUser.user_id,
     "username": publicUser.user_name,

@@ -16,8 +16,6 @@ async function Summary({ lang, user, count, date, className }: SummaryProps) {
   const { t } = await useTranslation(lang, 'stats')
   const { username } = user;
   moment.locale(lang === 'en' ? 'en-gb' : lang);
-
-  console.log(" summary count", count);
   
   return (
     <>
