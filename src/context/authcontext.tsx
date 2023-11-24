@@ -1,5 +1,5 @@
 'use client'
-import { getPlayerRole, savePlayerData } from '@/helpers/dbutils';
+import { getPlayerRole, getRoles, savePlayerData } from '@/helpers/dbutils';
 import { createContext, useContext, useEffect, useState } from 'react';
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
@@ -11,7 +11,7 @@ export const AuthContext = createContext<any>(null)
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isTrans, setIsTrans] = useState<boolean>(false);
+  const [isTrans, setIsTrans] = useState<string>('');
   const [visited, setVisited] = useState<Visited | undefined>(undefined);
   const [polygons, setPolygons] = useState<Feature[] | undefined>(undefined);
 
@@ -34,13 +34,13 @@ useEffect(() => {
   }, [polygons, user?.id])
 
   useEffect(() => {
-    const getPlayerRoleAwaited = async (id: string) => {
-      const role = await getPlayerRole(id);
+    const getRolesAwaited = async (id: string) => {
+      const role = await getRoles(id);
       setIsAdmin(role.admin)
       setIsTrans(role.trans)
     };
     if (user) {
-      getPlayerRoleAwaited(user.id.toString())
+      getRolesAwaited(user.id.toString())
     }
   }, [user])
 

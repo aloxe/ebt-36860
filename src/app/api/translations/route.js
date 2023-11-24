@@ -25,6 +25,7 @@ async function saveData(req) {
       namespace: `${req.ns}`,
       key: `${req.key}`,
       [req.lang]: `${req.string}`,
+      // TODO add all langs here
     },
   })
 }
