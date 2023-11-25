@@ -62,9 +62,13 @@ const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: stri
   <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
     <div className="text-stone-600 text-sm">
     <AdminLinks lang={lang} />
-      <h2>{t('Translations')}</h2>
+      <h2>{t('Translations')} [en → {transLang}]</h2>
       <p className="text-xs">All strings to translate are gathered on this page and sorted by categories. Please add words in the <em>&#123;&#123;&#125;&#125;</em> and in <em>t()</em> without translating them as this should be done dynamically. Words in <em>t()</em> are usually words that may be in sigular or in plural depending on the context, You may have to translate both version in a following field.</p>
-      {namespaces.map((ns) => (
+      <p>
+        <br/>
+      {namespaces.map( ns => {return <><b> {ns}</b>{ns !== "translations" && <> |</>}</>} )}
+      </p>
+      {namespaces.map( ns => (
         <div key={ns}>
           <h3>{ns}</h3>
           {Object.keys(translationChains[ns].en).map( key => {
