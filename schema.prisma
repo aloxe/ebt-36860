@@ -60,12 +60,12 @@ model translations {
   id            String      @id
   namespace     String
   key           String
-  fr            String
-  de            String
+  fr            String?
+  de            String?
 }
 
 model roles {
   id            String      @id
   admin         Boolean
-  trans         String
+  trans         String?
 }
