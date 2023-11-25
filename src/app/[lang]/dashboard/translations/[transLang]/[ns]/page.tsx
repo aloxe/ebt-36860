@@ -4,7 +4,7 @@ import { getTranslations, saveTranslation } from "@/helpers/dbutils";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
-import TransMenu from "./transMenu";
+import TransMenu from "../transMenu";
 interface FocusEvent<T = Element> extends SyntheticEvent {
   relatedTarget: EventTarget | null;
   target: EventTarget & T;
@@ -15,15 +15,14 @@ interface KeyboardEvent<T = Element> extends SyntheticEvent {
   target: EventTarget & T;
 }
 
-const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: string } }) => {
-  const { lang, transLang } = params;
+const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: string, ns: string } }) => {
+  const { lang, transLang, ns } = params;
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const { isTrans } = useAuth()
   const [dbTranslations, setDbTranslations] = useState(null)
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
 
-  // get all translation strings from english json files
   let translationChains: any = { }
   namespaces.map((ns) => {
     let english = require(`@/i18n/locales/en/${ns}.json`)
@@ -46,30 +45,26 @@ const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: stri
     }
   }
 
-  // load all translations for transLang from db
   useEffect(() => {
-    const fetchDbTrans = async (transLang: string) => {
-      const trans = await getTranslations(transLang)
+    const fetchDbTrans = async (transLang: string, ns: string) => {
+      const trans = await getTranslations(transLang, ns)
       setDbTranslations(trans)
       
     }
-    dbTranslations === null && fetchDbTrans(transLang)
+    dbTranslations === null && fetchDbTrans(transLang, ns)
   }, [dbTranslations])
 
   if (!isTrans) return <></>
 
   return (
-  <>
-  <AdminLinks lang={lang} />
-  <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
+    <>
+    <AdminLinks lang={lang} />
+    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
     <div className="text-stone-600 text-sm">
       <h2>{t('Translations')} [en → {transLang}]</h2>
-      <p className="text-xs">All strings to translate are gathered on this page and sorted by categories. Please add words in the <em>&#123;&#123;&#125;&#125;</em> and in <em>t()</em> without translating them as this should be done dynamically. Words in <em>t()</em> are usually words that may be in sigular or in plural depending on the context, You may have to translate both version in a following field.</p>
       <p>
-        <br/>
-        <TransMenu lang={lang} transLang={transLang} />
+        <TransMenu lang={lang} transLang={transLang} ns={ns} />
       </p>
-      {namespaces.map( ns => (
         <div key={ns}>
           <h3>{ns}</h3>
           {Object.keys(translationChains[ns].en).map( key => {
@@ -83,7 +78,7 @@ const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: stri
               <textarea 
                 name={key} rows={2} data-namespace={ns}
                 className="border border-solid border-emerald-950 w-full"
-                defaultValue={dbTranslations ? dbTranslations[key] : ""} 
+                defaultValue={dbTranslations ? dbTranslations[key] : ""}
                 onBlur={handleSaveOnBlur}
                 /* @ts-ignore */
                 onKeyUp={handleKeyUp}
@@ -92,7 +87,6 @@ const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: stri
             </div>
           )})}
         </div>
-      ))}
     </div>
   </div>
   </>
