@@ -126,10 +126,9 @@ export const saveEBTlocation = async (newLocation) => {
   return dataresult;
 }
 
-export const getTranslations = async (ns) => {
-  console.log("getTranslations");
+export const getTranslations = async (lang, ns) => {
   const requestOptions = { method: 'GET' };
-  const response = await fetch(`/api/translations${ns ? '/'+ns : ''}`, requestOptions)
+  const response = await fetch(`/api/translations${lang ? '/'+lang : ''}${ns ? '/'+ns : ''}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
