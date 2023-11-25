@@ -5,6 +5,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
 import TransMenu from "../transMenu";
+import JsonTranslations from "../jsonTranslations";
 interface FocusEvent<T = Element> extends SyntheticEvent {
   relatedTarget: EventTarget | null;
   target: EventTarget & T;
@@ -19,7 +20,7 @@ const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: stri
   const { lang, transLang, ns } = params;
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { isTrans } = useAuth()
+  const { isTrans, isAdmin } = useAuth()
   const [dbTranslations, setDbTranslations] = useState(null)
   const namespaces = ["dashboard", "faq", "home", "leaderboard", "stats", "translations"];
 
@@ -89,6 +90,8 @@ const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: stri
         </div>
     </div>
   </div>
+  {!isAdmin && <></>}
+  {isAdmin && <JsonTranslations transLang={transLang} ns={ns} dbTranslations={dbTranslations} />}
   </>
   )
 
