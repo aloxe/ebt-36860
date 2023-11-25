@@ -30,6 +30,7 @@ i18next
   })
   // TODO use https://github.com/i18next/i18next-chained-backend 
   // with DB translations
+  // https://stackoverflow.com/questions/75398918/how-to-properly-use-chainedbackend-with-i18next-when-managing-server-side-transl 
     
 export function useTranslation(lng, ns, options) {
   const [cookies, setCookie] = useCookies(['i18next'])
