@@ -12,7 +12,7 @@ function AdminLinks({ lang }: { lang: string }) {
   return (
     <div className="block">
         {!isAdmin && !isTrans && <></>}
-        {isAdmin && <Link href={`/${lang}/dashboard/admin`}>{t('admin-page')}</Link>} | 
+        {isAdmin && <><Link href={`/${lang}/dashboard/admin`}>{t('admin-page')}</Link> | </>}
         {isTrans && (<>
         {t('translations-')} {isTransLangs.map((transLang: string) => (
         <span key={transLang} > <Link href={`/${lang}/dashboard/translations/${transLang}`}>{transLang}</Link> |</span>
