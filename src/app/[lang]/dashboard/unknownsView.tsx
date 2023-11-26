@@ -72,9 +72,8 @@ export function UnknownsView({lang, user}: DashboardProps) {
         feedback.innerHTML = t('commune-not');
         return
       }
-
       myVisited.visitedCities.map(async function (city: City) {
-        if (city.city == location && city.departement == departement) {
+        if (city.city == location && city.top_zipcode?.substring(0,2) == departement) {
           if (city.commune) {
             feedback.className = "error"
             feedback.innerHTML = t('commune-already') + " " + city.commune;
@@ -118,7 +117,6 @@ export function UnknownsView({lang, user}: DashboardProps) {
           unknowns: myFreshVisited.unknowns.length,
         }
       })
-
       setVisited(myFreshVisited)
       // TODO do we still use storage for Visited?
   }
@@ -150,7 +148,7 @@ export function UnknownsView({lang, user}: DashboardProps) {
                 <div className="h-3"></div>
                   <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-osm')}</a>
                 <input type="hidden" value={city.city} name="location" id="location" />
-                <input type="hidden" value={city.departement} name="departement"  id="departement"/>
+                <input type="hidden" value={city.top_zipcode?.substring(0,2)} name="departement"  id="departement"/>
                 <input type="hidden" value="" name="code"  id="code" />
                 <input type="hidden" value="" name="commune" id="commune" />
                 </div>
