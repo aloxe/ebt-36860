@@ -20,7 +20,7 @@ export function getUserFlag(country) {
     return countryCodeToFlag(alpha2);  
 }
 
-function countryCodeToFlag(countrycode) {
+export function countryCodeToFlag(countrycode) {
     if (countrycode?.length !== 2) return;
 
 

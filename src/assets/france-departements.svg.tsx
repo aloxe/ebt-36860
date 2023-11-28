@@ -13,6 +13,7 @@ const CarteDeFranceSvg = ({visited}:CarteDeFranceSvgProps) => {
     y="0"
     viewBox="60 0 667 590"
     xmlSpace="preserve"
+    id="CarteDeFranceSvg"
   >
     <g
       className="region region-11"
