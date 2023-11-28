@@ -2,7 +2,6 @@
 import { useAuth } from "@/context/authcontext";
 import UserDetails from "./userdetails";
 import CitiesView from "./citiesView";
-import { UserMapView } from "./usermapView";
 import { UnknownsView } from "./unknownsView";
 import { useTranslation } from '@/i18n/client'
 import TitleButton from "@/components/common/titleButton";
@@ -43,7 +42,7 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
       </div>
 
       { username && visited && !isForum && <TitleButton
-            label={t('Share your results on Forum')}
+            label={t('see-map-share')}
             href={"#forum"}
             callback={handleToForum}
       />}

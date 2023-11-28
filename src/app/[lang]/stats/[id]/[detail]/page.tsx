@@ -2,18 +2,23 @@ import JeuCommunes from "@/app/[lang]/stats/[id]/[detail]/jeuCommunes";
 import JeuPrefectures from "@/app/[lang]/stats/[id]/[detail]/jeuPrefectures";
 import ListeCommunes from "@/components/stats/listeCommunes";
 import MapCommunes from "@/components/stats/mapCommunes";
-import TourDeFrance from "@/app/[lang]/stats/[id]/[detail]/tourDeFrance";
+import TourDeFrance from "@/components/common/tourDeFrance";
 import { getCountsServer, getVisitsServer } from "@/helpers/dbutils";
 import { getPublicUser } from "@/helpers/ebtutils";
-import StatsMenu from "../menu";
-import StatsHeader from "../header";
+import StatsMenu from "@/app/[lang]/stats/[id]/menu";
+import StatsHeader from "@/app/[lang]/stats/[id]/header";
+import { useTranslation } from '@/i18n'
 
 const UserDataDetail = async ({ params }: { params: { lang: string, id: string, detail: string } }) => {
   const { lang, id, detail } = params;
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const { t } = await useTranslation(lang, 'stats')
   const publicUser = await getPublicUser(id);
   const visits = await getVisitsServer(id, "fr");
   const counts = await getCountsServer(id, "date,communes,departements,prefectures,count");
   
+  const tourHeading = t('tour-de-france', {"username": publicUser.username})
+
   return (
     <>
       <StatsHeader lang={lang} id={id} user={publicUser} date={counts ? counts.date : undefined} count={counts ? JSON.parse(counts.count) : undefined} />
@@ -39,9 +44,9 @@ const UserDataDetail = async ({ params }: { params: { lang: string, id: string, 
         key="map" 
       />}
       {detail === "tour-de-france" && <TourDeFrance 
-        lang={lang} 
         user={publicUser}
         departements={counts ? JSON.parse(counts.departements) : []} 
+        heading={tourHeading}
         key="tour" 
       />}
       {detail === "prefectures" && <JeuPrefectures 
