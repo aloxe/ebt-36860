@@ -1,11 +1,11 @@
-import JeuCommunes from "@/components/stats/jeuCommunes";
-import JeuPrefectures from "@/components/stats/jeuPrefectures";
+import JeuCommunes from "@/app/[lang]/stats/[id]/[detail]/jeuCommunes";
+import JeuPrefectures from "@/app/[lang]/stats/[id]/[detail]/jeuPrefectures";
 import ListeCommunes from "@/components/stats/listeCommunes";
 import MapCommunes from "@/components/stats/mapCommunes";
-import TourDeFrance from "@/components/stats/tourDeFrance";
+import TourDeFrance from "@/app/[lang]/stats/[id]/[detail]/tourDeFrance";
 import { getCountsServer, getVisitsServer } from "@/helpers/dbutils";
 import { getPublicUser } from "@/helpers/ebtutils";
-import StatsMenu from "./../menu";
+import StatsMenu from "../menu";
 import StatsHeader from "../header";
 
 const UserDataDetail = async ({ params }: { params: { lang: string, id: string, detail: string } }) => {

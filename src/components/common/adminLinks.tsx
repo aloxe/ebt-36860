@@ -10,7 +10,7 @@ function AdminLinks({ lang }: { lang: string }) {
   const isTransLangs = isTrans.split(',');
 
   return (
-    <div className="block">
+    <div className="block w-full">
         {!isAdmin && !isTrans && <></>}
         {isAdmin && <><Link href={`/${lang}/dashboard/admin`}>{t('admin-page')}</Link> | </>}
         {isTrans && (<>
