@@ -3,7 +3,7 @@ import Spinner from "@/components/common/spinner";
 import TitleButton from "@/components/common/titleButton";
 import { ScoreCard } from "@/components/common/scoreCard";
 import { useAuth } from "@/context/authcontext";
-import { matchCommunes, processPostcodes, refreshVisited, removeDuplicateCommunes, removeDuplicateDepartements, removeNotPrefecture } from "@/helpers/cityutils";
+import { matchCommunes, processPostcodes, refreshVisited } from "@/helpers/cityutils";
 import { getEBTlocation, getVisits, saveCounts, saveVisits } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import Link from "next/link";
@@ -64,6 +64,11 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
     cities && countFrenchCommunes();
   }, [cities, countFrenchCommunes])
 
+  useEffect(() => {
+    console.log("step " + step);
+    
+  }, [step])
+
   const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setStep(1);
@@ -87,15 +92,15 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
     }
   }
 
-  return (
-    <>
-      { step === 0 && 
-      <TitleButton
+  if (step === 0) {
+    return (<TitleButton
       label={t('load-locations')}
       href={"#cities"}
       callback={handleCityRequest}
-      />}
-      { step > 0 &&
+      />)
+  }
+  return (
+    <>
       <div className="group bg-white rounded-lg border border-blue-200 text-left  p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>{t('your-locations')}</h2>
@@ -132,7 +137,6 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
           }
         </div>
       </div>
-      }
     </>
   )
 }

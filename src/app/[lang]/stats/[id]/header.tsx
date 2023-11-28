@@ -15,7 +15,7 @@ const StatsHeader = ({ lang, user, date, count }: HeaderProps) => {
     {/*TODO collapse these two on detail page */}
     <Profile lang={lang} user={user} className="md:basis-1/4 md:table-cell"/>
     <Summary lang={lang} user={user} count={count} date={date} 
-      className="md:basis-1/4 md:table-cell space-x-3"
+      className="md:basis-1/4 md:table-cell"
     />
   </div>
   )

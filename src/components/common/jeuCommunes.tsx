@@ -1,30 +1,18 @@
-import { fetchAllComplete } from "@/helpers/cityutils";
-import { useTranslation } from '@/i18n'
+import { TFunction } from "i18next";
+import PostToForum from "@/components/common/postToForum";
 
 interface JeuCommunesProps {
-  lang: string
-  user: User
-  communes: string[]
+  lang: string;
+  t: TFunction<any, any>;
+  username: string;
+  allCommunes: Commune[];
+  visitedCommunes: CommuneWithData[];
+  isDashboard?: boolean
 }
 
-async function JeuCommunes({lang, user, communes}: JeuCommunesProps) {
-    /* eslint-disable react-hooks/rules-of-hooks */
-    const { t } = await useTranslation(lang, 'stats')
+function JeuCommunes({lang, t, username, allCommunes, visitedCommunes, isDashboard = false}: JeuCommunesProps ) {
 
-  const allCommunesWithDomTom: Commune[] = await fetchAllComplete();
-  // we remove oversea municipalities
-  const allCommunes = allCommunesWithDomTom.filter(el => el.zone === "metro")
-  const firstPourcent = communes.length * 100 / allCommunes.length;
-
-  const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
-  const visitedCommunes = allCommunes.filter(c => communes.includes(c.code) ).map(c => ({
-    code: c.code,
-    nom: c.nom,
-    population: c.population || 0,
-    surface: c.surface ? c.surface / 100 : 0,
-    // @ts-ignore
-    altitude: parseInt(inseeAltitude.find(el => el.code === c.code)?.altitude),
-  }))
+  const firstPourcent = visitedCommunes.length * 100 / allCommunes.length;
 
   const allCommunesPop: number[] = allCommunes.map(el => el.population || 0)
   const allPop = allCommunesPop.reduce((buf, a) => buf + a)
@@ -60,7 +48,24 @@ const minAlt = visitedCommunes.reduce((prev, current) => {
     return (prev && prev.altitude < current.altitude) ? prev : current
 })
 
-const { username } = user;
+const BBCode = `[size=150]MÀJ de ${username}[/size]
+[color=blue][b]${visitedCommunes.length}[/b][/color] communes soit [color=blue][b] ${firstPourcent.toFixed(2)} % [/b][/color] du nombre de communes
+[color=red][b] ${Intl.NumberFormat("fr").format(visitedPop)} [/b][/color] habitants soit [color=red][b] ${secondPourcent.toFixed(2)} % [/b][/color] de la population
+[color=green][b] ${Intl.NumberFormat("fr", {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)} [/b][/color] km² soit [color=green][b] ${thirdPourcent.toFixed(2)} % [/b][/color] de la superficie
+
+la plus peuplée : ${maxPop.nom} avec ${Intl.NumberFormat("fr").format(maxPop.population)} habitants
+la moins peuplée : ${minPop.nom} avec ${Intl.NumberFormat("fr").format(minPop.population)} habitants
+
+la plus étendue : ${maxSurf.nom} avec ${Intl.NumberFormat("fr").format(maxSurf.population)} km²
+la moins étendue : ${minSurf.nom} avec ${Intl.NumberFormat("fr").format(minSurf.population)} km²
+
+la plus élevée : ${maxAlt.nom} avec ${Intl.NumberFormat("fr").format(maxAlt.altitude)} m
+la moins élevée : ${minAlt.nom} avec ${Intl.NumberFormat("fr").format(minAlt.altitude)} m
+altitude moyenne : ${visitedAltMoyenne.toFixed(2)} m
+
+[size=85]calculé sur [url=https://ebt.fr.eu.org/]▤ 36680 ▥[/url] avec les communes métropolitaines uniquement[/size]
+`
+
   return (
     <>
       <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
@@ -70,7 +75,7 @@ const { username } = user;
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">
-          <span className="text-blue-600">{communes.length}</span> {t('municipality', {count: communes.length})} {t('that-is')} <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> {t('of-the-total-municipalities')}<br />
+          <span className="text-blue-600">{visitedCommunes.length}</span> {t('municipality', {count: visitedCommunes.length})} {t('that-is')} <span className="text-blue-600">{firstPourcent.toFixed(2)}%</span> {t('of-the-total-municipalities')}<br />
           <span className="text-red-600">{Intl.NumberFormat(lang).format(visitedPop)}</span> {t('inhabitant', {count: visitedPop })} {t('that-is')} <span className="text-red-600">{secondPourcent.toFixed(2)}%</span> {t('of-the-total-population')}<br />
           <span className="text-green-500">{Intl.NumberFormat(lang, {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)}</span> km² {t('that-is')} <span className="text-green-500">{thirdPourcent.toFixed(2)}%</span> {t('of-the-total-surface')}
         </div>
@@ -90,6 +95,11 @@ const { username } = user;
         <div className="text-center text-xs mb-2">
         {t('calculation-note')}
         </div>
+        {!isDashboard && <></>}
+      {isDashboard && <>
+        {/* /!\ bellow is a client component */}
+        <PostToForum message={BBCode} topic={"7171"} />
+      </>}
       </div>
     </>
   )

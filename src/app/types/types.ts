@@ -33,10 +33,10 @@ interface DbUser {
 }
 
 interface Visited {
-  "visitedCities"?: City[]
+  "visitedCities": City[]
   "communes": string[]
   "departements": string[]
-  "prefectures"?: string[]
+  "prefectures": string[]
   "unknowns"?: string[]
   "date"?: string | number
   "userId"?: string | number
@@ -69,6 +69,17 @@ interface Commune {
     "zone": 'metro' | 'com' | 'drom';
     "departement"?: { code: string, nom: string; };
     "region"?: { code: string, nom: string; };
+    "altitude"?: number;
+  }
+
+  interface CommuneWithData {
+    "code": string;
+    "nom": string;
+    "surface": number;
+    "population": number;
+    "centre"?: { type: 'Point', coordinates: Array<string> };
+    "contour"?: { type: 'Polygon', coordinates: Array<string> };
+    "altitude": number;
   }
 
 interface Departement {
