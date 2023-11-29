@@ -66,7 +66,6 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
 
   useEffect(() => {
     console.log("step " + step);
-    
   }, [step])
 
   const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
