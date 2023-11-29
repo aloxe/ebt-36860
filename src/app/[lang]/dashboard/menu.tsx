@@ -1,10 +1,10 @@
 'use client'
-import Link from "next/link";
 import { useTranslation } from '@/i18n/client'
 import { useState } from "react";
 import ForumJeuCommunes from "./forumJeuCommunes";
 import { UserMapView } from "./usermapView";
 import TourDeFrance from "@/components/common/tourDeFrance";
+import JeuPrefectures from '@/components/common/jeuPrefectures';
 
 const ForumMenu = ({ lang, user, visited }: {lang: string, user: User, visited: Visited }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -16,15 +16,16 @@ const ForumMenu = ({ lang, user, visited }: {lang: string, user: User, visited: 
   const { communes, departements, prefectures, visitedCities } = visited;
 
   const tourHeading = t('tour-de-france', {"username": user.username})
+  const prefecturesHeading = t('user-prefectures', {"username": user.username})
 
-const handleClick = async (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const id = event.currentTarget.id;
-    setIs36680(id === "is36680")
-    setIsMap(id === "isMap")
-    setIsTourdefrance(id === "isTourdefrance")
-    setIsPrefectures(id === "isPrefectures")
-  }
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      const id = event.currentTarget.id;
+      setIs36680(id === "is36680")
+      setIsMap(id === "isMap")
+      setIsTourdefrance(id === "isTourdefrance")
+      setIsPrefectures(id === "isPrefectures")
+    }
 
   return (
   <>
@@ -38,10 +39,26 @@ const handleClick = async (event: React.MouseEvent<HTMLDivElement>) => {
     </div>
 
     {!is36680 && !isTourdefrance && !isPrefectures && <></>}
-    {is36680 && <ForumJeuCommunes lang={lang} user={user} communes={communes} />}
+    {is36680 && <ForumJeuCommunes 
+      lang={lang} 
+      user={user} 
+      communes={communes} />}
     {isMap && <UserMapView lang={lang} user={user} />}
-    {isTourdefrance && <TourDeFrance user={user} departements={departements} heading={tourHeading} isDashboard={true} />}
-    {/* {isPrefectures && <JeuPrefectures lang={lang} user={user} prefectures={prefectures} cities={visitedCities} />} */}
+    {isTourdefrance && <TourDeFrance 
+      lang={lang}  
+      user={user} 
+      departements={departements} 
+      heading={tourHeading} 
+      isDashboard={true} />}
+    {isPrefectures && <JeuPrefectures 
+        lang={lang} 
+        user={user} 
+        prefectures={prefectures}
+        cities={visitedCities}
+        heading={prefecturesHeading}
+        isDashboard={true}
+      />}
+
   </>
   )
 }
