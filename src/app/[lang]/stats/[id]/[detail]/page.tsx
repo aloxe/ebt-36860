@@ -1,5 +1,5 @@
 import JeuCommunes from "@/app/[lang]/stats/[id]/[detail]/jeuCommunes";
-import JeuPrefectures from "@/app/[lang]/stats/[id]/[detail]/jeuPrefectures";
+import JeuPrefectures from "@/components/common/jeuPrefectures";
 import ListeCommunes from "@/components/stats/listeCommunes";
 import MapCommunes from "@/components/stats/mapCommunes";
 import TourDeFrance from "@/components/common/tourDeFrance";
@@ -18,7 +18,7 @@ const UserDataDetail = async ({ params }: { params: { lang: string, id: string, 
   const counts = await getCountsServer(id, "date,communes,departements,prefectures,count");
   
   const tourHeading = t('tour-de-france', {"username": publicUser.username})
-
+  const prefecturesHeading = t('user-prefectures', {"username": publicUser.username})
   return (
     <>
       <StatsHeader lang={lang} id={id} user={publicUser} date={counts ? counts.date : undefined} count={counts ? JSON.parse(counts.count) : undefined} />
@@ -44,6 +44,7 @@ const UserDataDetail = async ({ params }: { params: { lang: string, id: string, 
         key="map" 
       />}
       {detail === "tour-de-france" && <TourDeFrance 
+        lang={lang} 
         user={publicUser}
         departements={counts ? JSON.parse(counts.departements) : []} 
         heading={tourHeading}
@@ -54,6 +55,7 @@ const UserDataDetail = async ({ params }: { params: { lang: string, id: string, 
         user={publicUser} 
         prefectures={counts ? JSON.parse(counts.prefectures) : []}
         cities={visits ? JSON.parse(visits.fr) : []}
+        heading={prefecturesHeading}
         key="pref" 
       />}
     </>

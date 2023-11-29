@@ -49,6 +49,7 @@ const minAlt = visitedCommunes.reduce((prev, current) => {
 })
 
 const BBCode = `[size=150]MÀJ de ${username}[/size]
+
 [color=blue][b]${visitedCommunes.length}[/b][/color] communes soit [color=blue][b] ${firstPourcent.toFixed(2)} % [/b][/color] du nombre de communes
 [color=red][b] ${Intl.NumberFormat("fr").format(visitedPop)} [/b][/color] habitants soit [color=red][b] ${secondPourcent.toFixed(2)} % [/b][/color] de la population
 [color=green][b] ${Intl.NumberFormat("fr", {maximumFractionDigits: 2, minimumFractionDigits: 2}).format(visitedSurf)} [/b][/color] km² soit [color=green][b] ${thirdPourcent.toFixed(2)} % [/b][/color] de la superficie
@@ -98,7 +99,7 @@ altitude moyenne : ${visitedAltMoyenne.toFixed(2)} m
         {!isDashboard && <></>}
       {isDashboard && <>
         {/* /!\ bellow is a client component */}
-        <PostToForum message={BBCode} topic={"7171"} />
+        <PostToForum lang={lang} message={BBCode} topic={"7171"} />
       </>}
       </div>
     </>
