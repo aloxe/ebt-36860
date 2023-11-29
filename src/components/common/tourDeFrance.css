@@ -2,7 +2,12 @@
   /* fill: transparent; */
   stroke-width: 1px;
   stroke: cornsilk;
-  opacity: 0.2;
+  fill: gray;
+  opacity: 0.4;
+}
+
+path.departement title {
+  white-space: pre-wrap;
 }
 
 svg g.region path.departement.visited {
