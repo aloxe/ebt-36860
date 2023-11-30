@@ -36,8 +36,8 @@ h3 {
   @apply text-amber-700 text-lg font-light font-sans italic mb-1 text-center uppercase
 }
 
-a {
-  @apply text-blue-900 underline underline-offset-4
+a, .link {
+  @apply text-blue-900 underline underline-offset-4 cursor-pointer
 }
 
 li {

@@ -2,34 +2,53 @@
 import { useAuth } from "@/context/authcontext";
 import UserDetails from "./userdetails";
 import CitiesView from "./citiesView";
-import { UserMapView } from "./usermapView";
 import { UnknownsView } from "./unknownsView";
 import { useTranslation } from '@/i18n/client'
+import TitleButton from "@/components/common/titleButton";
+import AdminLinks from "@/components/common/adminLinks";
+import { useState } from "react";
+import ForumMenu from "./menu";
 
 export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const { visited, user } = useAuth();
   const username = user ? user.username : "";
+  const [isForum, setIsForum] = useState<boolean>(false);
 
+  const handleToForum = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    console.log(event);
+    setIsForum(!isForum);
+  }
+
+  if (!user) {
+    return (
+      <div className="md:table border-spacing-x-4">
+       <h3>You need to log in to see this page…</h3>
+      </div>
+    )
+  }
   return (
       <>
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <h1>
-          {!user && `You need to log in to see this page…`}
-          {username && t('dashboard', {"username": username})}
-        </h1>
+      <AdminLinks lang={lang} />
+      <div className="md:table border-spacing-x-4">
+        <div className="md:basis-1/4 md:table-cell">
+          { username && <UserDetails lang={lang} />}
+        </div>
+        <div className="md:basis-1/4 md:table-cell">
+          { username && <CitiesView  lang={lang} user={user} />}
+        </div>
       </div>
-      {user?.username && <UserDetails lang={lang} />}
-      {user?.username && <CitiesView 
-        lang={lang}
-        user={user}
+
+      { username && visited && !isForum && <TitleButton
+            label={t('see-map-share')}
+            href={"#forum"}
+            callback={handleToForum}
       />}
-      {user?.username && visited && <UserMapView 
-        lang={lang}
-        user={user} 
-      />}
-      {user?.username && visited?.unknowns.length > 0 && <UnknownsView 
+      {username && isForum && visited && <ForumMenu lang={lang} user={user} visited={visited} />}
+
+      {username && visited?.unknowns.length > 0 && <UnknownsView 
         lang={lang}
         user={user}
       />}

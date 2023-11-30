@@ -11,9 +11,7 @@ const UserData = async ({ params }: { params: { lang: string, id: string } }) =>
 
   return (
     <>
-      <div className="md:table border-spacing-x-4">
-        <StatsHeader lang={lang} id={id} user={publicUser} date={counts ? counts.date : undefined} count={counts ? JSON.parse(counts.count) : undefined} />
-      </div>
+      <StatsHeader lang={lang} id={id} user={publicUser} date={counts ? counts.date : undefined} count={counts ? JSON.parse(counts.count) : undefined} />
       <StatsMenu lang={lang} id={id} />
     </>
   )

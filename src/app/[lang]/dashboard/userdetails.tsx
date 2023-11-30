@@ -29,15 +29,10 @@ const  UserDetails = ({ lang }: {lang: string}) => {
   }
 
   return (
-    <>
-    <AdminLinks lang={lang} />
     <Profile
       lang={lang}
       user={user} 
-      handleRefreshUser={handleRefreshUser} 
-      requestRefresh={requestRefresh} />
-    </>
-      
+      handleRefreshUser={handleRefreshUser} />    
   )
 }
 
