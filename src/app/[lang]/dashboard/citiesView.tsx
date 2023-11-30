@@ -64,10 +64,6 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
     cities && countFrenchCommunes();
   }, [cities, countFrenchCommunes])
 
-  useEffect(() => {
-    console.log("step " + step);
-  }, [step])
-
   const handleCityRequest = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setStep(1);

@@ -1,4 +1,4 @@
-import JeuCommunes from "@/app/[lang]/stats/[id]/[detail]/jeuCommunes";
+import StatJeuCommunes from "@/app/[lang]/stats/[id]/[detail]/statJeuCommunes";
 import JeuPrefectures from "@/components/common/jeuPrefectures";
 import ListeCommunes from "@/components/stats/listeCommunes";
 import MapCommunes from "@/components/stats/mapCommunes";
@@ -24,7 +24,7 @@ const UserDataDetail = async ({ params }: { params: { lang: string, id: string, 
       <StatsHeader lang={lang} id={id} user={publicUser} date={counts ? counts.date : undefined} count={counts ? JSON.parse(counts.count) : undefined} />
       <StatsMenu lang={lang} id={id} />
 
-      {detail === "36680-communes" && <JeuCommunes lang={lang} 
+      {detail === "36680-communes" && <StatJeuCommunes lang={lang} 
         user={publicUser} 
         communes={counts ? JSON.parse(counts.communes) : []} 
         key="is36000" 
