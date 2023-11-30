@@ -130,7 +130,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     if (!city.code) {
       // check name included + postcode
       var possibleCommunes = communes.filter((commune) => commune.nom.includes(city.city)
-        && hasSamePostcode(city.postcodes || [], commune.codesPostaux || [])
+        && (commune.codesPostaux && commune.codesPostaux?.includes(city.top_zipcode) || hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
         )
       if (possibleCommunes?.length === 1) {
         var foundCommune = possibleCommunes[0].chefLieu ? getChefLieu(possibleCommunes[0].chefLieu, communes) : possibleCommunes[0];
