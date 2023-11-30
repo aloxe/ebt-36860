@@ -223,7 +223,7 @@ export const refreshVisited = (visitedCities) =>  {
   const visitedKnown = visitedCities.filter(city => city.code)
   const visitedCommunes = removeDuplicateCommunes(visitedKnown);
   const communes = visitedCommunes.map(el => el.code)
-  const visitedDepartements = removeDuplicateDepartements(visitedCities);
+  const visitedDepartements = removeDuplicateDepartements(visitedCommunes);
   const departements = visitedDepartements.map(el => el.departement)
   const prefectures = removeNotPrefecture(communes);
   const visitedUnknowns = visitedCities.filter(city => !city.code);
