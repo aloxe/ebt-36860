@@ -184,7 +184,10 @@ export const processPostcodes = async (user, citiesArray) => {
       // we sort postcodes by departements ins an array
       let sort = []
       // if we can't fetch postcodes, stop here
-      if (postcodesArray.length <= 0) { return city; }
+      if (postcodesArray.length <= 0) { 
+        city.postcodes = [city.top_zipcode];
+        return city; 
+      }
       postcodesArray.forEach((postcode) => {
         let dep = getDepartement(postcode)
         if (!sort.find(o => o.dep === dep)) {
