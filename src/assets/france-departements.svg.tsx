@@ -842,7 +842,7 @@ const CarteDeFranceSvg = ({visited}:CarteDeFranceSvgProps) => {
       <path
         data-nom="Corse-du-Sud"
         data-numerodepartement="2A"
-        className="region-94 departement departement-2A departement-corse-du-sud"
+        className={visited.includes('2A') ? "departement visited" : "departement"}
         d="m640.5,554.2l3.2-1.7l0.7,8.4l-0.15,0.54 l-1.85,4.86l-2.7,1.9l3.3,0.4l-5.8,14.7l-3.1-1.2l-1.2-2.8l-11.2-3.4l-4.8-4.4l0.2-3l4.9-3.3l-9.5-1.9l2.7-7l-0.9-5.8l-7.3,2.6 l3-8.4l2.6-1.6l-7.9-4.4l-1.1-5.5l5.3-3.8l-3.8-4.2l-2.6,1l0.5-2.7l13.6,2.1l1.2,3.5l6,3.4l6,5.9l0.5,3.2l2.7,1.1l3.7,11 L640.5,554.2z"
         ><title>
         2A Corse-du-Sud &#013;Corse
@@ -850,7 +850,7 @@ const CarteDeFranceSvg = ({visited}:CarteDeFranceSvgProps) => {
       <path
         data-nom="Haute-Corse"
         data-numerodepartement="2B"
-        className="region-94 departement departement-2B departement-haute-corse"
+        className={visited.includes('2B') ? "departement visited" : "departement"}
         d="m643.7,551.5v1l-3.2,1.7l-3.8-0.5l-3.7-11 l-2.7-1.1l-0.5-3.2l-6-5.9l-6-3.4l-1.2-3.5l-13.6-2.1v-0.2l3.9-5l-0.3-3.4l2.2-2.8l2.8-0.3l0.9-2.9l10.7-4.2l3.5-4.9l8.6,1.3 l-0.5-17.4l2.4-2l2.9,1.1l0.18,0.89l1.52,8.21l-0.5,10.6l4,5.6l3.8,26l-5.4,11.9V551.5L643.7,551.5z"
         ><title>
         2B Haute-Corse &#013;Corse
