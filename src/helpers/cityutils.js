@@ -198,7 +198,7 @@ export const processPostcodes = async (user, citiesArray) => {
 
       if (sort.length > 1) {
         sort.forEach((obj) => {
-          if (getDepartement(top_zipcode) !== obj.dep) {
+          if (getDepartement(city.top_zipcode) !== obj.dep) {
             extraCities.push({
               city: city.city,
               country: city.country,
