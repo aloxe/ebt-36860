@@ -54,9 +54,13 @@ export const getRegions = (departements) => {
   return regions
 }
 
-export const getDepartement = (postcode) => (
-  parseInt(postcode.substring(0,2)) < 96 ? postcode.substring(0,2) : postcode.substring(0,3)
-)
+export const getDepartement = (postcode) => {
+  if (parseInt(postcode.substring(0,2)) === 20) {
+    // les départements de Corse
+    return parseInt(postcode.substring(2,3)) < 2 ? "2A" : "2B"
+  }
+  return parseInt(postcode.substring(0,2)) < 96 ? postcode.substring(0,2) : postcode.substring(0,3)
+}
 
 export const hasSamePostcode = (cp1, cp2) => cp1.filter(cp => cp2.includes(cp)).length > 0;
 
