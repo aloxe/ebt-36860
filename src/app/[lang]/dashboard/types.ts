@@ -1,4 +1,5 @@
 interface DashboardProps {
     lang?: string,
-    user: User
+    user: User,
+    visited?: Visited
 }

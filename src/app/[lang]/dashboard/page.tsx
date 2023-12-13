@@ -2,7 +2,7 @@
 import { useAuth } from "@/context/authcontext";
 import UserDetails from "./userdetails";
 import CitiesView from "./citiesView";
-import { UnknownsView } from "./unknownsView";
+import UnknownsView from "./unknownsView";
 import { useTranslation } from '@/i18n/client'
 import TitleButton from "@/components/common/titleButton";
 import AdminLinks from "@/components/common/adminLinks";
@@ -51,6 +51,7 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
       {username && visited?.unknowns.length > 0 && <UnknownsView 
         lang={lang}
         user={user}
+        visited={visited}
       />}
       </>
     )

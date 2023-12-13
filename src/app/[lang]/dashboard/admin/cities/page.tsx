@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AdminLinks from "@/components/common/adminLinks";
 import { getPlayerData } from "@/helpers/dbutils";
 
-export default function CitesAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) {
+const CitesAdmin = ({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -48,3 +48,5 @@ export default function CitesAdmin({ params: { lang }, searchParams }: { params:
     </>
   )
 }
+
+export default CitesAdmin
