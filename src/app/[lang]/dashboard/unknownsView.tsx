@@ -9,10 +9,10 @@ import moment from "moment";
 import 'moment/min/locales';
 import { useAuth } from "@/context/authcontext";
 
-export function UnknownsView({lang, user}: DashboardProps) {
+const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited: Visited }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  const { visited, setVisited } = useAuth();
+  // const { visited, setVisited } = useAuth();
   let myVisited = {...visited};
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
@@ -117,7 +117,8 @@ export function UnknownsView({lang, user}: DashboardProps) {
           unknowns: myFreshVisited.unknowns.length,
         }
       })
-      setVisited(myFreshVisited)
+      // setVisited(myFreshVisited)
+      // TODO all the saves
       // TODO do we still use storage for Visited?
   }
 
@@ -172,3 +173,5 @@ export function UnknownsView({lang, user}: DashboardProps) {
     </>
   )
 }
+
+export default UnknownsView;
