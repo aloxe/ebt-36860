@@ -1,13 +1,12 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
-import { refreshVisited } from "@/helpers/cityutils";
+import { getDepartement, refreshVisited } from "@/helpers/cityutils";
 import { getCounts, saveCounts, saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
-import { useAuth } from "@/context/authcontext";
 
 const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited: Visited }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -73,7 +72,7 @@ const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited:
         return
       }
       myVisited.visitedCities.map(async function (city: City) {
-        if (city.city == location && city.top_zipcode?.substring(0,2) == departement) {        
+        if (city.city == location && getDepartement(city.top_zipcode) === departement) {        
           if (city.commune) {
             feedback.className = "error"
             feedback.innerHTML = t('commune-already') + " " + city.commune;
@@ -149,7 +148,7 @@ const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited:
                 <div className="h-3"></div>
                   <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-osm')}</a>
                 <input type="hidden" value={city.city} name="location" id="location" />
-                <input type="hidden" value={city.top_zipcode?.substring(0,2)} name="departement"  id="departement"/>
+                <input type="hidden" value={getDepartement(city.top_zipcode)} name="departement"  id="departement"/>
                 <input type="hidden" value="" name="code"  id="code" />
                 <input type="hidden" value="" name="commune" id="commune" />
                 </div>
