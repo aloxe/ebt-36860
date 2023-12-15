@@ -26,6 +26,8 @@
     "places-unknown-desc4": "tell me on the forum",
     "places-unknown-desc4-link": "https://forum.eurobilltracker.com/viewtopic.php?f=20&t=57328",
     "find-on-osm": "find on 🗺 OSMap",
+    "location-not-found": "This location was not found you may have made a typo or associated a wrong postcode. Check if you can fix it on Eurobilltracker.",
+    "find-on-ebt": "find on EBT",
     "is-in": "is in",
     "chosse": "choose",
     "save": "Save",
