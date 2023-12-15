@@ -12,7 +12,7 @@ import ForumMenu from "./menu";
 export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
-  const { visited, user } = useAuth();
+  const { visited, setVisited, user } = useAuth();
   const username = user ? user.username : "";
   const [isForum, setIsForum] = useState<boolean>(false);
 
@@ -52,6 +52,7 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
         lang={lang}
         user={user}
         visited={visited}
+        setVisited={setVisited}
       />}
       </>
     )

@@ -8,10 +8,9 @@ import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
 
-const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited: Visited }) => {
+const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: User, visited: Visited, setVisited: any }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  // const { visited, setVisited } = useAuth();
   let myVisited = {...visited};
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
@@ -116,9 +115,7 @@ const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited:
           unknowns: myFreshVisited.unknowns.length,
         }
       })
-      // setVisited(myFreshVisited)
-      // TODO all the saves
-      // TODO do we still use storage for Visited?
+      setVisited(myFreshVisited)
   }
 
   return (
@@ -143,10 +140,30 @@ const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited:
         <div className="table w-full">
           {visitedUnknown.map((city: City) => {
             const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
-            return city.possible && <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="table-row even:bg-indigo-50">
-                <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city}<br/>
-                <div className="h-3"></div>
+            const ebtUrl = `https://fr.eurobilltracker.com/?tab=0&find=` + city.city;
+            if (!city.possible) {
+              return <div key={city.departement+" "+city.city} className="table-row bg-slate-200 even:bg-indigo-200">
+                <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city} ({city.top_zipcode})<br/>
+                  <div className="h-3">
                   <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-osm')}</a>
+                  </div>
+                </div>
+                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-4 hidden">
+                …
+                </div>
+                <div className="table-cell float-left">
+                  {t('location-not-found')}
+                </div>
+                <div className="table-cell">
+                <a href={ebtUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-ebt')}</a>
+                </div>
+              </div>
+            } else {
+            return <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="table-row even:bg-indigo-50">
+                <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city}<br/>
+                <div className="h-3">
+                  <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-osm')}</a>
+                </div>
                 <input type="hidden" value={city.city} name="location" id="location" />
                 <input type="hidden" value={getDepartement(city.top_zipcode)} name="departement"  id="departement"/>
                 <input type="hidden" value="" name="code"  id="code" />
@@ -166,6 +183,7 @@ const UnknownsView = ({lang, user, visited}: {lang: string, user: User, visited:
                   </button>
                 </div>
             </form>
+            }
           })}
         </div>
       </div>

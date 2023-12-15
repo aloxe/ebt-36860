@@ -47,7 +47,6 @@ useEffect(() => {
 
   const logout = () => {
     sessionStorage.removeItem('user');
-    sessionStorage.removeItem('visited');
     setUser(undefined)
     setVisited(undefined)
     setPolygons([])
