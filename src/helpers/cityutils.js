@@ -3,15 +3,6 @@ import { sansAccent } from "@/helpers/strings";
 
 // API calls such as:
 // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
-  
-export const fetchAllCommunes = async () => {
-  const response = await fetch(
-      `https://geo.api.gouv.fr/communes?fields=code,nom`,
-      { cache: 'force-cache' }
-    )
-  const communes = await response.json()
-  return communes;
-}
 
 export const fetchAllComplete = async () => {
   const response = await fetch(
@@ -20,16 +11,6 @@ export const fetchAllComplete = async () => {
     )
   const communes = await response.json()
   return communes;
-}
-
-export const fetchComplete = async (code) => {
-    const response = await fetch(
-      `https://geo.api.gouv.fr/communes?code=${code}&fields=code,nom,surface,population,codesPostaux,departement,region,zone`,
-      { cache: 'force-cache' }
-    )
-  const communes = await response.json()
-    // console.log("fetch complete", code, communes[0]);
-  return communes[0];
 }
 
 export const fetchPolygon = async (code) => {
@@ -97,6 +78,7 @@ const getChefLieu = (code, communes) => {
 }
 
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
+
   visitedCities.map((city) => {
     // check same name + dept
     var foundCommune = communes.find((commune) => city.city == commune.nom
@@ -118,7 +100,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     if (!city.code) {
       // check same name no diacritics + dept
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
-        && getDepartement(city.postcodes[0]) == commune.departement)
+        && getDepartement(city.postcodes[0]) === commune.departement)
       if (foundCommune?.chefLieu) {
         foundCommune = getChefLieu(foundCommune.chefLieu, communes)
       }
@@ -150,7 +132,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
   visitedCities.map(function (city) {
     if (!city.code && city.postcodes?.length == 1) {
       // check postcode if only one
-      const samePostcode = communes.filter((commune) => getDepartement(city.postcodes[0]) == commune.departement
+      const samePostcode = communes.filter((commune) => getDepartement(city.postcodes[0]) === commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
       if (samePostcode.length === 1) {
         var foundCommune = samePostcode[0].chefLieu ? getChefLieu(samePostcode[0].chefLieu, communes) : samePostcode[0];

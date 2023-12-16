@@ -3,7 +3,7 @@ import { Dropdown } from "@/components/common/dropdown";
 import { getDepartement, refreshVisited } from "@/helpers/cityutils";
 import { getCounts, saveCounts, saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
@@ -16,6 +16,8 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
 
   const visitedUnknown = useMemo(() => myVisited.visitedCities.filter((city: City) => !city.code),
 [myVisited.visitedCities]);
+
+  const communes = require('@etalab/decoupage-administratif/data/communes.json')
 
   function handleDropdownChoice(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
@@ -116,7 +118,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         }
       })
       setVisited(myFreshVisited)
-  }
+  }  
 
   return (
     <>
@@ -141,6 +143,10 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
           {visitedUnknown.map((city: City) => {
             const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
             const ebtUrl = `https://fr.eurobilltracker.com/?tab=0&find=` + city.city;
+            var foundCommune = communes.filter((c: Commune) => city.city === c.nom)
+            var foundPostCode = communes.filter((c: Commune) => c.codesPostaux && c.codesPostaux.includes(city.top_zipcode ? city.top_zipcode : "00000"))
+
+            
             if (!city.possible) {
               return <div key={city.departement+" "+city.city} className="table-row bg-slate-200 even:bg-indigo-200">
                 <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city} ({city.top_zipcode})<br/>
@@ -148,19 +154,31 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                   <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-osm')}</a>
                   </div>
                 </div>
-                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-4 hidden">
+                <div className="sm:table-cell px-6 align-top pt-4 hidden">
                 …
                 </div>
-                <div className="table-cell float-left">
-                  {t('location-not-found')}
+                <div className="table-cell text-sm">
+                  {t('location-not-found')}<br/>
+                  { foundCommune.length > 0 && 
+                  <span className="text-xs">
+                    {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
+                    <br/></span>}
+                  { foundPostCode.length > 0 && 
+                  <span className="text-xs">
+                    {t('found')} {city.top_zipcode} {t('with')} {foundPostCode.map((c: Commune)  => c.nom + ", " )}
+                    <br/></span>}
+                  { foundCommune.length == 0 && <span className="text-xs">{city.city} {t('is-not-municipality')} <br/></span>}
+                  { foundPostCode.length == 0 && <span className="text-xs">{city.top_zipcode} {t('is-not-postcode')} <br/></span>}
+
                 </div>
-                <div className="table-cell">
-                <a href={ebtUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-ebt')}</a>
+                <div className="table-cell align-top text-center">
+                {t('check-on-ebt')}<br/>
+                <a href={t('ebt-link')} className="text-[0.7rem] btn btn-secondary" target="_blank">Eurobilltracker</a>
                 </div>
               </div>
             } else {
             return <form key={city.departement+" "+city.city} onSubmit={handleSubmit} className="table-row even:bg-indigo-50">
-                <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city}<br/>
+                <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city} ({city.top_zipcode})<br/>
                 <div className="h-3">
                   <a href={osmUrl} className="text-[0.7rem] btn btn-secondary" target="_blank">{t('find-on-osm')}</a>
                 </div>
@@ -173,8 +191,13 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 {t('is-in')}
                 </div>
                 <div className="table-cell float-left">
+                { foundCommune.length > 0 && 
+                  <span className="text-xs">
+                    {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
+                    <br/></span>}
                   {dropdownCommunes(city.possible || [])}
                   <br/><span id="error" className="error float-left"></span>
+
                 </div>
                 <div className="table-cell">
                   <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer" id="save" disabled>
