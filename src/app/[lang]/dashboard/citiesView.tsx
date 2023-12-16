@@ -81,7 +81,9 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
       setStep(2)
     } else {
       // Admin user only has user.id, we fetch existing data
-      const visitedCities = await getVisits(user.id, 'fr')
+      const visitedCities = await getVisits(user.id, 'cities')
+      // if cities not available:
+      // const visitedCities = await getVisits(user.id, 'fr')
       setCities(visitedCities)
       setStep(2)
     }

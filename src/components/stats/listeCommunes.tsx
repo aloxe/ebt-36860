@@ -30,19 +30,18 @@ async function ListeCommunes({lang, user, communes, prefectures}: ListeCommunesP
               </th>
             </tr>
           </thead>
-          <tbody>
-            {departements.map((departement: any)  => (
-              <>
-              <tr key={departement.code} className={visitedCommunes.filter(function(commune){
-                  return commune?.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
-                  <th colSpan={3} className="whitespace-nowrap p-4">
-                    {departement.code === "984" ? <>TAAF (984)</> :
-                    <>{departement.nom} ({departement.code})</>}
-                    <div className="float-right font-thin">
-                      {visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length} {t('municipality', {count: visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length})} 
-                      {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? " (🏛️)" : ""}
-                    </div>
-                    </th>
+          {departements.map((departement: any) => (
+            <tbody key={departement.code}>
+              <tr className={visitedCommunes.filter(function(commune) {
+                return commune?.departement?.code === departement.code }).length < 1 ? "bg-sky-100 opacity-20" : "bg-sky-200"}>
+                <th colSpan={3} className="whitespace-nowrap p-4">
+                  {departement.code === "984" ? <>TAAF (984)</> :
+                  <>{departement.nom} ({departement.code})</>}
+                  <div className="float-right font-thin">
+                    {visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length} {t('municipality', {count: visitedCommunes.filter((commune) => (commune?.departement?.code === departement.code)).length})} 
+                    {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? " (🏛️)" : ""}
+                  </div>
+                </th>
               </tr>
               {visitedCommunes.map( commune => (
                 commune?.departement?.code === departement.code &&
@@ -64,9 +63,8 @@ async function ListeCommunes({lang, user, communes, prefectures}: ListeCommunesP
                   </td>
                 </tr>
               ))}
-              </>
-            ))}
-          </tbody>
+            </tbody>
+          ))}
         </table>
     </div>
     {/* essai liste brute */}
