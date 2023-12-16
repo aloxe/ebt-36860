@@ -43,11 +43,8 @@ const UnknownsAdmin = ({ params: { lang }, searchParams }: { params: { lang: str
           setUserVisited(userVisited)
         } else {
           console.log("user without visited");
-
         }
       }
-      console.log(fetchUserVisitedData);
-
       fetchUserVisitedData(user_id)
     }
   }, [user])
