@@ -14,8 +14,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
   let myVisited = {...visited};
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
-  const visitedUnknown = useMemo(() => myVisited.visitedCities.filter((city: City) => !city.code),
-[myVisited.visitedCities]);
+  const visitedUnknown = myVisited.visitedCities.filter((city: City) => !city.code);
 
   const communes = require('@etalab/decoupage-administratif/data/communes.json')
 
@@ -25,13 +24,13 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
     const DropDownRowSpan = event?.currentTarget.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0]?.childNodes[0]
 
     const newname = event.currentTarget.childNodes[0].nodeValue
-    const newcode = event.currentTarget.id 
+    const newcode = event.currentTarget.id
 
     // writte name instead of choose
     if (DropDownRowSpan) DropDownRowSpan.nodeValue = newname;
 
     // add name and code in hidden input values
-    // @ts-ignore 
+    // @ts-ignore
     const communeEl = myform?.commune;
     if (communeEl) communeEl.setAttribute("value", newname || "")
     // @ts-ignore
@@ -44,7 +43,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
     const saveButton = myform?.save;
     saveButton?.removeAttribute('disabled')
 
-    // @ts-ignore clean error 
+    // @ts-ignore clean error
     const error = myform?.error
     if (error) error.innerHTML = ""
   }
@@ -73,7 +72,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         return
       }
       myVisited.visitedCities.map(async function (city: City) {
-        if (city.city == location && getDepartement(city.top_zipcode) === departement) {        
+        if (city.city == location && getDepartement(city.top_zipcode) === departement) {
           if (city.commune) {
             feedback.className = "error"
             feedback.innerHTML = t('commune-already') + " " + city.commune;
@@ -81,7 +80,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
           } else {
             city.code = code
             city.commune = commune
-            city.possible = undefined 
+            city.possible = undefined
             delete city.possible
             const newEBTlocation:any = {
               "code_postal": city.top_zipcode,
@@ -101,24 +100,24 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         }
       });
       // visitedCities has changed we need to update all depending data
-      const myFreshVisited = await refreshVisited(myVisited.visitedCities)   
+      const myFreshVisited = await refreshVisited(myVisited.visitedCities)
       const count = await getCounts(user.id, "count")
-      saveCounts(user.id, { 
+      saveCounts(user.id, {
         communes: myFreshVisited.communes,
         departements: myFreshVisited.departements,
         prefectures: myFreshVisited.prefectures,
         unknowns: myFreshVisited.unknowns,
-        count: { 
-          all: count.all, 
+        count: {
+          all: count.all,
           fr: myFreshVisited.visitedCities.length,
           communes: myFreshVisited.communes.length,
           departements: myFreshVisited.departements.length,
           prefectures: myFreshVisited.prefectures.length,
-          unknowns: myFreshVisited.unknowns.length, 
+          unknowns: myFreshVisited.unknowns.length,
         }
       })
       setVisited(myFreshVisited)
-  }  
+  }
 
   return (
     <>
@@ -137,7 +136,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
           {t('places-unknown-desc2')}
         </div>
         <div className="text-sm text-stone-600 my-1">
-          {t('places-unknown-desc3')} <Link href={t('places-unknown-desc4-link')} target="_blank">{t('places-unknown-desc4')}</Link>. 
+          {t('places-unknown-desc3')} <Link href={t('places-unknown-desc4-link')} target="_blank">{t('places-unknown-desc4')}</Link>.
         </div>
         <div className="table w-full">
           {visitedUnknown.map((city: City) => {
@@ -146,7 +145,8 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
             var foundCommune = communes.filter((c: Commune) => city.city === c.nom)
             var foundPostCode = communes.filter((c: Commune) => c.codesPostaux && c.codesPostaux.includes(city.top_zipcode ? city.top_zipcode : "00000"))
 
-            
+            console.log(foundCommune);
+
             if (!city.possible) {
               return <div key={city.departement+" "+city.city} className="table-row bg-slate-200 even:bg-indigo-200">
                 <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city} ({city.top_zipcode})<br/>
@@ -159,11 +159,11 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 </div>
                 <div className="table-cell text-sm">
                   {t('location-not-found')}<br/>
-                  { foundCommune.length > 0 && 
+                  { foundCommune.length > 0 &&
                   <span className="text-xs">
                     {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
                     <br/></span>}
-                  { foundPostCode.length > 0 && 
+                  { foundPostCode.length > 0 &&
                   <span className="text-xs">
                     {t('found')} {city.top_zipcode} {t('with')} {foundPostCode.map((c: Commune)  => c.nom + ", " )}
                     <br/></span>}
@@ -191,7 +191,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 {t('is-in')}
                 </div>
                 <div className="table-cell float-left">
-                { foundCommune.length > 0 && 
+                { foundCommune.length > 0 &&
                   <span className="text-xs">
                     {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
                     <br/></span>}
