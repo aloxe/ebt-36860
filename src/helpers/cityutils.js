@@ -70,11 +70,9 @@ export const removeNotPrefecture = (communes) => {
   return prefectures;
 }
 
-const getChefLieu = (code, communes) => {
-  // in case there is a match with a "code" of a commune déléguée
-  // we return the chek lieu "commune actuelle" instead
-  const chefLieu = communes.find((commune) => code === commune.code);
-  return chefLieu[0];
+const getCommuneFromCode = (code, communes) => {
+  const foundCommune = communes.find((commune) => code === commune.code);
+  return foundCommune;
 }
 
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
@@ -83,9 +81,11 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     // check same name + dept
     var foundCommune = communes.find((commune) => city.city == commune.nom
       && getDepartement(city.postcodes[0]) == commune.departement)
-      // chefLieu of commune is the real commune (we found a former commune) 
-      if (foundCommune?.chefLieu) {
-        foundCommune = getChefLieu(foundCommune.chefLieu, communes)
+    if (foundCommune?.chefLieu) {
+        // chefLieu of commune is the real commune
+        // we found a former commune or commune déléguée
+        // we will return the chek lieu "commune actuelle" instead
+        foundCommune = getCommuneFromCode(foundCommune.chefLieu, communes)
       }
       if (foundCommune) {
         city.code = foundCommune.code
@@ -102,7 +102,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
         && getDepartement(city.postcodes[0]) === commune.departement)
       if (foundCommune?.chefLieu) {
-        foundCommune = getChefLieu(foundCommune.chefLieu, communes)
+        foundCommune = getCommuneFromCode(foundCommune.chefLieu, communes)
       }
       if (foundCommune) {
         city.code = foundCommune.code
@@ -119,7 +119,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         && (commune.codesPostaux && commune.codesPostaux?.includes(city.top_zipcode) || hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
         )
       if (possibleCommunes?.length === 1) {
-        var foundCommune = possibleCommunes[0].chefLieu ? getChefLieu(possibleCommunes[0].chefLieu, communes) : possibleCommunes[0];
+        var foundCommune = possibleCommunes[0].chefLieu ? getCommuneFromCode(possibleCommunes[0].chefLieu, communes) : possibleCommunes[0];
         city.code = foundCommune.code;
         city.commune = foundCommune.nom;
         city.departement = foundCommune.departement;
@@ -135,7 +135,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       const samePostcode = communes.filter((commune) => getDepartement(city.postcodes[0]) === commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
       if (samePostcode.length === 1) {
-        var foundCommune = samePostcode[0].chefLieu ? getChefLieu(samePostcode[0].chefLieu, communes) : samePostcode[0];
+        var foundCommune = samePostcode[0].chefLieu ? getCommuneFromCode(samePostcode[0].chefLieu, communes) : samePostcode[0];
         city.code = foundCommune.code;
         city.commune = foundCommune.nom;
         city.departement = foundCommune.departement;
@@ -151,7 +151,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
       var foundCommune = EBTLocations.find((lieu) => lieu.nom_ebt == city.city
         && hasSamePostcode(city.postcodes || [], [lieu.code_postal]))
       if (foundCommune) {
-        if (foundCommune.chefLieu) foundCommune = getChefLieu(foundCommune.chefLieu, communes)
+        if (foundCommune.chefLieu) foundCommune = getCommuneFromCode(foundCommune.chefLieu, communes)
         city.code = foundCommune.code_commune;
         city.commune = foundCommune.nom_commune;
         city.departement = getDepartement(foundCommune.code_commune)
@@ -170,9 +170,9 @@ export const processPostcodes = async (user, citiesArray) => {
       // we sort postcodes by departements ins an array
       let sort = []
       // if we can't fetch postcodes, stop here
-      if (postcodesArray.length <= 0) { 
+      if (postcodesArray.length <= 0) {
         city.postcodes = [city.top_zipcode];
-        return city; 
+        return city;
       }
       postcodesArray.forEach((postcode) => {
         let dep = getDepartement(postcode)
@@ -226,4 +226,3 @@ export const refreshVisited = (visitedCities) =>  {
     date: Date.now()
   };
 }
-

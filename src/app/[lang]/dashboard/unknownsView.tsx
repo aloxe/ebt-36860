@@ -14,8 +14,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
   let myVisited = {...visited};
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
-  const visitedUnknown = useMemo(() => myVisited.visitedCities.filter((city: City) => !city.code),
-[myVisited.visitedCities]);
+  const visitedUnknown = myVisited.visitedCities.filter((city: City) => !city.code);
 
   const communes = require('@etalab/decoupage-administratif/data/communes.json')
 
@@ -118,7 +117,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         }
       })
       setVisited(myFreshVisited)
-  }  
+  }
 
   return (
     <>
@@ -146,7 +145,8 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
             var foundCommune = communes.filter((c: Commune) => city.city === c.nom)
             var foundPostCode = communes.filter((c: Commune) => c.codesPostaux && c.codesPostaux.includes(city.top_zipcode ? city.top_zipcode : "00000"))
 
-            
+            console.log(foundCommune);
+
             if (!city.possible) {
               return <div key={city.departement+" "+city.city} className="table-row bg-slate-200 even:bg-indigo-200">
                 <div className="table-cell min-w-max pb-4 align-top pt-4">{city.city} ({city.top_zipcode})<br/>
@@ -159,11 +159,11 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 </div>
                 <div className="table-cell text-sm">
                   {t('location-not-found')}<br/>
-                  { foundCommune.length > 0 && 
+                  { foundCommune.length > 0 &&
                   <span className="text-xs">
                     {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
                     <br/></span>}
-                  { foundPostCode.length > 0 && 
+                  { foundPostCode.length > 0 &&
                   <span className="text-xs">
                     {t('found')} {city.top_zipcode} {t('with')} {foundPostCode.map((c: Commune)  => c.nom + ", " )}
                     <br/></span>}
@@ -191,7 +191,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 {t('is-in')}
                 </div>
                 <div className="table-cell float-left">
-                { foundCommune.length > 0 && 
+                { foundCommune.length > 0 &&
                   <span className="text-xs">
                     {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
                     <br/></span>}
