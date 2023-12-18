@@ -4,25 +4,33 @@ import { useTranslation } from '@/i18n/client'
 import { useEffect, useState } from "react";
 import AdminLinks from "@/components/common/adminLinks";
 import { getPlayerData } from "@/helpers/dbutils";
+import { useSearchParams } from 'next/navigation'
 
-const CitesAdmin = ({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) => {
+const CitesAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false)
+  const searchParams = useSearchParams()
+  const user_id = searchParams.get("user_id") ?? ""
 
   useEffect(() => {
-    if (!loading) {
-      const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";  
+    if (user_id && !loading) {
       const fetchUserData = async (id: string) => {
         const userData: User = await getPlayerData("user", id);
-        if (userData) {
+        if (userData?.id) {
           userData.isFake = true;
           setUser(userData)
+        } else if (userData) {
+          setUser({ 
+            id: parseInt(id),
+            username: userData.toString(),
+            isFake: true
+          })
         } else {
           setUser({ 
-            id: parseInt(user_id),
-            username: "La tête à Toto",
+            id: parseInt(id),
+            username: "la tête a Toto",
             isFake: true
           })
         }
@@ -30,7 +38,7 @@ const CitesAdmin = ({ params: { lang }, searchParams }: { params: { lang: string
       setLoading(true);
       fetchUserData(user_id)
     }
-  }, [loading])
+  }, [loading, user_id])
 
   return (
     <>

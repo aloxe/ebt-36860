@@ -21,6 +21,9 @@
     "mean-altitude": "mean altitude",
     "calculation-note": "calculations are made from metropolitan France",
     "usermap": "{{username}}’s french map",
+    "download-map": "Download map",
+    "copy": "copy",
+    "goto-forum": "Go to the forum",
     "tour-de-france": "{{username}}’s tour de France",
     "user-prefectures": "{{username}}’s prefectures"
 }
