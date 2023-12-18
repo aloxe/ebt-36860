@@ -56,7 +56,7 @@ function ButtonDownload({ lang, visitedDepartements }: {lang: string, visitedDep
     }
 
     return (
-        <button type="button" onClick={handleClick} className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer text-right">{t('download-map')}</button>
+        <button type="button" onClick={handleClick} className="btn mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer text-right">{t('download-map')}</button>
   );
 };
 
