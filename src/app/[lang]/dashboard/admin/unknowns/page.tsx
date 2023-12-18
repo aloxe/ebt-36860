@@ -18,13 +18,19 @@ const UnknownsAdmin = ({ params: { lang }, searchParams }: { params: { lang: str
       const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";  
       const fetchUserData = async (id: string) => {
         const userData: User = await getPlayerData("user", id);
-        if (userData) {
+        if (userData?.id) {
           userData.isFake = true;
           setUser(userData)
+        } else if (userData) {
+          setUser({ 
+            id: parseInt(user_id),
+            username: userData.toString(),
+            isFake: true
+          })
         } else {
           setUser({ 
             id: parseInt(user_id),
-            username: "La tête à Toto",
+            username: "la tête a Toto",
             isFake: true
           })
         }
@@ -51,7 +57,6 @@ const UnknownsAdmin = ({ params: { lang }, searchParams }: { params: { lang: str
 
   const setVisited = (visited: Visited) => {
     console.log("set", visited);
-    console.log("not really useful here (admin)");
   }
 
   return (

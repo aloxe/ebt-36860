@@ -235,7 +235,6 @@ export const getPlayerData = async (key, userId) => {
     body: JSON.stringify(userId),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
-  console.log("request", key, userId);
   const response = await fetch(`/api/players/get`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
@@ -253,7 +252,6 @@ export const getPlayerData = async (key, userId) => {
     // response ok
     return JSON.parse(dataresult[key]);
   }
-  console.log("return ", dataresult[key]);
   return dataresult[key]
 }
 
