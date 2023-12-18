@@ -70,7 +70,7 @@ export const removeNotPrefecture = (communes) => {
   return prefectures;
 }
 
-const getCommuneFromCode = (code, communes) => {
+export const getCommuneFromCode = (code, communes) => {
   const foundCommune = communes.find((commune) => code === commune.code);
   return foundCommune;
 }

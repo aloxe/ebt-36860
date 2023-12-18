@@ -60,6 +60,7 @@ interface City {
 // API découpage administratif
 interface Commune {
     "code": string;
+    "chefLieu"?: string;
     "nom": string;
     "surface"?: number;
     "population"?: number;

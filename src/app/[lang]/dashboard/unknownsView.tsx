@@ -1,9 +1,8 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
-import { getDepartement, refreshVisited } from "@/helpers/cityutils";
+import { getCommuneFromCode, getDepartement, refreshVisited } from "@/helpers/cityutils";
 import { getCounts, saveCounts, saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
@@ -141,11 +140,13 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         <div className="table w-full">
           {visitedUnknown.map((city: City) => {
             const osmUrl = "https://www.openstreetmap.org/search?query=" + city.top_zipcode + " " + city.city;
-            const ebtUrl = `https://fr.eurobilltracker.com/?tab=0&find=` + city.city;
-            var foundCommune = communes.filter((c: Commune) => city.city === c.nom)
-            var foundPostCode = communes.filter((c: Commune) => c.codesPostaux && c.codesPostaux.includes(city.top_zipcode ? city.top_zipcode : "00000"))
+            var foundCommune = communes.filter((c: Commune) => city.city === c.nom && !c.chefLieu)
+            var foundChefLieu = communes.filter((c: Commune) => city.city === c.nom && c.chefLieu)
+            if (foundChefLieu.length > 0) {
+              foundChefLieu = foundChefLieu.map((c: Commune) => getCommuneFromCode(c.chefLieu, communes))
+            }
 
-            console.log(foundCommune);
+            var foundPostCode = communes.filter((c: Commune) => c.codesPostaux && c.codesPostaux.includes(city.top_zipcode ? city.top_zipcode : "00000"))
 
             if (!city.possible) {
               return <div key={city.departement+" "+city.city} className="table-row bg-slate-200 even:bg-indigo-200">
@@ -158,16 +159,24 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 …
                 </div>
                 <div className="table-cell text-sm">
-                  {t('location-not-found')}<br/>
-                  { foundCommune.length > 0 &&
+                  { foundCommune.length > 0 && foundChefLieu.length == 0 &&
                   <span className="text-xs">
-                    {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
+                    {city.city} {t('can-have-postcode')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
+                    <br/></span>}
+                    { foundCommune.length == 0 && foundChefLieu.length > 0 &&
+                  <span className="text-xs">
+                    {city.city} {t('is-in')} {foundChefLieu[0].nom} <br/>
+                    {foundChefLieu[0].nom} {t('can-have-postcode')} {foundChefLieu.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
+                    <br/></span>}
+                    { foundCommune.length > 0 && foundChefLieu.length > 0 &&
+                  <span className="text-xs">
+                    {city.city} {t('can-have-postcode')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )} or {foundChefLieu.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
                     <br/></span>}
                   { foundPostCode.length > 0 &&
                   <span className="text-xs">
-                    {t('found')} {city.top_zipcode} {t('with')} {foundPostCode.map((c: Commune)  => c.nom + ", " )}
+                    {city.top_zipcode} {t('can-have-commune')} {foundPostCode.map((c: Commune)  => c.nom + ", " )}
                     <br/></span>}
-                  { foundCommune.length == 0 && <span className="text-xs">{city.city} {t('is-not-municipality')} <br/></span>}
+                  { foundCommune.length == 0 && foundChefLieu.length == 0 && <span className="text-xs">{city.city} {t('is-not-municipality')} <br/></span>}
                   { foundPostCode.length == 0 && <span className="text-xs">{city.top_zipcode} {t('is-not-postcode')} <br/></span>}
 
                 </div>
@@ -193,7 +202,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
                 <div className="table-cell float-left">
                 { foundCommune.length > 0 &&
                   <span className="text-xs">
-                    {t('found')} {city.city} {t('with')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
+                    {city.city} {t('can-have-postcode')} {foundCommune.map((c: Commune)  => c.codesPostaux && c.codesPostaux.map(zip => zip + ", " ) )}
                     <br/></span>}
                   {dropdownCommunes(city.possible || [])}
                   <br/><span id="error" className="error float-left"></span>
