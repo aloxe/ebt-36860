@@ -29,7 +29,7 @@ const ForumMenu = ({ lang, user, visited }: {lang: string, user: User, visited: 
 
   return (
   <>
-    <div className=" block group bg-white rounded-lg border border-blue-200 text-left p-2 m-2 sm:p-4 sm:m-4">
+    <div className=" block group bg-white rounded-lg border border-blue-200 text-left p-0 m-2 sm:m-4">
       <nav className="flex place-items-center justify-around sm:flex-row  p-2 m-0 sm:p-4 md:text-md sm:text-sm text-xs">
         <div className="link" id="is36680" onClick={handleClick}>36680</div>
         <div className="link" id="isMap" onClick={handleClick}>{t("map")}</div>
