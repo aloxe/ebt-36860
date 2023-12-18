@@ -5,31 +5,33 @@ import { useEffect, useState } from "react";
 import AdminLinks from "@/components/common/adminLinks";
 import { getPlayerData } from "@/helpers/dbutils";
 import Spinner from "@/components/common/spinner";
+import { useSearchParams } from 'next/navigation'
 
-const UnknownsAdmin = ({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) => {
+const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);
   const [userVisited, setUserVisited] = useState<Visited | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false)
+  const searchParams = useSearchParams()
+  const user_id = searchParams.get("user_id") ?? ""
 
   useEffect(() => {
-    if (!loading) {
-      const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
+    if (user_id && !loading) {
       const fetchUserData = async (id: string) => {
         const userData: User = await getPlayerData("user", id);
         if (userData?.id) {
           userData.isFake = true;
           setUser(userData)
         } else if (userData) {
-          setUser({ 
-            id: parseInt(user_id),
+          setUser({
+            id: parseInt(id),
             username: userData.toString(),
             isFake: true
           })
         } else {
           setUser({
-            id: parseInt(user_id),
+            id: parseInt(id),
             username: "la tête a Toto",
             isFake: true
           })
@@ -38,11 +40,10 @@ const UnknownsAdmin = ({ params: { lang }, searchParams }: { params: { lang: str
       setLoading(true);
       fetchUserData(user_id)
     }
-  }, [loading])
+  }, [loading, user_id])
 
   useEffect(() => {
     if (user) {
-      const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
       const fetchUserVisitedData = async (id: string) => {
         const userVisited: Visited = await getPlayerData("content", id);
         if (userVisited) {
@@ -53,7 +54,7 @@ const UnknownsAdmin = ({ params: { lang }, searchParams }: { params: { lang: str
       }
       fetchUserVisitedData(user_id)
     }
-  }, [user])
+  }, [user, user_id])
 
   const setVisited = (visited: Visited) => {
     console.log("set", visited);
