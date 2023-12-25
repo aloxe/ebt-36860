@@ -358,3 +358,29 @@ export const savePolygons = async (userId, dataToSave) => {
   });
 }
 
+export const saveUser = async (dataToSave) => {
+  // if (!userId) {
+  //   console.log('saveUser Error : no userId ', dataToSave);
+  //   return null;
+  // };
+
+  const objectToSave = { dataToSave }
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(objectToSave),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+  };
+
+      await fetch(`/api/users/`, requestOptions)
+      .then(
+        response => {
+          if (response.status !== 200) {
+            console.log("problème ", response.status);
+          }
+        })
+      .catch(function (err) {
+        console.log('Fetch Error :-S', err);
+        return null;
+      });
+}
+

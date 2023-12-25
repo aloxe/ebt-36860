@@ -8,6 +8,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model users {
+  id          String    @unique
+  username    String
+  date        DateTime
+  sessionid   String
+  my_city     String
+  my_country  String
+  my_flag     String
+  my_zip      String
+  totalbills  Int
+  totalhits   Int
+}
+
 model players {
   id         String    @unique
   user       String
