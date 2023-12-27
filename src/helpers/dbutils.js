@@ -364,7 +364,10 @@ export const saveUser = async (dataToSave) => {
   //   return null;
   // };
 
+  // console.log("data",dataToSave);
   const objectToSave = { dataToSave }
+  // console.log("object",objectToSave);
+
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(objectToSave),

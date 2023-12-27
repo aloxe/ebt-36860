@@ -5,6 +5,7 @@ import moment from "moment";
 import 'moment/min/locales';
 import { isJson } from "@/helpers/strings";
 import { useTranslation } from '@/i18n/client'
+import { saveUser } from "@/helpers/dbutils";
 
 
 const  UserList = ({ players }: {players: DbUser[]}) => {
@@ -15,7 +16,22 @@ const  UserList = ({ players }: {players: DbUser[]}) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(event.target.my_flag.value + " " + event.target.username.value);
+    const userData = event.currentTarget
+    console.log("saving" + userData);
+
+    const datatosave = { 
+      id: userData.user_id.value || undefined,
+      sessionid: userData.sessionid.value || undefined,
+      username: userData.username.value || undefined,
+      my_city: userData.my_city.value || undefined,
+      my_country: userData.my_country.value || undefined,
+      my_flag: userData.my_flag.value || undefined,
+      my_zip: userData.my_zip.value || undefined,
+      totalbills: userData.totalbills.value || undefined,
+      totalhits: userData.totalhits.value || undefined,
+      email: userData.email.value || undefined
+    }
+    saveUser(datatosave)
   }
 
     if (!isAdmin) return <></>
@@ -64,7 +80,7 @@ const  UserList = ({ players }: {players: DbUser[]}) => {
           </td>
           {<td>
             <form onSubmit={handleSubmit}>
-            <input type="hidden" value={p.id} name="id" id="id" />
+            <input type="hidden" value={p.id} name="user_id" id="user_id" />
             <input type="hidden" value={p.username} name="username" id="username" />
             <input type="hidden" value={isJson(p.user) ? JSON.parse(p.user).sessionid : p.user } name="sessionid" id="sessionid" />
             <input type="hidden" value={isJson(p.user) && JSON.parse(p.user).email} name="email" id="email" />
