@@ -1,5 +1,5 @@
 'use client'
-import { getPlayerRole, getRoles, savePlayerData } from '@/helpers/dbutils';
+import { getRoles, savePlayerData, saveUser as saveUserInDb  } from '@/helpers/dbutils';
 import { createContext, useContext, useEffect, useState } from 'react';
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
@@ -15,22 +15,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [visited, setVisited] = useState<Visited | undefined>(undefined);
   const [polygons, setPolygons] = useState<Feature[] | undefined>(undefined);
 
+  const saveUser = (user: User) => {
+    sessionStorage.setItem('user', JSON.stringify(user))
+    setUser(user)
+    saveUserInDb(user)
+  }
+
   useEffect(() => {
     if (!user) {
       const storeUser = typeof window !== 'undefined' && JSON.parse(sessionStorage.getItem('user') || "{}");
       storeUser.id && setUser(storeUser);
     }
-    user && savePlayerData(user?.id, user)
   }, [user])
 
-
-useEffect(() => {
-  // we stop saving visited
-  // visited && savePlayerData(user?.id, visited)
-}, [visited, user?.id])
-
   useEffect(() => {
-    polygons && savePlayerData(user?.id, polygons)
+    polygons?.length && savePlayerData(user?.id, polygons)
   }, [polygons, user?.id])
 
   useEffect(() => {
@@ -53,7 +52,7 @@ useEffect(() => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isAdmin, isTrans, visited, setVisited, polygons, setPolygons, logout }}>
+    <AuthContext.Provider value={{ user, saveUser, isAdmin, isTrans, visited, setVisited, polygons, setPolygons, logout }}>
       { children }
     </AuthContext.Provider>
   )

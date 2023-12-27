@@ -87,8 +87,8 @@ export const getPostcodes = async (user, city) => {
       credentials: 'include',
     };
 
-    // cookie set doesn't work (same domain)
-    // const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1`, requestOptions)
+    // cookie set (autologin=1) doesn't work (same domain policy)
+    // so we need sessionid
     const response = await fetch(`/api/eurobilltracker/?m=sessioncheck&v=2&autologin=1&PHPSESSID=${user.sessionid}`, requestOptions)
       .catch(function (err) {
         console.log('Fetch relogin Error :-S', err);
@@ -96,8 +96,7 @@ export const getPostcodes = async (user, city) => {
       });
 
     const loginUser = await response?.json();
-    if (loginUser) return loginUser
-    else return null
+    return loginUser ?? null
   }
 
     export const EBTsearch = async (user, searchTerm, what = 0) => {
