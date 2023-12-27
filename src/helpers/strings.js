@@ -16,6 +16,7 @@ export function addSauPluriel(value) {
 
 export function getUserFlag(country) {
     var countries = require("i18n-iso-countries");
+    countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
     let alpha2 = countries.getAlpha2Code(country, "en")
     return countryCodeToFlag(alpha2);  
 }

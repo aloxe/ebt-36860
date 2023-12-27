@@ -19,6 +19,7 @@ model users {
   my_zip      String
   totalbills  Int
   totalhits   Int
+  email      String
 }
 
 model players {

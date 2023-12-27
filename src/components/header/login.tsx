@@ -4,9 +4,10 @@ import { EBTlogin, EBTsearch } from "@/helpers/ebtutils";
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
+import { completeUser } from "@/helpers/users";
 
 const Login = ({ lang }: {lang: string}) => {
-  const { user, setUser, logout } = useAuth();
+  const { user, saveUser, logout } = useAuth();
   const [userLogsIn, setUserLogsIn] = useState<boolean>(false);
   const { push } = useRouter();
 
@@ -19,28 +20,24 @@ const Login = ({ lang }: {lang: string}) => {
     const login = (event.target as HTMLInputElement).getElementsByTagName("input")[0].value
     const password = (event.target as HTMLInputElement).getElementsByTagName("input")[1].value
 
-    const loginUser = await EBTlogin(login, password);
+    let loginUser = await EBTlogin(login, password);
     if (!loginUser) {
-      //TODO display error message
+      // user error in EBT, should not happen
       console.log("login error: no user");
       return
     }
-    // add missing info from EBT user service
+    // add user info from EBT
     const searchUser = await EBTsearch(loginUser, loginUser.username, 1)
     if (searchUser.users.length = 1) {
-      loginUser.id = searchUser.users[0].id
-      loginUser.active = searchUser.users[0].active
+      loginUser.id = searchUser.users[0].id.toString()
     } else {
-      // TODO error message for users without id?
+      // user error in EBT, should not happen
       console.log("login error: user with no");
       loginUser.id = loginUser.username
     }
-    if (loginUser) {
-      loginUser.email = login;
-      loginUser.date = Date.now();
-      sessionStorage.setItem('user', JSON.stringify(loginUser));
-      setUser(loginUser);
-    }
+    // add more user info
+    loginUser = completeUser(loginUser, login)
+    saveUser(loginUser);
   }
 
   const handleLogout = () => {
