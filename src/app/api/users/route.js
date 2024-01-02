@@ -3,46 +3,44 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const req = await request.json();
-  if (!!req.dataToSave) {
+  if (!!req.id) {
     await saveUserData(req);
   } else {
-    // TODO send correct error code
-    console.log("ERROR not good data: can't save", req);
+    console.log("ERROR not good user data: must have an id", req);
   }
   return NextResponse.json(req);
 }
 
 async function saveUserData(req) {
-  console.log(saveUserData, req);
   const date = new Date().toISOString()
-  const data = JSON.stringify(req)
+  const data = req.dataToSave;
   await prisma.users.upsert({
     where: {
-      user_id: `${data.user_id}`,
+      id: req.id,
     },
     update: {
-      username: `${data.username}`,
-      sessionid: `${data.sessionid}`,
-      my_city: `${data.my_city}`,
-      my_country: `${data.my_country}`,
-      my_flag: `${data.my_flag}`,
-      my_zip: `${data.my_zip}`,
-      totalbills: `${data.totalbills}`,
-      totalhits: `${data.totalhits}`,
-      email: `${data.email}`,
+      username: req.username,
+      sessionid: req.sessionid,
+      my_city: req.my_city,
+      my_country: req.my_country,
+      my_flag: req.my_flag,
+      my_zip: req.my_zip,
+      totalbills: req.totalbills,
+      totalhits: req.totalhits,
+      email: req.email,
     },
     create: {
-      user_id: `${data.user_id}`,
-      username: `${data.username}`,
+      id: req.id,
+      username: req.username,
       date: date,
-      sessionid: `${data.sessionid}`,
-      my_city: `${data.my_city}`,
-      my_country: `${data.my_country}`,
-      my_flag: `${data.my_flag}`,
-      my_zip: `${data.my_zip}`,
-      totalbills: `${data.totalbills}`,
-      totalhits: `${data.totalhits}`,
-      email: `${data.email}`,
+      sessionid: req.sessionid,
+      my_city: req.my_city,
+      my_country: req.my_country,
+      my_flag: req.my_flag,
+      my_zip: req.my_zip,
+      totalbills: req.totalbills,
+      totalhits: req.totalhits,
+      email: req.email,
     },
   })
 }

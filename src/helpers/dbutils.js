@@ -359,18 +359,10 @@ export const savePolygons = async (userId, dataToSave) => {
 }
 
 export const saveUser = async (dataToSave) => {
-  // if (!userId) {
-  //   console.log('saveUser Error : no userId ', dataToSave);
-  //   return null;
-  // };
-
-  // console.log("data",dataToSave);
-  const objectToSave = { dataToSave }
-  // console.log("object",objectToSave);
-
+  // const objectToSave = { dataToSave }
   const requestOptions = {
     method: 'POST',
-    body: JSON.stringify(objectToSave),
+    body: JSON.stringify(dataToSave),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
 

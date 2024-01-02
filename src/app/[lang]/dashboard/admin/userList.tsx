@@ -16,20 +16,18 @@ const  UserList = ({ players }: {players: DbUser[]}) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const userData = event.currentTarget
-    console.log("saving" + userData);
-
+    const userFormData = event.currentTarget
     const datatosave = { 
-      id: userData.user_id.value || undefined,
-      sessionid: userData.sessionid.value || undefined,
-      username: userData.username.value || undefined,
-      my_city: userData.my_city.value || undefined,
-      my_country: userData.my_country.value || undefined,
-      my_flag: userData.my_flag.value || undefined,
-      my_zip: userData.my_zip.value || undefined,
-      totalbills: userData.totalbills.value || undefined,
-      totalhits: userData.totalhits.value || undefined,
-      email: userData.email.value || undefined
+      id: userFormData.user_id.value || undefined,
+      sessionid: userFormData.sessionid.value || "undefined",
+      username: userFormData.username.value || "undefined",
+      my_city: userFormData.my_city.value || "",
+      my_country: userFormData.my_country.value || "",
+      my_flag: userFormData.my_flag.value || "",
+      my_zip: userFormData.my_zip.value || "",
+      totalbills: parseInt(userFormData.totalbills.value) || 0,
+      totalhits: parseInt(userFormData.totalhits.value) || 0,
+      email: userFormData.email.value || "undefined"
     }
     saveUser(datatosave)
   }
