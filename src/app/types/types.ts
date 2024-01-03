@@ -3,7 +3,7 @@ interface User {
   "sessionid"?: string
   "username"?: string
   "url"?: string
-  "my_city"?: string[]
+  "my_city"?: string
   "my_country"?: string
   "my_flag"?: string
   "my_zip"?: string

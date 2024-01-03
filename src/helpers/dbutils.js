@@ -40,8 +40,13 @@ export const getUsers = async () => {
       date: true,
       username: true, 
       sessionid: true,
+      my_city: true,
+      my_zip: true,
       my_country: true,
-      my_flag: true
+      my_flag: true,
+      totalbills: true,
+      totalhits: true,
+      email: true
       }
   });
   return res;

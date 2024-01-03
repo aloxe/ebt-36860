@@ -5,6 +5,7 @@ import moment from "moment";
 import 'moment/min/locales';
 import { useTranslation } from '@/i18n/client'
 import { saveUser } from "@/helpers/dbutils";
+import Link from "next/link";
 
 
 const  UserList = ({ players }: {players: User[]}) => {
@@ -41,8 +42,8 @@ const  UserList = ({ players }: {players: User[]}) => {
         <tr className="bg-sky-200">
           <th className="px-3 md:px-6 py-4 text-center">num</th>
           <th className="px-3 md:px-6 py-2 text-center">name</th>
-          <th className="px-3 md:px-6 py-2 text-center">session</th>
           <th className="px-3 md:px-6 py-2 text-center">geo</th>
+          <th className="px-3 md:px-6 py-2 text-center">▥</th>
           <th className="px-3 md:px-6 py-2 text-center">💶</th>
           <th className="px-3 md:px-6 py-2 text-center">sav</th>
         </tr>
@@ -59,16 +60,34 @@ const  UserList = ({ players }: {players: User[]}) => {
           </td>
           <td>
           <>{p.my_flag} {p.username}</><br/>
-          <div className="text-center font-thin text-sm">date{moment(p.date).format('DD/MM/YYYY HH:mm')}</div>
+          <div className="font-thin text-sm">{moment(p.date).format('DD/MM/YYYY HH:mm')}</div>
+          <span className="text-xs">{p.sessionid ? p.sessionid : p.username }</span>
           </td>
-          <td className="text-xs">
-            {p.sessionid ? p.sessionid : p.username }<br/>
-            {p.date?.toString()}
-          </td>
+
           <td>
           {p.my_zip +" "+ p.my_city}<br/>
           {p.my_country}<br/>
           {p.email}<br/>
+          </td>
+          <td>
+          {(!p.count || p.count?.communes < 1) && <>
+            <Link href={{ pathname: 'cities', query: { user_id: p.id } }}>communes non récupérées</Link><br/>
+          </>}
+          {p.count && p.count.communes > 1 && <>
+            <Link href={{ pathname: 'cities', query: { user_id: p.id } }}>Locations</Link>: {p.count?.all}<br/>
+            <b>communes: {p.count?.communes}</b><br/>
+            Dpt: {p.count?.departements}<br/>
+          </>}
+
+          {!!p.count?.unknowns && 
+          <>
+            <Link href={{ pathname: 'unknowns', query: { user_id: p.id } }}>unknowns: {p.count?.unknowns}</Link>
+            <br/>
+          </>}
+          {p.count && !p.count?.unknowns && <>All known<br/></>}
+          {!p.count && <>-<br/></>}
+          <Link href={{ pathname: 'usermap', query: { user_id: p.id } }}>Carte: {p.polygons === "{}" ? "☐" : "☑"}</Link>
+
           </td>
           <td>
           💶: {p.totalbills}<br/>
