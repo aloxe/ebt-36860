@@ -1,15 +1,16 @@
 import Spinner from "@/components/common/spinner";
-import { getUserFlag } from "@/helpers/strings";
 import { useTranslation } from '@/i18n'
 import moment from "moment";
 import 'moment/min/locales';
 
-const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string}) => {
+const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) => {
 
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
+  console.log("players", players.length);
+  
   return (
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
@@ -24,7 +25,7 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
         {!players &&
         <tr><td><Spinner /></td></tr>
         }
-        {players && players.map( async (p, index) => (
+        {players && players.map( (p, index) => (
         <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${p.count ? " hover:bg-amber-50" : "opacity-60 border-stone-800"}`} 
         key={p.id}>
 
@@ -37,9 +38,7 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
             <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} 
             className={`fill-cell ${p.count && "text-blue-900 underline cursor-pointer"}`}>
 
-            {!!p.country && <>{await getUserFlag(p.country)} {p.username}</>}
-            {/* @ts-ignore */}
-            {!p.country && <>{p.flag} {p.username}</>}
+            {<>{p.my_flag} {p.username}</>}
             </a>
           </td>
           <td className="h-full">
@@ -47,7 +46,6 @@ const LeaderTable = async ({ players, lang }: {players: DbUser[], lang: string})
               {p.score}
               <div className="text-right text-xs whitespace-nowrap truncate">
                 {!!p.date && (<i>{moment(p.date).format('LL')}</i>)}
-                {!p.date && (<i>{moment(JSON.parse(p.user).date).format('LL')}</i>)}
               </div>
             </a>
           </td>

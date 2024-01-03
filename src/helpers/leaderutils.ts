@@ -1,42 +1,37 @@
-import { getCounts, getCountsServer, getUsers, getVisitsServer } from "./dbutils";
-import { getPublicUser } from "./ebtutils";
-import { compareScore, getUserFlag, isJson } from "./strings";
+import { getCountsServer, getUsers } from "./dbutils";
+import { compareScore } from "./strings";
 
 const getOldPlayers = () => {
   const oldJsonPlayers = require("@/data/players/leaderboard_old.json");
-  const oldPlayers: DbUser[] = oldJsonPlayers.map((el: any)  => ({
-    user_id: el.user,
+  const oldPlayers: User[] = oldJsonPlayers.map((el: any)  => ({
+    id: el.user,
     score: el.nombre,
     username: el.username,
-    flag: el.userflag,
+    my_flag: el.userflag,
     date: el.date * 1000 || el.filedate * 1000
   }))
   return oldPlayers;
 }
 
 export const getNewPlayers = async () => {
-  const barePlayers: DbUser[] = await getUsers()
-  let newPlayers = await Promise.all(barePlayers.map(async (p): Promise<DbUser> => {
+  const barePlayers: User[] = await getUsers()
+  let newPlayers = await Promise.all(barePlayers.map(async (p): Promise<User> => {
     let counts = await getCountsServer(p.id, "prefectures,date,count")
     p.count = counts?.count ? JSON.parse(counts?.count) : undefined;
     p.score = counts ? p.count.communes : 0
     p.date = counts ? new Date(counts.date) : p.date
-    // TODO keep only parsing when all users are recorded again
-    // table players will need a refactor
-    p.username = isJson(p.user) ? JSON.parse(p.user).username : p.user;
-    let pu = await getPublicUser(p.id)
-    p.country = isJson(p.user) ? JSON.parse(p.user).my_country : pu.my_country
-    p.flag = getUserFlag(p.country)
     return p;
   }));
   return newPlayers;
 }
 
-const mergePlayers = (newPlayers: DbUser[], oldPlayers: DbUser[]) => {
+const mergePlayers = (newPlayers: User[], oldPlayers: User[]) => {
   const barePlayerIds = newPlayers.map(el => el.id)
-  oldPlayers = oldPlayers.filter((u: any) => !barePlayerIds.includes(u.user_id))
+  oldPlayers = oldPlayers.filter((u: any) => !barePlayerIds.includes(u.id))
   let players = [...newPlayers, ...oldPlayers]
   players.sort( compareScore );
+  console.log("players", players);
+  
   return players
 }
 

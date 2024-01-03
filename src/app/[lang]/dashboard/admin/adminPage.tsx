@@ -5,7 +5,7 @@ import Link from "next/link";
 import moment from "moment";
 import 'moment/min/locales';
 
-const  AdminPage = ({ players }: {players: DbUser[]}) => {
+const  AdminPage = ({ players }: {players: User[]}) => {
   const { isAdmin } = useAuth()
   moment.locale('en-gb');
 
@@ -31,7 +31,7 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
         key={p.id}>
           <td>
           {p.id}<br />
-          <>{p.flag} {p.username}</><br/>
+          <>{p.my_flag} {p.username}</><br/>
           <div className="text-center font-thin text-sm">{moment(p.date).format('DD/MM/YYYY HH:mm')}</div>
           </td>
           <td>

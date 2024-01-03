@@ -3,21 +3,22 @@ import { isJson } from "./strings";
 
 // server side
 
-export const getUserVisited = async (id) => {
-  const response = await prisma.visited.findUnique({
-    where: {
-        user_id: id,
-    },
-  });
-  const visited = await JSON.parse(response?.content || "")
-  // return {
-  //   visited,
-  //   revalidate: 60,
-  // }
-  return visited;
-}
+// export const getUserVisited = async (id) => {
+//   const response = await prisma.visited.findUnique({
+//     where: {
+//         user_id: id,
+//     },
+//   });
+//   const visited = await JSON.parse(response?.content || "")
+//   // return {
+//   //   visited,
+//   //   revalidate: 60,
+//   // }
+//   return visited;
+// }
 
 export const getUserPolygons = async (id) => {
+  // TODO: change to table polygons
   const response = await prisma.visited.findUnique({
     where: {
         user_id: id,
@@ -32,23 +33,19 @@ export const getUserPolygons = async (id) => {
 }
 
 export const getUsers = async () => {
-  const res = await prisma.players.findMany(
+  const res = await prisma.users.findMany(
     {
     select: {
       id: true,
-      user: true, 
       date: true,
-      // content:true,
+      username: true, 
+      sessionid: true,
+      my_country: true,
+      my_flag: true
       }
-  }
-  );
-  // return {
-  //   users: res,
-  //   revalidate: 300,
-  // }
+  });
   return res;
 }
-
 
 export const getVisitsServer = async (id, field) => {
   const fields = field.split(',');

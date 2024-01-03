@@ -13,7 +13,7 @@ export default function UserMapAdmin({ params: { lang }, searchParams }: { param
     if (!user) {
       const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
       setUser({ 
-        id: parseInt(user_id),
+        id: user_id,
         username: "Essai Toto",
         isFake: true
       })

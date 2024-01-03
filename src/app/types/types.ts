@@ -1,9 +1,8 @@
 interface User {
-  "id": number
+  "id": string
   "sessionid"?: string
   "username"?: string
   "url"?: string
-  "user"?: string | User
   "my_city"?: string[]
   "my_country"?: string
   "my_flag"?: string
@@ -15,21 +14,9 @@ interface User {
   "date"?: string | Date
   "content"?: string;
   "visited"?: { content: Visited | string }
-  "isFake"?: boolean;
-}
-
-interface DbUser {
-  "id": string
-  "user": string
-  "username"?: string
-  "country"?: string
-  "content"?: string
-  "polygons"?: string
-  "visited"?: Visited
   "count"?: any
-  "date"?: string | Date
-  "score"?: number
-  "flag"?: string
+  "polygons"?: string
+  "isFake"?: boolean;
 }
 
 interface Visited {
