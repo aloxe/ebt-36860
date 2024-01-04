@@ -3,28 +3,28 @@ import { useAuth } from "@/context/authcontext";
 import { refreshUser } from "@/helpers/ebtutils";
 import { useState } from "react";
 import Profile from "./profileView";
-import AdminLinks from "@/components/common/adminLinks";
+import { completeUser } from "@/helpers/users";
 
 const  UserDetails = ({ lang }: {lang: string}) => {
-  const { user, setUser } = useAuth();
+  const { user, saveUser, logout } = useAuth();
   const [requestRefresh, setRequestRefresh] = useState<boolean>(false);
+  const [expired, setExpired] = useState<boolean>(false);
+
+  const handleLogout = () => logout()
 
   const handleRefreshUser = async (event: React.MouseEvent<HTMLAnchorElement>) => {
     setRequestRefresh(true);
-    var login = user.email
-    var id = user.id
-    const loginUser = await refreshUser(user);
+    let loginUser = await refreshUser(user);
     if (loginUser) {
-      loginUser.date =  Date.now();
-      loginUser.email = login;
-      loginUser.id = id;
-
-      sessionStorage.setItem('user', JSON.stringify(loginUser));
-      setUser(loginUser);
+      loginUser.id = user.id;
+      loginUser = completeUser(loginUser, user.email)
+      saveUser(loginUser);
+      // TODO check if useful
       setRequestRefresh(false);
     } else {
     console.log('Fetch relogin Error :-S');
     setRequestRefresh(false);
+    setExpired(true);
     }
   }
 
@@ -32,7 +32,10 @@ const  UserDetails = ({ lang }: {lang: string}) => {
     <Profile
       lang={lang}
       user={user} 
-      handleRefreshUser={handleRefreshUser} />    
+      requestRefresh={requestRefresh}
+      expired={expired}
+      handleRefreshUser={handleRefreshUser}
+      handleLogout={handleLogout} />    
   )
 }
 

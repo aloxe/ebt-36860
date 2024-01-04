@@ -9,11 +9,13 @@ type ProfileViewProps = {
     user: User, 
     handleRefreshUser?: MouseEventHandler, 
     className?: string, 
-    requestRefresh?: boolean
+    requestRefresh?: boolean,
+    expired?: boolean,
+    handleLogout?: MouseEventHandler,
     loadingUser: string,
     banknoteLabel: string,
     hitLabel: string, 
-    lang: string,
+    lang: string
   }
 
 function ProfileView({
@@ -21,6 +23,8 @@ function ProfileView({
     handleRefreshUser, 
     className, 
     requestRefresh,
+    expired,
+    handleLogout,
     loadingUser,
     banknoteLabel,
     hitLabel,
@@ -37,8 +41,12 @@ function ProfileView({
           <h2>
             {user.username}
           </h2>
-          {isLoggedIn && !requestRefresh && <div className="text-right text-stone-400 text-sm">{moment(user.date).format('LLL')}
-            <span className="text-right text-blue-900 text-lg cursor-pointer" onClick={handleRefreshUser}> ⟳ </span>
+          {isLoggedIn && !requestRefresh && <div className="text-right text-stone-400 text-sm">
+            {expired ?
+            <>session expired, <span className="text-right text-blue-900  cursor-pointer" onClick={handleLogout}> <span className="text-lg mr-[-4px]">⊏</span>→ </span></> :
+            <>{moment(user.date).format('LLL')}
+            <span className="text-right text-blue-900 text-lg cursor-pointer" onClick={handleRefreshUser}> ⟳ </span></>
+            }
         </div>}
         </div>
         {requestRefresh ? 
