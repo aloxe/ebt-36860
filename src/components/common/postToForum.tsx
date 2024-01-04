@@ -10,7 +10,6 @@ function PostToForum({ lang, message, topic }: {lang: string, message: string, t
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        console.log("clicked");
         const textarea = document.getElementById("message")
         if (textarea) {
             textarea.focus()
@@ -27,6 +26,7 @@ function PostToForum({ lang, message, topic }: {lang: string, message: string, t
         <form method="post" action="https://forum.eurobilltracker.com/posting.php?mode=reply&t=7171#preview" >
         <input type="hidden" name="topic_cur_post_id" value="" />
         <input type="submit" name="preview" value="Preview" className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer float-right"/> */}
+        <h2 className="mb-0 mt-4 text-left">{t("share-on-forum")}</h2>
         <div className="float-right">
             <button type="button" onClick={handleClick} className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer">{t('copy')}</button>
             {!copied && <Link href="#" className={`btn max-w-min mx-5 m-5 p-3 sm:btn-primary sm:px-4 sm:h-[40px] no-underline cursor-not-allowed opacity-25 `} >{t('goto-forum')}</Link>}
