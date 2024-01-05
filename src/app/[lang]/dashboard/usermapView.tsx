@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import { useAuth } from "@/context/authcontext";
 import { getCounts, savePolygons } from "@/helpers/dbutils";
-import { getUserPolygones } from "@/helpers/maputils";
+import { makeUserPolygons } from "@/helpers/maputils";
 
 const DynamicMyMapComponent = dynamic(() =>
   import('@/components/maps/map').then((module) => module.MyMapComponent)
@@ -14,7 +14,7 @@ const DynamicMyMapComponent = dynamic(() =>
 export function UserMapView({ lang, user }: DashboardProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  const { visited } = useAuth();
+  const { visited, polygons, setPolygons } = useAuth();
   const [communes, setCommunes] = useState<any>(visited?.communes || undefined);
   const [departements, setDepartements] = useState<any>(visited?.departements || undefined);
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
@@ -25,20 +25,18 @@ export function UserMapView({ lang, user }: DashboardProps) {
 
   const handlefetchData = useCallback( async () => {
     setFetching(true);
-
-    const communesToDisplay = await getUserPolygones(communes, departements)
-    // TODO We still save it just to have a look
+    const communesToDisplay = await makeUserPolygons(communes, departements)  
+    setPolygons(communesToDisplay)
     savePolygons(user.id, communesToDisplay);
     setMapPolygons(communesToDisplay)
     setDisabled(false);
-
 }, [communes, departements])
 
   useEffect(() => {
-    if (!fetching) {
+    if (!polygons) {
       handlefetchData()
     }
-  }, [fetching, handlefetchData])
+  }, [polygons, handlefetchData])
 
   useEffect(() => {
     if (!communes) {

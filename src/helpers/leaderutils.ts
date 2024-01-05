@@ -30,8 +30,6 @@ const mergePlayers = (newPlayers: User[], oldPlayers: User[]) => {
   oldPlayers = oldPlayers.filter((u: any) => !barePlayerIds.includes(u.id))
   let players = [...newPlayers, ...oldPlayers]
   players.sort( compareScore );
-  console.log("players", players);
-  
   return players
 }
 

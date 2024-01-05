@@ -1,5 +1,5 @@
 'use client'
-import { getRoles, savePlayerData, saveUser as saveUserInDb  } from '@/helpers/dbutils';
+import { getRoles, saveUser as saveUserInDb  } from '@/helpers/dbutils';
 import { createContext, useContext, useEffect, useState } from 'react';
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
@@ -28,9 +28,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user])
 
-  useEffect(() => {
-    polygons?.length && savePlayerData(user?.id, polygons)
-  }, [polygons, user?.id])
+  // useEffect(() => {
+  //   polygons?.length && savePlayerData(user?.id, polygons)
+  // }, [polygons, user?.id])
 
   useEffect(() => {
     const getRolesAwaited = async (id: string) => {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     sessionStorage.removeItem('user');
     setUser(undefined)
     setVisited(undefined)
-    setPolygons([])
+    // setPolygons([])
   }
 
   return (
