@@ -17,7 +17,7 @@ import { isJson } from "./strings";
 //   return visited;
 // }
 
-export const getUserPolygons = async (id) => {
+export const getUserPolygonsFromVisited = async (id) => {
   // TODO: change to table polygons
   const response = await prisma.visited.findUnique({
     where: {
@@ -29,6 +29,18 @@ export const getUserPolygons = async (id) => {
   //   polygons,
   //   revalidate: 60,
   // }
+  return polygons;
+}
+
+export const getUserPolygons = async (id) => {
+  console.log("getUserPolygons");
+  // TODO: change to table polygons
+  const response = await prisma.polygons.findUnique({
+    where: {
+        user_id: id,
+    },
+  });
+  const polygons = await JSON.parse(response?.polygons || "")
   return polygons;
 }
 
@@ -168,7 +180,6 @@ export const saveTranslation = async (ns, key, lang, string) => {
 }
 
 export const getPlayerRole = async (userId) => {
-  // accept db keys from columns: user | content | polygons
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(userId),
@@ -189,6 +200,17 @@ export const getPlayerRole = async (userId) => {
 export const getRoles = async (userId) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/roles/${userId}`, requestOptions)
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+      return null;
+    });
+  const dataresult = await response?.json();
+  return dataresult;
+}
+
+export const getPolygons = async (userId) => {
+  const requestOptions = { method: 'GET' };
+  const response = await fetch(`/api/polygons/${userId}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
@@ -257,32 +279,33 @@ export const getPlayerData = async (key, userId) => {
   return dataresult[key]
 }
 
-export const savePlayerData = async (userId, dataToSave) => {
-  console.log("savePlayerData", userId, dataToSave);
-  if (!userId) {
-    console.log('savePlayerData Error :-S', dataToSave);
-    return null;
-  };
+// export const savePlayerData = async (userId, dataToSave) => {
+//   console.log("save player data with polygons");
+//   console.log("savePlayerData", userId, dataToSave);
+//   if (!userId) {
+//     console.log('savePlayerData Error :-S', dataToSave);
+//     return null;
+//   };
 
-  const objectToSave = { userId, dataToSave }
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(objectToSave),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-  };
+//   const objectToSave = { userId, dataToSave }
+//   const requestOptions = {
+//     method: 'POST',
+//     body: JSON.stringify(objectToSave),
+//     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
+//   };
 
-      await fetch(`/api/players/`, requestOptions)
-      .then(
-        response => {
-          if (response.status !== 200) {
-            console.log("problème ", response.status);
-          }
-        })
-      .catch(function (err) {
-        console.log('Fetch Error :-S', err);
-        return null;
-      });
-}
+//       await fetch(`/api/players/`, requestOptions)
+//       .then(
+//         response => {
+//           if (response.status !== 200) {
+//             console.log("problème ", response.status);
+//           }
+//         })
+//       .catch(function (err) {
+//         console.log('Fetch Error :-S', err);
+//         return null;
+//       });
+// }
 
 // export const getUser = async (userId) => {
 //   const requestOptions = { method: 'GET' };
