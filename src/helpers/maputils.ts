@@ -20,7 +20,7 @@ const fetchPolygonsPerDpt = async (dptCode:string) => {
   return results;
 }
 
-export const getUserPolygones = async (communes: string[], departements: string[]) => {
+export const makeUserPolygons = async (communes: string[], departements: string[]) => {
   var regions = getRegions(departements)
 
   let promissed = regions.map(regCode => {

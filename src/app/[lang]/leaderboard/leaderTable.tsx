@@ -8,8 +8,6 @@ const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) =
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
   moment.locale(lang === 'en' ? 'en-gb' : lang);
-
-  console.log("players", players.length);
   
   return (
     <table className="min-w-full text-left text-md font-light">

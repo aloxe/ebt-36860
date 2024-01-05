@@ -1,13 +1,12 @@
 'use client'
-import { getUserPolygons } from "@/helpers/dbutils";
 import { MyMapComponent } from "../maps/map";
 import { useTranslation } from '@/i18n/client'
-import { getUserPolygones } from "@/helpers/maputils";
-import { MouseEventHandler, useCallback, useEffect, useState } from "react";
+import { makeUserPolygons } from "@/helpers/maputils";
+import { useCallback, useEffect, useState } from "react";
 import Spinner from "../common/spinner";
-import Screen from "@/assets/screen.svg";
 import NormalScreen from "@/assets/normal-screen.svg";
 import FullScreen from "@/assets/full-screen.svg";
+import { getPolygons, savePolygons } from "@/helpers/dbutils";
 
 interface MapCommunesProps {
   lang: string
@@ -22,13 +21,22 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
   const { username } = user;
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [ fetching, setFetching ] = useState<boolean>(false);
-  
+
   // NOTE: This is a use-client component because 
   // sever can't handle polygone data for even 1 departement
   const handlefetchData = useCallback( async () => {
     setFetching(true);
-    const communesToDisplay = await getUserPolygones(communes, departements)
-    setMapPolygons(communesToDisplay)
+
+    let communesToDisplay = await getPolygons(user.id)
+    if (!communesToDisplay) {
+      communesToDisplay = await makeUserPolygons(communes, departements)
+      setMapPolygons(communesToDisplay)
+    } else {
+      communesToDisplay = JSON.parse(communesToDisplay.polygons)
+      savePolygons(user.id, communesToDisplay)
+      setMapPolygons(communesToDisplay)
+    }
+    
 }, [communes, departements])
 
 
