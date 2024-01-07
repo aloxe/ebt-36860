@@ -1,50 +1,9 @@
 import prisma from "@/lib/prisma";
 import { isJson } from "./strings";
 
-const MAX_POLYGONS = 2000
+export const MAX_POLYGONS = 1000
 
 // server side
-
-// export const getUserVisited = async (id) => {
-//   const response = await prisma.visited.findUnique({
-//     where: {
-//         user_id: id,
-//     },
-//   });
-//   const visited = await JSON.parse(response?.content || "")
-//   // return {
-//   //   visited,
-//   //   revalidate: 60,
-//   // }
-//   return visited;
-// }
-
-// export const getUserPolygonsFromVisited = async (id) => {
-//   // TODO: change to table polygons
-//   const response = await prisma.visited.findUnique({
-//     where: {
-//         user_id: id,
-//     },
-//   });
-//   const polygons = await JSON.parse(response?.polygons || "")
-//   // return {
-//   //   polygons,
-//   //   revalidate: 60,
-//   // }
-//   return polygons;
-// }
-
-export const getUserPolygons = async (id) => {
-  console.log("getUserPolygons");
-  // TODO: change to table polygons
-  const response = await prisma.polygons.findUnique({
-    where: {
-        user_id: id,
-    },
-  });
-  const polygons = await JSON.parse(response?.polygons || "")
-  return polygons;
-}
 
 export const getUsers = async () => {
   const res = await prisma.users.findMany(
@@ -218,23 +177,6 @@ export const getPolygons = async (userId) => {
       return null;
     });
   const dataresult = await response?.json();
-
-  if (dataresult?.polygons && Object.keys(JSON.parse(dataresult.polygons)[0])[0] === 'chunks') {
-    const NumChunks = JSON.parse(dataresult.polygons)[0].chunks
-    let polygonstext = []
-    for (let i = 0; i < NumChunks; i++) {
-       const chunk = await getPolygons(userId+"-"+i.toString())
-       // TODO add if chunk
-      polygonstext = [...polygonstext, ...JSON.parse(chunk.polygons)]
-    }
-    const dr2 = {
-      date: dataresult.date,
-      polygons: JSON.stringify(polygonstext)
-    }
-    console.log("return dr2 for "+userId, dr2);
-    return dr2
-  }
-  console.log("return dataresult for " + userId, dataresult);
   return dataresult;
 }
 
@@ -298,47 +240,7 @@ export const getPlayerData = async (key, userId) => {
   return dataresult[key]
 }
 
-// export const savePlayerData = async (userId, dataToSave) => {
-//   console.log("save player data with polygons");
-//   console.log("savePlayerData", userId, dataToSave);
-//   if (!userId) {
-//     console.log('savePlayerData Error :-S', dataToSave);
-//     return null;
-//   };
-
-//   const objectToSave = { userId, dataToSave }
-//   const requestOptions = {
-//     method: 'POST',
-//     body: JSON.stringify(objectToSave),
-//     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-//   };
-
-//       await fetch(`/api/players/`, requestOptions)
-//       .then(
-//         response => {
-//           if (response.status !== 200) {
-//             console.log("problème ", response.status);
-//           }
-//         })
-//       .catch(function (err) {
-//         console.log('Fetch Error :-S', err);
-//         return null;
-//       });
-// }
-
-// export const getUser = async (userId) => {
-//   const requestOptions = { method: 'GET' };
-//   const response = await fetch(`/api/users/${userId}`, requestOptions)
-//     .catch(function (err) {
-//       console.log('Fetch Error :-S', err);
-//       return null;
-//     });
-//   const dataresult = await response?.json();
-//   return dataresult;
-// }
-
 export const saveUser = async (dataToSave) => {
-  // const objectToSave = { dataToSave }
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(dataToSave),
@@ -411,22 +313,15 @@ export const saveCounts = async (userId, isNew, dataToSave) => {
 
 
 export const savePolygons = async (userId, dataToSave) => {
-  console.log(">savePolygons for " + userId);
   if (!userId) {
     console.log('save Polygons Error :-S', dataToSave);
     return null;
   };
 
-  // split dataToSave if it is too big
+  // We don't save when more than 1000 communes
+  // it is quicker to regenerate
   if (dataToSave.length > MAX_POLYGONS) {
-    let chunk = []
-    for (let i = 0; i < dataToSave.length; i += MAX_POLYGONS) {
-      chunk.push(dataToSave.slice(i, i + MAX_POLYGONS));
-    }
-    savePolygons(userId, [{"chunks": chunk.length}])
-    for (let i = 0; i < chunk.length; i++) {
-      savePolygons(userId+"-"+i.toString(), chunk[i])
-    }
+    console.log('Dont save Polygons data too big');
     return
   }
 

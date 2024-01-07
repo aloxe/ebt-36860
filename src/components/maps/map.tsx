@@ -107,8 +107,8 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
 
       {/* map.getPane('labels').style.zIndex = 650;
         map.getPane('labels').style.pointerEvents = 'none'; */}
-      {showDep && <GeoJSON key="dada" data={deptLayer.data} style={deptLayer.style} />}
-      {showCom && dataCommunes?.length > 1 && <GeoJSON key="saints" data={communesLayer.data} style={communesLayer.style} />}
+      {showDep && <GeoJSON data={deptLayer.data} style={deptLayer.style} />}
+      {showCom && dataCommunes?.length > 1 && <GeoJSON data={communesLayer.data} style={communesLayer.style} />}
     </MapContainer>
     </>
   )
