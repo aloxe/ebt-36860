@@ -15,8 +15,8 @@ import 'moment/min/locales';
 const CitiesView = ({ lang, user }: DashboardProps) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  const [step, setStep] = useState<number>(0);
   const { visited, setVisited } = useAuth();
+  const [step, setStep] = useState<number>(0);
   const [cities, setCities] = useState<City[] | undefined>(undefined);
   const [citiesInFrance, setCitiesInFrance] = useState<number | undefined>(undefined);
   const { logout } = useAuth();
