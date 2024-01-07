@@ -11,6 +11,7 @@
   "dependencies": {
     "@etalab/decoupage-administratif": "^3.0.0",
     "@prisma/client": "^5.4.1",
+    "@turf/turf": "^6.5.0",
     "@types/geojson": "^7946.0.10",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",

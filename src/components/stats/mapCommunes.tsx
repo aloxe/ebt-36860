@@ -7,6 +7,7 @@ import Spinner from "../common/spinner";
 import NormalScreen from "@/assets/normal-screen.svg";
 import FullScreen from "@/assets/full-screen.svg";
 import { getPolygons, savePolygons } from "@/helpers/dbutils";
+import union from '@turf/union';
 
 interface MapCommunesProps {
   lang: string
@@ -26,17 +27,61 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
   // sever can't handle polygone data for even 1 departement
   const handlefetchData = useCallback( async () => {
     setFetching(true);
+    console.log("find polygons");
+    var startTime1 = performance.now()
 
     let communesToDisplay = await getPolygons(user.id)
+    var endTime1 = performance.now()
+    console.log(`Call to getPolygons took ${endTime1 - startTime1} ms`)
     if (!communesToDisplay) {
+      console.log("not in DB > make");
+      var startTime2 = performance.now()
       communesToDisplay = await makeUserPolygons(communes, departements)
-      setMapPolygons(communesToDisplay)
-    } else {
-      communesToDisplay = JSON.parse(communesToDisplay.polygons)
+      var endTime2 = performance.now()
+      console.log(`Call to makeUserPolygons took ${endTime2 - startTime2} ms`)
       savePolygons(user.id, communesToDisplay)
       setMapPolygons(communesToDisplay)
+    } else {
+      console.log("in DB > no need for make");
+      communesToDisplay = JSON.parse(communesToDisplay.polygons)
+      setMapPolygons(communesToDisplay)
     }
+    var endTime3 = performance.now()
+    console.log(`All took ${endTime3 - startTime1} ms TOTAL`)
+    console.log(communesToDisplay);
+    console.log(JSON.stringify(communesToDisplay).length);
     
+  if (communesToDisplay.length > 500) {
+    savePolygons(user.id, communesToDisplay)
+  }
+//   console.log("on coupe en mmorceaux");
+
+
+//   let chunk = []
+//   for (let i = 0; i < communesToDisplay.length; i += 500) {
+//     chunk.push(communesToDisplay.slice(i, i + 500));
+//   }
+//     // savePolygons(user.id, "split="+chunk.length)
+//     for (let i = 0; i < chunk.length; i++) {
+//     console.log('save chunk[i] ' + i, chunk[i]);
+//     savePolygons(user.id+"-"+i.toString(), chunk[i])
+//   }
+// }
+
+    // var fusionCommunes = communesToDisplay[0];
+    // for (let i=1; i < communesToDisplay.length; i++) {
+    //   fusionCommunes = union(fusionCommunes, communesToDisplay[i]);
+    // }
+    // var fc2 = {
+    //   "type": "FeatureCollection",
+    //   "features": [fusionCommunes] // note features has to be an array
+    // }
+    // console.log([fusionCommunes]);
+    // console.log(JSON.stringify([fusionCommunes]).length);
+    // // setMapPolygons([fusionCommunes])
+    // console.log("on map");
+    
+
 }, [communes, departements])
 
 
