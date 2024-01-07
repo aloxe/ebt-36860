@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { isJson } from "./strings";
 
+const MAX_POLYGONS = 2000
+
 // server side
 
 // export const getUserVisited = async (id) => {
@@ -17,20 +19,20 @@ import { isJson } from "./strings";
 //   return visited;
 // }
 
-export const getUserPolygonsFromVisited = async (id) => {
-  // TODO: change to table polygons
-  const response = await prisma.visited.findUnique({
-    where: {
-        user_id: id,
-    },
-  });
-  const polygons = await JSON.parse(response?.polygons || "")
-  // return {
-  //   polygons,
-  //   revalidate: 60,
-  // }
-  return polygons;
-}
+// export const getUserPolygonsFromVisited = async (id) => {
+//   // TODO: change to table polygons
+//   const response = await prisma.visited.findUnique({
+//     where: {
+//         user_id: id,
+//     },
+//   });
+//   const polygons = await JSON.parse(response?.polygons || "")
+//   // return {
+//   //   polygons,
+//   //   revalidate: 60,
+//   // }
+//   return polygons;
+// }
 
 export const getUserPolygons = async (id) => {
   console.log("getUserPolygons");
@@ -216,6 +218,23 @@ export const getPolygons = async (userId) => {
       return null;
     });
   const dataresult = await response?.json();
+
+  if (dataresult?.polygons && Object.keys(JSON.parse(dataresult.polygons)[0])[0] === 'chunks') {
+    const NumChunks = JSON.parse(dataresult.polygons)[0].chunks
+    let polygonstext = []
+    for (let i = 0; i < NumChunks; i++) {
+       const chunk = await getPolygons(userId+"-"+i.toString())
+       // TODO add if chunk
+      polygonstext = [...polygonstext, ...JSON.parse(chunk.polygons)]
+    }
+    const dr2 = {
+      date: dataresult.date,
+      polygons: JSON.stringify(polygonstext)
+    }
+    console.log("return dr2 for "+userId, dr2);
+    return dr2
+  }
+  console.log("return dataresult for " + userId, dataresult);
   return dataresult;
 }
 
@@ -392,10 +411,24 @@ export const saveCounts = async (userId, isNew, dataToSave) => {
 
 
 export const savePolygons = async (userId, dataToSave) => {
+  console.log(">savePolygons for " + userId);
   if (!userId) {
     console.log('save Polygons Error :-S', dataToSave);
     return null;
   };
+
+  // split dataToSave if it is too big
+  if (dataToSave.length > MAX_POLYGONS) {
+    let chunk = []
+    for (let i = 0; i < dataToSave.length; i += MAX_POLYGONS) {
+      chunk.push(dataToSave.slice(i, i + MAX_POLYGONS));
+    }
+    savePolygons(userId, [{"chunks": chunk.length}])
+    for (let i = 0; i < chunk.length; i++) {
+      savePolygons(userId+"-"+i.toString(), chunk[i])
+    }
+    return
+  }
 
   const objectToSave = { userId, data: dataToSave }
   const requestOptions = {
