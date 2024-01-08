@@ -1,6 +1,7 @@
 // @ts-ignore
 import { GeoJsonTypes } from 'react-leaflet';
 import { getRegions } from './cityutils';
+import { MAX_POLYGONS, getPolygons, savePolygons } from './dbutils';
 type Feature = GeoJsonTypes.Feature
 
 const fetchPolygonsPerRegion = async (codeRegion:string) => {
@@ -20,7 +21,7 @@ const fetchPolygonsPerDpt = async (dptCode:string) => {
   return results;
 }
 
-export const getUserPolygones = async (communes: string[], departements: string[]) => {
+export const makeUserPolygons = async (communes: string[], departements: string[]) => {
   var regions = getRegions(departements)
 
   let promissed = regions.map(regCode => {
@@ -34,4 +35,17 @@ export const getUserPolygones = async (communes: string[], departements: string[
   return Promise.all(promissed).then(values => {
     return Array().concat(...values)
   });
+}
+
+export const fetchPolygons = async (userId: string, communes: string[], departements: string[], isNew: boolean = false) => {
+  const canSave = communes.length <= MAX_POLYGONS
+  let communesToDisplay = canSave ? await getPolygons(userId) : null;
+  if (!communesToDisplay) {
+    communesToDisplay = await makeUserPolygons(communes, departements)
+    canSave && savePolygons(userId, communesToDisplay)
+    return communesToDisplay
+  } else {
+    communesToDisplay = JSON.parse(communesToDisplay.polygons)
+    return communesToDisplay
+  }
 }

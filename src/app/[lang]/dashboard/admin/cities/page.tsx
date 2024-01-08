@@ -23,13 +23,13 @@ const CitesAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
           setUser(userData)
         } else if (userData) {
           setUser({ 
-            id: parseInt(id),
+            id,
             username: userData.toString(),
             isFake: true
           })
         } else {
           setUser({ 
-            id: parseInt(id),
+            id,
             username: "la tête a Toto",
             isFake: true
           })

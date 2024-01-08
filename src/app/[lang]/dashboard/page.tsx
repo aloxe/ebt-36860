@@ -18,7 +18,6 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
 
   const handleToForum = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log(event);
     setIsForum(!isForum);
   }
 
