@@ -90,8 +90,8 @@ const  UserList = ({ players }: {players: User[]}) => {
 
           </td>
           <td>
-          💶: {p.totalbills}<br/>
-          🏆: {p.totalhits}
+            💶: {p.totalbills}<br/>
+            🏆: {p.totalhits}
           </td>
           {<td>
             <form onSubmit={handleSubmit}>

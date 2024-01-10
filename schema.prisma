@@ -30,14 +30,6 @@ model players {
   date       DateTime
 }
 
-model visited {
-  user_id    String    @unique
-  user       String
-  content    String
-  polygons   String
-  date       DateTime
-}
-
 model lieux {
   id            Int      @id @default(autoincrement())
   code_postal   String

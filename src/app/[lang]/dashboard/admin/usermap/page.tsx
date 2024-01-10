@@ -3,6 +3,7 @@ import { UserMapView } from "@/app/[lang]/dashboard/usermapView";
 import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 export default function UserMapAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -14,7 +15,7 @@ export default function UserMapAdmin({ params: { lang }, searchParams }: { param
       const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
       setUser({
         id: user_id,
-        username: "Essai Toto",
+        username: "Toto",
         isFake: true
       })
     }

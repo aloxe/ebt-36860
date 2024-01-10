@@ -70,7 +70,7 @@ async function ListeCommunes({lang, user, communes, prefectures}: ListeCommunesP
     {/* essai liste brute */}
     {/* <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
       {allCommuneNames.map((name, index) => <span key={index}>{name}</span>)}
-      {visited?.communes.map((code, index) => <span key={index}>{getName(code) || <b>→ {code} ←</b>} </span>)}
+      {visitedCommunes.map((code, index) => <span key={index}>{getName(code) || <b>→ {code} ←</b>} </span>)}
     </div> */}
   </>
   )

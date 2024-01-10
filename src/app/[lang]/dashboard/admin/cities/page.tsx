@@ -3,7 +3,7 @@ import CitiesView from "@/app/[lang]/dashboard/citiesView";
 import { useTranslation } from '@/i18n/client'
 import { useEffect, useState } from "react";
 import AdminLinks from "@/components/common/adminLinks";
-import { getPlayerData } from "@/helpers/dbutils";
+import { getUser } from "@/helpers/dbutils";
 import { useSearchParams } from 'next/navigation'
 
 const CitesAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
@@ -17,7 +17,7 @@ const CitesAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   useEffect(() => {
     if (user_id && !loading) {
       const fetchUserData = async (id: string) => {
-        const userData: User = await getPlayerData("user", id);
+        const userData: User = await getUser(id);
         if (userData?.id) {
           userData.isFake = true;
           setUser(userData)
