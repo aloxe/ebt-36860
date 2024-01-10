@@ -202,9 +202,9 @@ export const getCounts = async (userId, field) => {
   return dataresult;
 }
 
-export const getAllVisited = async () => {
+export const getUser = async (userId) => {
   const requestOptions = { method: 'GET' };
-  const response = await fetch(`/api/players`, requestOptions)
+  const response = await fetch(`/api/users/${userId}`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
@@ -213,6 +213,7 @@ export const getAllVisited = async () => {
   return dataresult;
 }
 
+// TODO soon remove
 export const getPlayerData = async (key, userId) => {
   // accept db keys from columns: user | content | polygons
   const requestOptions = {

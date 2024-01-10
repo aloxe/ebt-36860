@@ -28,10 +28,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [user])
 
-  // useEffect(() => {
-  //   polygons?.length && savePlayerData(user?.id, polygons)
-  // }, [polygons, user?.id])
-
   useEffect(() => {
     const getRolesAwaited = async (id: string) => {
       const role = await getRoles(id);
@@ -48,7 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     sessionStorage.removeItem('user');
     setUser(undefined)
     setVisited(undefined)
-    // setPolygons([])
+    setPolygons(undefined)
   }
 
   return (

@@ -3,7 +3,7 @@ import UnknownsView from "@/app/[lang]/dashboard/unknownsView";
 import { useTranslation } from '@/i18n/client'
 import { useEffect, useState } from "react";
 import AdminLinks from "@/components/common/adminLinks";
-import { getPlayerData } from "@/helpers/dbutils";
+import { getUser, getVisits } from "@/helpers/dbutils";
 import Spinner from "@/components/common/spinner";
 import { useSearchParams } from 'next/navigation'
 
@@ -11,7 +11,7 @@ const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [userVisited, setUserVisited] = useState<Visited | undefined>(undefined);
+  const [visitedCities, setVisitedCities] = useState<City[] | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false)
   const searchParams = useSearchParams()
   const user_id = searchParams.get("user_id") ?? ""
@@ -19,7 +19,7 @@ const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   useEffect(() => {
     if (user_id && !loading) {
       const fetchUserData = async (id: string) => {
-        const userData: User = await getPlayerData("user", id);
+        const userData: User = await getUser(id);
         if (userData?.id) {
           userData.isFake = true;
           setUser(userData)
@@ -44,15 +44,15 @@ const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
 
   useEffect(() => {
     if (user) {
-      const fetchUserVisitedData = async (id: string) => {
-        const userVisited: Visited = await getPlayerData("content", id);
-        if (userVisited) {
-          setUserVisited(userVisited)
+      const fetchVisitedCities = async (id: string) => {
+        const visitedCities: City[] = await getVisits("cities", id);
+        if (visitedCities) {
+          setVisitedCities(visitedCities)
         } else {
           console.log("user without visited");
         }
       }
-      fetchUserVisitedData(user_id)
+      fetchVisitedCities(user_id)
     }
   }, [user, user_id])
 
@@ -69,11 +69,11 @@ const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
           {!user && `No user yet`}
           {user && t('user-data', {"username": user.username})}
         </h1>
-        {!user || !userVisited && <Spinner />}
-        {user && userVisited && <UnknownsView 
+        {!user || !visitedCities && <Spinner />}
+        {user && visitedCities && <UnknownsView 
           lang={lang}
           user={user}
-          visited={userVisited}
+          visitedCities={visitedCities}
           setVisited={setVisited}
         />}
     </>
