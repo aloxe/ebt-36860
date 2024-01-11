@@ -4,7 +4,7 @@ import Spinner from "@/components/common/spinner";
 import moment from "moment";
 import 'moment/min/locales';
 import { useTranslation } from '@/i18n/client'
-import { getPlayerData, getVisits, getVisitsServer, saveUser, saveVisits } from "@/helpers/dbutils";
+import { saveUser } from "@/helpers/dbutils";
 import Link from "next/link";
 
 
@@ -12,22 +12,6 @@ const  UserList = ({ players }: {players: User[]}) => {
   const { isAdmin } = useAuth()
   moment.locale('en-gb');
   const { t } = useTranslation('en', 'dashboard');
-
-  const handleCopy = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const id = event.currentTarget.user_id.value || undefined
-    const visits: any = await getVisits(id, "cities");
-    if (!visits) {
-      console.log("need to copy");
-      const contentCities: any = await getPlayerData("content", id);
-      if (contentCities?.visitedCities) {
-        saveVisits(id, false, { cities: contentCities.visitedCities })
-        
-      }
-    }
-    
-  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -60,7 +44,6 @@ const  UserList = ({ players }: {players: User[]}) => {
           <th className="px-3 md:px-6 py-2 text-center">name</th>
           <th className="px-3 md:px-6 py-2 text-center">geo</th>
           <th className="px-3 md:px-6 py-2 text-center">▥</th>
-          <th className="px-3 md:px-6 py-2 text-center">cities</th>
           <th className="px-3 md:px-6 py-2 text-center">💶</th>
           <th className="px-3 md:px-6 py-2 text-center">sav</th>
         </tr>
@@ -105,15 +88,6 @@ const  UserList = ({ players }: {players: User[]}) => {
           {!p.count && <>-<br/></>}
           <Link href={{ pathname: 'usermap', query: { user_id: p.id } }}>Carte: {p.polygons === "{}" ? "☐" : "☑"}</Link>
 
-          </td>
-          <td>
-          <form onSubmit={handleCopy}>
-            <input type="hidden" value={p.id} name="user_id" id="user_id" />
-            <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer" id="save2" type="submit">
-              <span className="sm:hidden">💾</span>
-              <span className="hidden sm:inline-block">copy</span>
-            </button>
-            </form>
           </td>
           <td>
             💶: {p.totalbills}<br/>

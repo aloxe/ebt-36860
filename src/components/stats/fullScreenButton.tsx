@@ -2,10 +2,10 @@
 import NormalScreen from "@/assets/normal-screen.svg";
 import FullScreen from "@/assets/full-screen.svg";
 
-export const FullScreenButton = () => {
+export const FullScreenButton = ({allowScrollZoom}: {allowScrollZoom:any}) => {
 
   const defaultClass = "transition-{margin} duration-150 bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4"
-  const fullScreenClass = "transition-{margin} duration-150 fixed top-0 bottom-0 left-0 right-0 bg-orange-400 text-left p-0 pt-[45px] m-0 h-[calc(100vh-45px)] w-[100vw] fullscreen"
+  const fullScreenClass = "transition-{margin} duration-150 fixed top-0 bottom-0 left-0 right-0 bg-white text-left p-0 pt-[45px] m-0 h-[calc(100vh-45px)] w-[100vw] group fullscreen"
   const defaultTitleClass = "transition-all duration-500 flex justify-between"
   const fullScreenTitleClass = "transition-all duration-500 flex justify-between absolute w-full px-14 pb-0 mt-6 text-xs z-[1000]"
 
@@ -23,11 +23,12 @@ export const FullScreenButton = () => {
 
   event.currentTarget.children[0].className = isFull ? "" : "hidden"
   event.currentTarget.children[1].className = isFull ? "hidden" : ""
+  allowScrollZoom()
   }
 
   return (
     <>
-      <div className="text-right text-stone-400 text-sm cursor-pointer"
+      <div id="screenchange" className="text-right text-stone-400 text-sm cursor-pointer"
         /* @ts-ignore */
         onClick={handleClick}
       >

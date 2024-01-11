@@ -21,6 +21,7 @@ export function UserMapView({ lang, user }: DashboardProps) {
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
+  const [ fullscreen, setFullscreen ] = useState<boolean>(false);
 
   const handlefetchData = useCallback( async () => {
     const communesToDisplay = await fetchPolygons(user.id, communes, departements, true)
@@ -40,14 +41,23 @@ export function UserMapView({ lang, user }: DashboardProps) {
     }
   }, [polygons, handlefetchData])
 
+  const allowScrollZoom = () => {
+    setFullscreen(!fullscreen)
+  }
+
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
         <h2>{t('your-map')}</h2>
-        <FullScreenButton />
+        <FullScreenButton allowScrollZoom={allowScrollZoom} />
       </div>
-      <div className="md:flex md:justify-around text-center">
-        <div className="mb-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]">
+      <div className="md:flex md:justify-around text-center bg-white
+      group-[.fullscreen]:text-xs group-[.fullscreen]:absolute group-[.fullscreen]:top-[96px] group-[.fullscreen]:left-[58px] group-[.fullscreen]:z-[550] group-[.fullscreen]:text-left
+
+      ">
+        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]
+        ">
         <label
           className="inline-block pl-[0.15rem] hover:cursor-pointer"
           htmlFor='dep'>
@@ -58,7 +68,8 @@ export function UserMapView({ lang, user }: DashboardProps) {
         </label>
         </div>
 
-        <div className="mb-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]">
+        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]">
 
           <label
             className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
@@ -76,7 +87,7 @@ export function UserMapView({ lang, user }: DashboardProps) {
       </div>
       <div className="w-full h-90 overflow-hidden text-center">
         {mapPolygons && (
-          <DynamicMyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} />
+          <DynamicMyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} allowScrollZoom={fullscreen} />
         )}
       </div>
     </div>
