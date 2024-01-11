@@ -45,7 +45,7 @@ const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
   useEffect(() => {
     if (user) {
       const fetchVisitedCities = async (id: string) => {
-        const visitedCities: City[] = await getVisits("cities", id);
+        const visitedCities: City[] = await getVisits(id, "fr");
         if (visitedCities) {
           setVisitedCities(visitedCities)
         } else {
