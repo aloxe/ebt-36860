@@ -213,37 +213,6 @@ export const getUser = async (userId) => {
   return dataresult;
 }
 
-// TODO soon remove
-export const getPlayerData = async (key, userId) => {
-  // accept db keys from columns: user | content | polygons
-  console.log("---------------- getPlayerData");
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(userId),
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
-  };
-  console.log("================== get");
-  const response = await fetch(`/api/players/get`, requestOptions)
-    .catch(function (err) {
-      console.log('Fetch Error :-S', err);
-      return null;
-    });
-    console.log("response", response);
-  const dataresult = await response?.json();
-  if (!response || !dataresult) {
-    // no response
-    return undefined;}
-  if (!dataresult[key] || !Object.keys(dataresult[key]).length || dataresult[key] === "undefined") {
-    // response undefined
-    return undefined;
-  }
-  if (isJson(dataresult[key])) {
-    // response ok
-    return JSON.parse(dataresult[key]);
-  }
-  return dataresult[key]
-}
-
 export const saveUser = async (dataToSave) => {
   const requestOptions = {
     method: 'POST',

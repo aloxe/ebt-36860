@@ -20,23 +20,14 @@ async function saveData(req) {
         fr: `${JSON.stringify(req.data.fr)}`
       }
     });
-  } else if (!req.isNew && Object.keys(req.data)[0] === "cities") { // upsert doesn't update when date is undefined
-    await prisma.visits.update({
-      where: {
-        user_id: `${req.userId}`,
-      },
-      data: {
-        date: date,
-        cities: `${JSON.stringify(req.data.cities)}`,
-      }
-    });
   } else {
+    // note: upsert doesn't update when date is undefined
     await prisma.visits.upsert({
       where: {
         user_id: `${req.userId}`,
       },
       update: {
-        date: date,
+        date: date, 
         cities: `${JSON.stringify(req.data.cities)}`,
       },
       create: {

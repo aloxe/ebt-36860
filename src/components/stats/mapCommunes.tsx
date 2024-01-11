@@ -19,6 +19,7 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
   const { username } = user;
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [fetching, setFetching] = useState<boolean>(false);
+  const [fullscreen, setFullscreen] = useState<boolean>(false);
 
   // NOTE: This is a use-client component because 
   // sever can't handle polygone data for even 1 departement
@@ -34,6 +35,10 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
     }
   }, [fetching, handlefetchData])
 
+  const allowScrollZoom = () => {
+    setFullscreen(!fullscreen)
+  }
+
   return (
     <>
     <div className="bg-red-700 absolute z-50"></div>
@@ -42,12 +47,12 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
           <h2 className="drop-shadow-lg shadow-white">
             {t('usermap', {"username": username})}
           </h2>
-          <FullScreenButton />
+          <FullScreenButton allowScrollZoom={allowScrollZoom} />
         </div>
         <div className="text-left text-lg font-bold mb-4">
           <div className="w-full h-90 overflow-hidden text-center">
             {!mapPolygons && <Spinner />}
-            {!!mapPolygons && <MyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={true} showCom={true} tiles={"carto"} />}
+            {!!mapPolygons && <MyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={true} showCom={true} tiles={"carto"} allowScrollZoom={fullscreen} />}
           </div>
         </div>
       </div>
