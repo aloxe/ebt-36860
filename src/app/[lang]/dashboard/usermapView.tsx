@@ -1,66 +1,63 @@
 'use client'
-import Spinner from "@/components/common/spinner";
 import dynamic from 'next/dynamic';
+import Spinner from "@/components/common/spinner";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import { useAuth } from "@/context/authcontext";
-import { getCounts, savePolygons } from "@/helpers/dbutils";
-import { getUserPolygones } from "@/helpers/maputils";
+import { fetchPolygons } from "@/helpers/maputils";
+import { FullScreenButton } from "@/components/stats/fullScreenButton";
 
+// necessary to avoid server rendering of this part
 const DynamicMyMapComponent = dynamic(() =>
-  import('@/components/maps/map').then((module) => module.MyMapComponent)
-)
+  import('@/components/maps/map').then((module) => module.MyMapComponent))
 
 export function UserMapView({ lang, user }: DashboardProps) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  const { visited } = useAuth();
+  const { visited, polygons, setPolygons } = useAuth();
   const [communes, setCommunes] = useState<any>(visited?.communes || undefined);
   const [departements, setDepartements] = useState<any>(visited?.departements || undefined);
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
   const [showDep, setShowDep] = useState<boolean>(false);
   const [showCom, setShowCom] = useState<boolean>(false);
-  const [ fetching, setFetching ] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
+  const [ fullscreen, setFullscreen ] = useState<boolean>(false);
 
   const handlefetchData = useCallback( async () => {
-    setFetching(true);
-
-    const communesToDisplay = await getUserPolygones(communes, departements)
-    // TODO We still save it just to have a look
-    savePolygons(user.id, communesToDisplay);
+    const communesToDisplay = await fetchPolygons(user.id, communes, departements, true)
     setMapPolygons(communesToDisplay)
+    setPolygons(communesToDisplay)
     setDisabled(false);
-
-}, [communes, departements])
+}, [communes, departements, user, setPolygons])
 
   useEffect(() => {
-    if (!fetching) {
+    if (!polygons) {
       handlefetchData()
-    }
-  }, [fetching, handlefetchData])
-
-  useEffect(() => {
-    if (!communes) {
-      const fetchCommunes = async () => {
-        const resp = await getCounts(user.id, "communes,departements")
-        setCommunes(resp.communes)
-        setDepartements(resp.departements)
-      }
-      fetchCommunes()
     } else {
-      setDisabled(true)
-      setFetching(false)
+      setMapPolygons(polygons)
+      setDisabled(false);
+      setShowDep(true);
+      setShowCom(true);
     }
-  }, [communes])
+  }, [polygons, handlefetchData])
+
+  const allowScrollZoom = () => {
+    setFullscreen(!fullscreen)
+  }
 
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
         <h2>{t('your-map')}</h2>
+        <FullScreenButton allowScrollZoom={allowScrollZoom} />
       </div>
-      <div className="md:flex md:justify-around">
-        <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+      <div className="md:flex md:justify-around text-center bg-white
+      group-[.fullscreen]:text-xs group-[.fullscreen]:absolute group-[.fullscreen]:top-[96px] group-[.fullscreen]:left-[58px] group-[.fullscreen]:z-[550] group-[.fullscreen]:text-left
+      
+      ">
+        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]
+        ">
         <label 
           className="inline-block pl-[0.15rem] hover:cursor-pointer"
           htmlFor='dep'>
@@ -71,24 +68,26 @@ export function UserMapView({ lang, user }: DashboardProps) {
         </label>
         </div>
 
-        <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
-          <input
+        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]">
+          
+          <label
+            className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
+            htmlFor="com">
+              <input
             className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
             type="checkbox" checked={showCom} value="com" id="com"
             onChange={() => setShowCom(!showCom)}
             // @ts-ignore
             disabled={disabled}
-             />
-          <label
-            className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
-            htmlFor="com"> {t('municipality', {count: mapPolygons?.length})} {!disabled && mapPolygons && `(${mapPolygons.length})`}
+             /> {t('municipality', {count: mapPolygons?.length})} {!disabled && mapPolygons && `(${mapPolygons.length})`}
           </label> 
           {disabled && <Spinner />}
         </div>
       </div>
-      <div className="w-full h-90 bg-orange-200 overflow-hidden">
+      <div className="w-full h-90 overflow-hidden text-center">
         {mapPolygons && (
-          <DynamicMyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} />
+          <DynamicMyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={showDep} showCom={showCom} allowScrollZoom={fullscreen} />
         )}
       </div>
     </div>

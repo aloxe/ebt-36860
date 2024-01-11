@@ -9,6 +9,7 @@ export async function POST(request) {
 
 async function saveData(req) {
   const date = req.isNew ? new Date().toISOString() : undefined;
+  console.log("save Data ", Object.keys(req.data)[0], req);
   if (Object.keys(req.data)[0] === "fr") { // TODO evolve for each [country]
     await prisma.visits.update({
       where: {
@@ -20,12 +21,13 @@ async function saveData(req) {
       }
     });
   } else {
+    // note: upsert doesn't update when date is undefined
     await prisma.visits.upsert({
       where: {
         user_id: `${req.userId}`,
       },
       update: {
-        date: date,
+        date: date, 
         cities: `${JSON.stringify(req.data.cities)}`,
       },
       create: {

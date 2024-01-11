@@ -7,13 +7,12 @@ import { useTranslation } from '@/i18n/client'
 import moment from "moment";
 import 'moment/min/locales';
 
-const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: User, visited: Visited, setVisited: any }) => {
+const UnknownsView = ({lang, user, visitedCities, setVisited}: {lang: string, user: User, visitedCities: City[], setVisited: any }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  let myVisited = {...visited};
   moment.locale(lang === 'en' ? 'en-gb' : lang);
 
-  const visitedUnknown = myVisited.visitedCities.filter((city: City) => !city.code);
+  const visitedUnknown = visitedCities.filter((city: City) => !city.code);
 
   const communes = require('@etalab/decoupage-administratif/data/communes.json')
 
@@ -70,7 +69,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         feedback.innerHTML = t('commune-not');
         return
       }
-      myVisited.visitedCities.map(async function (city: City) {
+      visitedCities.map(async function (city: City) {
         if (city.city == location && getDepartement(city.top_zipcode) === departement) {
           if (city.commune) {
             feedback.className = "error"
@@ -99,7 +98,7 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
         }
       });
       // visitedCities has changed we need to update all depending data
-      const myFreshVisited = await refreshVisited(myVisited.visitedCities)
+      const myFreshVisited = await refreshVisited(visitedCities)
       const count = await getCounts(user.id, "count")
       saveCounts(user.id, {
         communes: myFreshVisited.communes,
@@ -124,9 +123,6 @@ const UnknownsView = ({lang, user, visited, setVisited}: {lang: string, user: Us
       <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>{t('places-unknown')}</h2>
-          {myVisited?.date && <div className="text-right text-stone-400 text-sm">
-          {moment(visited.date).format('LLL')}
-          </div>}
         </div>
         <div className="text-sm text-stone-600 my-1">
           {t('places-unknown-desc1')}

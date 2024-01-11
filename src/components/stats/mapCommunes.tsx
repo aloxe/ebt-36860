@@ -1,13 +1,10 @@
 'use client'
-import { getUserPolygons } from "@/helpers/dbutils";
-import { MyMapComponent } from "../maps/map";
+import { MyMapComponent } from "@/components/maps/map";
 import { useTranslation } from '@/i18n/client'
-import { getUserPolygones } from "@/helpers/maputils";
-import { MouseEventHandler, useCallback, useEffect, useState } from "react";
-import Spinner from "../common/spinner";
-import Screen from "@/assets/screen.svg";
-import NormalScreen from "@/assets/normal-screen.svg";
-import FullScreen from "@/assets/full-screen.svg";
+import { fetchPolygons } from "@/helpers/maputils";
+import { useCallback, useEffect, useState } from "react";
+import Spinner from "@/components/common/spinner";
+import { FullScreenButton } from "@/components/stats/fullScreenButton";
 
 interface MapCommunesProps {
   lang: string
@@ -21,16 +18,16 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
   const { t } = useTranslation(lang, 'stats')
   const { username } = user;
   const [mapPolygons, setMapPolygons] = useState<any>(undefined);
-  const [ fetching, setFetching ] = useState<boolean>(false);
-  
+  const [fetching, setFetching] = useState<boolean>(false);
+  const [fullscreen, setFullscreen] = useState<boolean>(false);
+
   // NOTE: This is a use-client component because 
   // sever can't handle polygone data for even 1 departement
   const handlefetchData = useCallback( async () => {
     setFetching(true);
-    const communesToDisplay = await getUserPolygones(communes, departements)
+    const communesToDisplay = await fetchPolygons(user.id, communes, departements)
     setMapPolygons(communesToDisplay)
-}, [communes, departements])
-
+}, [communes, departements, user])
 
   useEffect(() => {
     if (!fetching) {
@@ -38,26 +35,10 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
     }
   }, [fetching, handlefetchData])
 
-  const defaultClass = "transition-{margin} duration-150 bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4"
-  const fullScreenClass = "transition-{margin} duration-150 fixed top-0 bottom-0 left-0 right-0 bg-white text-left p-0 pt-[45px] m-0 h-[calc(100vh-45px)] w-[100vw] fullscreen"
-  const defaultTitleClass = "transition-all duration-500 flex justify-between"
-  const fullScreenTitleClass = "transition-all duration-500 flex justify-between absolute w-full px-14 pb-0 mt-4 text-xs z-[1000]"
-
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const isFull = event.currentTarget.children[0].className === "hidden";
-  /* @ts-ignore */
-  event.currentTarget.parentNode.parentNode.className = isFull ?
-  defaultClass : fullScreenClass;
-  /* @ts-ignore */
-  event.currentTarget.parentNode.parentNode.className = isFull ?
-  defaultClass : fullScreenClass;
-  /* @ts-ignore */
-  event.currentTarget.parentNode.className = isFull ?
-  defaultTitleClass : fullScreenTitleClass;
-
-  event.currentTarget.children[0].className = isFull ? "" : "hidden"
-  event.currentTarget.children[1].className = isFull ? "hidden" : ""
+  const allowScrollZoom = () => {
+    setFullscreen(!fullscreen)
   }
+
   return (
     <>
     <div className="bg-red-700 absolute z-50"></div>
@@ -66,19 +47,12 @@ function MapCommunes({lang, user, communes, departements}: MapCommunesProps) {
           <h2 className="drop-shadow-lg shadow-white">
             {t('usermap', {"username": username})}
           </h2>
-          <div className="text-right text-stone-400 text-sm cursor-pointer"
-            /* @ts-ignore */
-            onClick={handleClick}
-          >
-            <div className=""><FullScreen height="30px" width="40px" fill="rgb(146 64 14)" isFull={false}/></div>
-            <div className="hidden"><NormalScreen height="30px" width="40px" fill="rgb(146 64 14)"  /></div>
-          {/* <Screen height="30px" width="40px" fill="rgb(146 64 14)" isFull={false}  */}
-          </div> 
+          <FullScreenButton allowScrollZoom={allowScrollZoom} />
         </div>
         <div className="text-left text-lg font-bold mb-4">
           <div className="w-full h-90 overflow-hidden text-center">
             {!mapPolygons && <Spinner />}
-            {!!mapPolygons && <MyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={true} showCom={true} tiles={"carto"} />}
+            {!!mapPolygons && <MyMapComponent departements={departements} dataCommunes={mapPolygons} showDep={true} showCom={true} tiles={"carto"} allowScrollZoom={fullscreen} />}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 'use client'
-import { GeoJSON, MapContainer, Pane, TileLayer } from 'react-leaflet';
+import { GeoJSON, MapContainer, Pane, TileLayer, useMap } from 'react-leaflet';
 // import { GeoJSON as GeoJsonTypes } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 import './map.css';
@@ -10,6 +10,7 @@ type MyMapComponent = {
   showDep: boolean;
   showCom: boolean;
   tiles?: string;
+  allowScrollZoom: boolean;
 }
 
 // @ts-ignore
@@ -44,17 +45,23 @@ const OpenStreetMap_France = {
   attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }
 
-export function MyMapComponent({ departements, dataCommunes, showDep, showCom, tiles }: MyMapComponent) {
+function ChangeZoom({allowScrollZoom}: {allowScrollZoom: boolean}) {
+  const map = useMap();
+  !allowScrollZoom && map.scrollWheelZoom.disable();
+  allowScrollZoom && map.scrollWheelZoom.enable();
+  return null;
+}
+
+export function MyMapComponent({ departements, dataCommunes, showDep, showCom, tiles, allowScrollZoom }: MyMapComponent) {
   // TODO make an enum for tiles
   const isCarto = tiles === "carto";
-
   const deptLayer : {data:FeatureCollection, style?:any} = {
     data: require("@/data/departements.geojson"),
   }
 
   deptLayer.style = (feature: Feature) => {
     return {
-      fillColor: departements?.includes(feature.properties.code) ? 'Salmon' : 'transparent', 
+      fillColor: departements?.includes(feature.properties.code) ? "Salmon" : 'transparent', 
       dashArray: "3",
       fillOpacity: 0.1,
       color: 'black', 
@@ -84,8 +91,10 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
     <MapContainer
       center={[46.449, 2.867]}
       zoom={6}
-      scrollWheelZoom={false}
-      placeholder={<p>carte de France</p>}>
+      scrollWheelZoom={allowScrollZoom}
+      placeholder={<p>carte de France</p>}
+    >
+      <ChangeZoom allowScrollZoom={allowScrollZoom} />
       {isCarto && <Pane name="labels" style={{ zIndex: 650, pointerEvents: 'none' }}>
       </Pane>}
       {!isCarto && <TileLayer
@@ -107,8 +116,8 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
 
       {/* map.getPane('labels').style.zIndex = 650;
         map.getPane('labels').style.pointerEvents = 'none'; */}
-      {showDep && <GeoJSON key="dada" data={deptLayer.data} style={deptLayer.style} />}
-      {showCom && dataCommunes?.length > 1 && <GeoJSON key="saints" data={communesLayer.data} style={communesLayer.style} />}
+      {showDep && <GeoJSON data={deptLayer.data} style={deptLayer.style} />}
+      {showCom && dataCommunes?.length > 1 && <GeoJSON data={communesLayer.data} style={communesLayer.style} />}
     </MapContainer>
     </>
   )

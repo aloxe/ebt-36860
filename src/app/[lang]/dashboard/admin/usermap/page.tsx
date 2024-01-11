@@ -3,8 +3,9 @@ import { UserMapView } from "@/app/[lang]/dashboard/usermapView";
 import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
-export default function UserMapAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string | undefined } }) {
+export default function UserMapAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -13,8 +14,8 @@ export default function UserMapAdmin({ params: { lang }, searchParams }: { param
     if (!user) {
       const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
       setUser({ 
-        id: parseInt(user_id),
-        username: "Essai Toto",
+        id: user_id,
+        username: "Toto",
         isFake: true
       })
     }

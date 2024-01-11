@@ -40,7 +40,7 @@ function JeuPrefectures({lang, user, prefectures, cities, heading, isDashboard}:
           {departementsMetro.map(departement => {
             if (prefectures.includes(departement.chefLieu)) {
               const pref = cities.find(city => city.code === departement.chefLieu)
-              return pref && <div><b key={pref.code}>{departement.code}</b> {pref.commune || pref.city}</div>
+              return pref && <div key={pref.code}><b>{departement.code}</b> {pref.commune || pref.city}</div>
             }
           })}
           </>

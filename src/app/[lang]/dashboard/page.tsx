@@ -1,13 +1,15 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import UserDetails from "./userdetails";
-import CitiesView from "./citiesView";
-import UnknownsView from "./unknownsView";
 import { useTranslation } from '@/i18n/client'
-import TitleButton from "@/components/common/titleButton";
 import AdminLinks from "@/components/common/adminLinks";
 import { useState } from "react";
-import ForumMenu from "./menu";
+import dynamic from "next/dynamic";
+
+const CitiesView = dynamic(() => import('./citiesView'))
+const TitleButton = dynamic(() => import('@/components/common/titleButton'))
+const ForumMenu = dynamic(() => import('./menu'))
+const UnknownsView = dynamic(() => import('./unknownsView'))
 
 export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -18,7 +20,6 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
 
   const handleToForum = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log(event);
     setIsForum(!isForum);
   }
 
@@ -51,7 +52,7 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
       {username && visited?.unknowns.length > 0 && <UnknownsView 
         lang={lang}
         user={user}
-        visited={visited}
+        visitedCities={visited.visitedCities}
         setVisited={setVisited}
       />}
       </>

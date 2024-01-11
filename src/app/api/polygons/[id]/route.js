@@ -2,15 +2,13 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from 'next/server';
 
 export async function GET(req, { params }) {
-  const res = await prisma.visits.findUnique({
+  const res = await prisma.polygons.findUnique({
     where: {
       user_id: params.id,
     },
     select: {
-      user_id:true,
-      date:true,
-      cities:true,
-      fr:true,
+      date: true,
+      polygons: true,
     },
   });
   return NextResponse.json(res)
