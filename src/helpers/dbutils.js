@@ -188,7 +188,7 @@ export const getVisits = async (userId, field) => {
       return null;
     });
   const dataresult = await response?.json();
-  return JSON.parse(dataresult[field]);
+  return !!dataresult[field] ? JSON.parse(dataresult[field]) : undefined;
 }
 
 export const getCounts = async (userId, field) => {
@@ -216,16 +216,19 @@ export const getUser = async (userId) => {
 // TODO soon remove
 export const getPlayerData = async (key, userId) => {
   // accept db keys from columns: user | content | polygons
+  console.log("---------------- getPlayerData");
   const requestOptions = {
     method: 'POST',
     body: JSON.stringify(userId),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }
   };
+  console.log("================== get");
   const response = await fetch(`/api/players/get`, requestOptions)
     .catch(function (err) {
       console.log('Fetch Error :-S', err);
       return null;
     });
+    console.log("response", response);
   const dataresult = await response?.json();
   if (!response || !dataresult) {
     // no response
