@@ -10,6 +10,9 @@ interface User {
   "totalbills"?: number
   "totalhits"?: number
   "score"?: number
+  "pop"?: number
+  "surf"?: number
+  "alt"?: number
   "email"?: string
   "date"?: string | Date
   "content"?: string;

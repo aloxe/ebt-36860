@@ -8,7 +8,7 @@ export async function POST(request) {
 }
 
 async function saveData(req) {
-  const date = req.isNew ? new Date().toISOString() : undefined;
+  const date = new Date().toISOString();
   console.log("save Data ", Object.keys(req.data)[0], req);
   if (Object.keys(req.data)[0] === "fr") { // TODO evolve for each [country]
     await prisma.visits.update({
@@ -16,7 +16,7 @@ async function saveData(req) {
         user_id: `${req.userId}`,
       },
       data: {
-        date: date,
+        date: req.isNew ? date : undefined,
         fr: `${JSON.stringify(req.data.fr)}`
       }
     });
@@ -27,7 +27,7 @@ async function saveData(req) {
         user_id: `${req.userId}`,
       },
       update: {
-        date: date, 
+        date: req.isNew ? date : undefined,
         cities: `${JSON.stringify(req.data.cities)}`,
       },
       create: {

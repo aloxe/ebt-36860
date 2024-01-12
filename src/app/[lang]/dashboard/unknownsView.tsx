@@ -1,6 +1,6 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
-import { getCommuneFromCode, getDepartement, refreshVisited } from "@/helpers/cityutils";
+import { getCommuneFromCode, getDepartement, getGeoScore, refreshVisited } from "@/helpers/cityutils";
 import { getCounts, saveCounts, saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
 import { useTranslation } from '@/i18n/client'
@@ -100,6 +100,7 @@ const UnknownsView = ({lang, user, visitedCities, setVisited}: {lang: string, us
       // visitedCities has changed we need to update all depending data
       const myFreshVisited = await refreshVisited(visitedCities)
       const count = await getCounts(user.id, "count")
+      const geoScore = getGeoScore(communes, myFreshVisited.communes)
       saveCounts(user.id, {
         communes: myFreshVisited.communes,
         departements: myFreshVisited.departements,
@@ -112,6 +113,9 @@ const UnknownsView = ({lang, user, visitedCities, setVisited}: {lang: string, us
           departements: myFreshVisited.departements.length,
           prefectures: myFreshVisited.prefectures.length,
           unknowns: myFreshVisited.unknowns.length,
+          pop: geoScore.visitedPop,
+          surf: geoScore.visitedSurf,
+          alt: geoScore.visitedAltMoyenne
         }
       })
       setVisited(myFreshVisited)

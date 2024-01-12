@@ -16,6 +16,7 @@ const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) =
           <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{t("rank")}</th>
           <th className="px-3 md:px-6 py-2">{t("name")}</th>
           <th className="px-3 md:px-6 py-2">{t("score")}</th>
+          <th className="px-3 md:px-6 py-2">{t("data")}</th>
           {/* <th className="whitespace-nowrap px-6 py-4">map</th> */}
         </tr>
       </thead>
@@ -42,6 +43,13 @@ const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) =
           <td className="h-full">
             <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
               {p.score}
+            </a>
+          </td>
+          <td className="h-full">
+            <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell py-0 ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
+              {p.pop && <>👥: {Intl.NumberFormat(lang).format(p.pop)} ha.</>}<br/>
+              {p.surf && <>📐: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.surf)} km²</>}<br/>
+              {p.alt && <>⛰️: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.alt)} m.</>}
               <div className="text-right text-xs whitespace-nowrap truncate">
                 {!!p.date && (<i>{moment(p.date).format('LL')}</i>)}
               </div>

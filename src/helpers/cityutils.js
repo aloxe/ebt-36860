@@ -75,6 +75,33 @@ export const getCommuneFromCode = (code, communes) => {
   return foundCommune;
 }
 
+export const getGeoScore = (allCommunes, communes) => {
+
+  const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
+  const inseeSurface = require('@/data/communes-surface-2019.json')
+  const visitedCommunes = allCommunes.filter(c => communes.includes(c.code)).map(c => {
+    let surface = inseeSurface.find(el => el.code === c.code)?.surface
+    surface = surface ? surface / 100 : 0;
+    return {
+      code: c.code,
+      nom: c.nom,
+      population: c.population ?? 0,
+      surface,
+      altitude: parseInt(inseeAltitude.find(el => el.code === c.code)?.altitude) ?? 0 }
+  })
+
+  const visitedCommunesPop = visitedCommunes.map(el => el.population || 0)
+  const visitedPop = visitedCommunesPop.reduce((buf, a) => buf + a) || 0
+
+  const visitedCommunesSurf = visitedCommunes.map(el => el.surface || 0)
+  const visitedSurf = visitedCommunesSurf.reduce((a, b) => a + b) || 0
+
+  const visitedAlt = visitedCommunes.filter(c => c.altitude)
+  const visitedAltMoyenne = (visitedAlt.reduce((a, b) => a + b.altitude, 0)) / visitedAlt.length
+
+  return { visitedPop, visitedSurf, visitedAltMoyenne }
+}
+
 export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
   visitedCities.map((city) => {
