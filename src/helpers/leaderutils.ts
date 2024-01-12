@@ -19,6 +19,9 @@ export const getNewPlayers = async () => {
     let counts = await getCountsServer(p.id, "prefectures,date,count")
     p.count = counts?.count ? JSON.parse(counts?.count) : undefined;
     p.score = counts ? p.count.communes : 0
+    p.pop = counts ? p.count.pop : 0
+    p.surf = counts ? p.count.surf : 0
+    p.alt = counts ? p.count.alt : 0
     p.date = counts ? new Date(counts.date) : p.date
     return p;
   }));

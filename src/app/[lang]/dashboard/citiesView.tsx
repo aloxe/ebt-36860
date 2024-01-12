@@ -3,7 +3,7 @@ import Spinner from "@/components/common/spinner";
 import TitleButton from "@/components/common/titleButton";
 import { ScoreCard } from "@/components/common/scoreCard";
 import { useAuth } from "@/context/authcontext";
-import { matchCommunes, processPostcodes, refreshVisited } from "@/helpers/cityutils";
+import { getGeoScore, matchCommunes, processPostcodes, refreshVisited } from "@/helpers/cityutils";
 import { getEBTlocation, getVisits, saveCounts, saveVisits } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
 import Link from "next/link";
@@ -35,9 +35,8 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
       const visitedCities: City[] = await matchCommunes(visitedLocations, communes, EBTLocations)
       // we save all fr locations with communes info
       saveVisits(user.id, !user.isFake, { fr: visitedCities })
-
       const visited = refreshVisited(visitedCities)
-
+      const geoScore = getGeoScore(communes, visited.communes)
       saveCounts(user.id, !user.isFake, { 
         communes: visited.communes,
         departements: visited.departements,
@@ -50,6 +49,9 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
           departements: visited.departements.length,
           prefectures: visited.prefectures.length,
           unknowns: visited.unknowns.length, 
+          pop: geoScore.visitedPop,
+          surf: geoScore.visitedSurf,
+          alt: geoScore.visitedAltMoyenne
         }
       })
       setVisited(visited)
