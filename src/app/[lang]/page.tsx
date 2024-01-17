@@ -18,7 +18,7 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
 
       <div className="group bg-white rounded-lg border border-blue-200 text-left mx-0 p-2 my-2 sm:p-4 sm:m-4">
         <h2>{t("current-leaders")}</h2>
-        <LeaderTable players={players} lang={lang} />
+        <LeaderTable players={players} lang={lang} type="score"/>
         <LinkButton label={"All players"} href={`/${lang}/leaderboard/`}/>
       </div>
 

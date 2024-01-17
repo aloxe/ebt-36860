@@ -57,3 +57,34 @@ export function isJson(str) {
   }
   return 0;
 }
+
+// results
+export function compareAlt( a, b ) {
+  if ( a.alt > b.alt ){
+    return -1;
+  }
+  if ( a.alt < b.alt ){
+    return 1;
+  }
+  return 0;
+}
+
+export function comparePop( a, b ) {
+  if ( a.pop > b.pop ){
+    return -1;
+  }
+  if ( a.pop < b.pop ){
+    return 1;
+  }
+  return 0;
+}
+
+export function compareSurf( a, b ) {
+  if ( a.surf > b.surf ){
+    return -1;
+  }
+  if ( a.surf < b.surf ){
+    return 1;
+  }
+  return 0;
+}
