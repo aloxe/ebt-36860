@@ -3,7 +3,6 @@ import { useAuth } from "@/context/authcontext";
 import Spinner from "@/components/common/spinner";
 import moment from "moment";
 import 'moment/min/locales';
-import { useTranslation } from '@/i18n/client'
 import { saveUser } from "@/helpers/dbutils";
 import Link from "next/link";
 
@@ -11,7 +10,7 @@ import Link from "next/link";
 const  UserList = ({ players }: {players: User[]}) => {
   const { isAdmin } = useAuth()
   moment.locale('en-gb');
-  const { t } = useTranslation('en', 'dashboard');
+
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +31,7 @@ const  UserList = ({ players }: {players: User[]}) => {
     saveUser(datatosave)
   }
 
-    if (!isAdmin) return <></>
+  if (!isAdmin) return <></>
 
   return (
     <>
@@ -108,7 +107,7 @@ const  UserList = ({ players }: {players: User[]}) => {
 
             <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px] cursor-pointer" id="save" type="submit">
               <span className="sm:hidden">💾</span>
-              <span className="hidden sm:inline-block">{t('save')}</span>
+              <span className="hidden sm:inline-block">save</span>
             </button>
             </form>
           </td>}
