@@ -8,13 +8,13 @@ export async function POST(request) {
 }
 
 async function saveData(req) {
-  const date = req.isNew ? new Date().toISOString() : undefined;
+  const date = new Date().toISOString();
   await prisma.counts.upsert({
     where: {
       user_id: `${req.userId}`,
     },
     update: {
-      date: date,
+      date: req.isNew ? date : undefined,
       communes: `${req.data.communes ? JSON.stringify(req.data.communes) : undefined}`,
       departements: `${req.data.departements ? JSON.stringify(req.data.departements) : undefined}`,
       prefectures: `${req.data.prefectures ? JSON.stringify(req.data.prefectures) : undefined}`,

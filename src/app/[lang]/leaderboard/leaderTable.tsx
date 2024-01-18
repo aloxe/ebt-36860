@@ -3,19 +3,36 @@ import { useTranslation } from '@/i18n'
 import moment from "moment";
 import 'moment/min/locales';
 
-const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) => {
+export const UNIT = {
+  score: "",
+  pop: "hab.",
+  surf: "km²",
+  alt: "m."
+}
+
+export const ICON = {
+  score: "🏘",
+  pop: "👥",
+  surf: "📐",
+  alt: "⛰️"
+}
+
+const LeaderTable = async ({ players, lang, type }: {players: User[], lang: string, type: string}) => {
 
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
   moment.locale(lang === 'en' ? 'en-gb' : lang);
-  
+  const isMain = type === "score"
+
   return (
+    <>
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
         <tr className="bg-sky-200">
           <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{t("rank")}</th>
           <th className="px-3 md:px-6 py-2">{t("name")}</th>
-          <th className="px-3 md:px-6 py-2">{t("score")}</th>
+          <th className="px-3 md:px-6 py-2">{t(type)}</th>
+          <th className="px-3 md:px-6 py-2">{isMain && t("data")}</th>
           {/* <th className="whitespace-nowrap px-6 py-4">map</th> */}
         </tr>
       </thead>
@@ -41,11 +58,19 @@ const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) =
           </td>
           <td className="h-full">
             <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
-              {p.score}
-              <div className="text-right text-xs whitespace-nowrap truncate">
-                {!!p.date && (<i>{moment(p.date).format('LL')}</i>)}
-              </div>
+            {(ICON as any)[type]} {(p as any)[type] && Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format((p as any)[type]) || "‒"} {t((UNIT as any)[type])}
+            <div className="text-right text-xs whitespace-nowrap truncate">
+              {!!p.date && (<i>{moment(p.date).format('LL')}</i>)}           
+            </div>
             </a>
+
+          </td>
+          <td className="h-full">
+            {isMain && <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell py-0 ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
+              {p.pop && <>👥: {Intl.NumberFormat(lang).format(p.pop)} ha.</>}<br/>
+              {p.surf && <>📐: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.surf)} km²</>}<br/>
+              {p.alt && <>⛰️: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.alt)} m.</>}
+            </a>}
           </td>
           {/* <td className="whitespace-nowrap px-6 py-4 w-2">carte</td> */}
           {/* </a> */}
@@ -53,6 +78,7 @@ const LeaderTable = async ({ players, lang }: {players: User[], lang: string}) =
         ))}
       </tbody>
     </table>
+    </>
   )
 }
 
