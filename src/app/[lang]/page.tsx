@@ -28,7 +28,6 @@ export default async function Home({ params: { lang } }: { params: { lang: strin
         </h2>
         <ol>
           <li>{t("register-on")} <a href="https://fr.eurobilltracker.com/?referer=31378">eurobilltracker</a></li>
-          <li>{t("register-on")}</li>
           <li>{t("travel-to-france-find-euros")}</li>
           <li>{t("generate-your-map-here")}</li>
         </ol>
