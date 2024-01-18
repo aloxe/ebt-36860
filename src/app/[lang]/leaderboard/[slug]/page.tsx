@@ -6,7 +6,7 @@ import LeaderMenu from "../menu";
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const revalidate = 600
 
-export const SLUG = {
+const SLUG = {
   score: "municipalities",
   pop: "population",
   surf: "surface",
