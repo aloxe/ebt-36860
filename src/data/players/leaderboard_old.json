@@ -1,15 +1,5 @@
 [
     {
-        "user": "71295",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "Kleman",
-        "nombre": 5072,
-        "population": 41988436,
-        "superficie": 123531.92000000001,
-        "type": "visites",
-        "date": 1605548089
-    },
-    {
         "user": "18274",
         "userflag": "\ud83c\uddeb\ud83c\uddf7",
         "username": "jla_lyon",
@@ -20,38 +10,6 @@
         "type": "novisit",
         "date": 1446406027,
         "filedate": 1604867220
-    },
-    {
-        "user": "29791",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "Yok's",
-        "nombre": 1464,
-        "population": 21565431,
-        "superficie": 39407.75,
-        "type": "novisit",
-        "date": 1514834827,
-        "filedate": 1604867222
-    },
-    {
-        "user": "127262",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "Jackgaillard",
-        "nombre": 1142,
-        "population": 18671674,
-        "superficie": 25161.85,
-        "date": 1693234334,
-        "type": "visites"
-    },
-    {
-        "user": "44768",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "Phaseolus",
-        "nombre": 982,
-        "population": 17483246,
-        "superficie": 23684.44,
-        "type": "visites",
-        "date": null,
-        "filedate": 1604788333
     },
     {
         "user": "64011",
@@ -65,16 +23,6 @@
         "filedate": 1604867223
     },
     {
-        "user": "125525",
-        "userflag": "\ud83c\udde8\ud83c\udded",
-        "username": "Loursonvoyageur",
-        "nombre": 808,
-        "population": 11977531,
-        "superficie": 16899.17,
-        "date": 1696458854,
-        "type": "visites"
-    },
-    {
         "user": "55084",
         "userflag": "\ud83c\udde8\ud83c\udded",
         "username": "Yelverdack",
@@ -84,36 +32,6 @@
         "type": "novisit",
         "date": 1343852523,
         "filedate": 1343852523
-    },
-    {
-        "user": "39850",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "Ted X",
-        "nombre": 746,
-        "population": 16793880,
-        "superficie": 21392.52,
-        "type": "visites",
-        "date": 1688161904
-    },
-    {
-        "user": "166169",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "trezay",
-        "nombre": 653,
-        "population": 12840765,
-        "superficie": 17853.57,
-        "date": 1695676706,
-        "type": "visites"
-    },
-    {
-        "user": "31378",
-        "userflag": "\ud83c\udde8\ud83c\uddff",
-        "username": "a\u0333l\u0333o\u0333x\u0333e\u0333",
-        "nombre": 620,
-        "population": 11783837,
-        "superficie": 13570.65,
-        "type": "visites",
-        "date": 1695673613
     },
     {
         "user": "37297",
@@ -333,16 +251,6 @@
         "type": "novisit"
     },
     {
-        "user": "56584",
-        "userflag": "\ud83c\udde9\ud83c\uddea",
-        "username": "tralla23",
-        "nombre": 157,
-        "population": 2188635,
-        "superficie": 3966.94,
-        "date": 1695051456,
-        "type": "visites"
-    },
-    {
         "user": "60476",
         "userflag": "\ud83c\uddeb\ud83c\uddf7",
         "username": "Sherrysmoon&Cie",
@@ -476,16 +384,6 @@
         "population": 5094505,
         "superficie": 2144.43,
         "date": 1692615343,
-        "type": "visites"
-    },
-    {
-        "user": "192608",
-        "userflag": "\ud83c\uddeb\ud83c\uddf7",
-        "username": "Romain17",
-        "nombre": 70,
-        "population": 1581225,
-        "superficie": 1632.01,
-        "date": 1609538932,
         "type": "visites"
     },
     {
@@ -624,17 +522,6 @@
         "type": "visites"
     },
     {
-        "user": "11641",
-        "userflag": "\ud83c\uddee\ud83c\uddea",
-        "username": "Burdie",
-        "nombre": 9,
-        "population": 105185,
-        "superficie": 104.75,
-        "type": "visites",
-        "date": null,
-        "filedate": 1604867219
-    },
-    {
         "user": "72565",
         "username": "vaylniss",
         "userflag": "\ud83c\uddeb\ud83c\uddf7",
@@ -681,17 +568,6 @@
         "type": "visites"
     },
     {
-        "user": "10680",
-        "userflag": "\ud83c\uddf5\ud83c\uddf9",
-        "username": "lmviterbo",
-        "nombre": 3,
-        "population": 10639,
-        "superficie": 144,
-        "type": "visites",
-        "date": null,
-        "filedate": 1604867218
-    },
-    {
         "user": "104046",
         "username": "viola.scvp",
         "userflag": "\ud83c\uddee\ud83c\uddf9",
@@ -725,36 +601,5 @@
         "communes": [],
         "date": 1153946100,
         "type": "novisit"
-    },
-    {
-        "user": "204806",
-        "userflag": "\ud83c\udde7\ud83c\uddea",
-        "username": "Tracktor19",
-        "nombre": 0,
-        "population": 0,
-        "superficie": 0,
-        "type": "visites",
-        "date": null,
-        "filedate": 1604867221
-    },
-    {
-        "user": "xANONYMEx",
-        "userflag": "\u2690",
-        "username": "ANONYME",
-        "nombre": 0,
-        "population": 0,
-        "superficie": 0,
-        "date": 1694768458,
-        "type": "visites"
-    },
-    {
-        "user": "215666",
-        "userflag": "\ud83c\uddee\ud83c\uddea",
-        "username": "d_m1",
-        "nombre": 17,
-        "population": 2857833,
-        "superficie": 412.39,
-        "date": 1697045253,
-        "type": "visites"
     }
 ]
