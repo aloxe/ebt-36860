@@ -1,6 +1,13 @@
 {
     "leaderboard": "Leaderboard",
+    "municipalities": "municipalities",
+    "population": "population",
+    "surface": "surface",
+    "altitude": "altitude",
     "rank": "rank",
     "name": "name",
-    "score": "score"
+    "score": "score",
+    "hab.": "inhab.",
+    "km²": "km²",
+    "m.": "M."
   }
