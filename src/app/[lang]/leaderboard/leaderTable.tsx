@@ -5,7 +5,7 @@ import 'moment/min/locales';
 
 export const UNIT = {
   score: "",
-  pop: "ha.",
+  pop: "hab.",
   surf: "km²",
   alt: "m."
 }
@@ -17,12 +17,13 @@ export const ICON = {
   alt: "⛰️"
 }
 
-const LeaderTable = async ({ players, lang, type }: {players: User[], type: string, lang: string}) => {
+const LeaderTable = async ({ players, lang, type }: {players: User[], lang: string, type: string}) => {
 
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
   moment.locale(lang === 'en' ? 'en-gb' : lang);
   const isMain = type === "score"
+
   return (
     <>
     <table className="min-w-full text-left text-md font-light">

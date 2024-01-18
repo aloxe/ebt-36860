@@ -13,7 +13,7 @@ const LeaderBoard = async ({ params: { lang } }: { params: { lang: string}}) => 
   
   return (
   <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
-    <LeaderMenu lang={lang} />
+    <LeaderMenu lang={lang} slug="municipalities" />
     <div className="text-stone-600 text-sm">
       <h2>{t("leaderboard")}</h2>
       <LeaderTable players={players} lang={lang} type="score"/>

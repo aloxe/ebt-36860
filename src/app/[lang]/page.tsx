@@ -1,11 +1,11 @@
 import LinkButton from "@/components/common/linkButton";
 import TitleButton from "@/components/common/titleButton";
-import { getAllPlayers } from "@/helpers/leaderutils";
+import { getAllPlayersSorted } from "@/helpers/leaderutils";
 import LeaderTable from "@/app/[lang]/leaderboard/leaderTable";
 import { useTranslation } from '@/i18n'
 
 export default async function Home({ params: { lang } }: { params: { lang: string}}) {
-  const allPlayers = await getAllPlayers();
+  const allPlayers = await getAllPlayersSorted("score");
   const players = allPlayers.slice(0,4);
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, ['home', 'translations'])

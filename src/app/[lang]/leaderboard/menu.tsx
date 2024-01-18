@@ -1,7 +1,7 @@
 import { useTranslation } from '@/i18n'
 import Link from "next/link";
 
-const LeaderMenu = async ({ lang }: { lang: string}) => {
+const LeaderMenu = async ({ lang, slug }: { lang: string, slug: string}) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
   
