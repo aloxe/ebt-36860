@@ -11,7 +11,6 @@ const  UserList = ({ players }: {players: User[]}) => {
   const { isAdmin } = useAuth()
   moment.locale('en-gb');
 
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
