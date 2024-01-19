@@ -4,13 +4,10 @@ import { getCommuneFromCode, getDepartement, getGeoScore, refreshVisited } from 
 import { getCounts, saveCounts, saveEBTlocation } from "@/helpers/dbutils";
 import Link from "next/link";
 import { useTranslation } from '@/i18n/client'
-import moment from "moment";
-import 'moment/min/locales';
 
 const UnknownsView = ({lang, user, visitedCities, setVisited}: {lang: string, user: User, visitedCities: City[], setVisited: any }) => {
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard');
-  moment.locale(lang === 'en' ? 'en-gb' : lang);
 
   const visitedUnknown = visitedCities.filter((city: City) => !city.code);
 

@@ -1,15 +1,12 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
 import Spinner from "@/components/common/spinner";
-import moment from "moment";
-import 'moment/min/locales';
 import { saveUser } from "@/helpers/dbutils";
 import Link from "next/link";
-
+import { formatDate } from "@/helpers/time";
 
 const  UserList = ({ players }: {players: User[]}) => {
   const { isAdmin } = useAuth()
-  moment.locale('en-gb');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,7 +55,7 @@ const  UserList = ({ players }: {players: User[]}) => {
           </td>
           <td>
           <>{p.my_flag} {p.username}</><br/>
-          <div className="font-thin text-sm">{moment(p.date).format('DD/MM/YYYY HH:mm')}</div>
+          <div className="font-thin text-sm">{formatDate('en', 'DD/MM/YYYY HH:mm', p.date)}</div>
           <span className="text-xs">{p.sessionid ? p.sessionid : p.username }</span>
           </td>
 
