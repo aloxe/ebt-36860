@@ -9,8 +9,7 @@ import { getCities } from "@/helpers/ebtutils";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
-import moment from "moment";
-import 'moment/min/locales';
+import { formatDate } from "@/helpers/time";
 
 const CitiesView = ({ lang, user }: DashboardProps) => {
   /* eslint-disable react-hooks/rules-of-hooks */
@@ -20,7 +19,6 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
   const [cities, setCities] = useState<City[] | undefined>(undefined);
   const [citiesInFrance, setCitiesInFrance] = useState<number | undefined>(undefined);
   const { logout } = useAuth();
-  moment.locale(lang === 'en' ? 'en-gb' : lang);
 
   const countFrenchCommunes = useCallback( async () => {
     const citiesFrance = cities && cities.filter((city: City) => city.country == "France");
@@ -104,7 +102,7 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
         <div className="flex justify-between">
           <h2>{t('your-locations')}</h2>
           { step > 2 && 
-            <div className="text-right text-stone-400 text-sm">{moment(visited?.date).format('LLL')} 
+            <div className="text-right text-stone-400 text-sm">{formatDate(lang, "LLL", visited?.date)} 
               <span className="text-right  text-blue-900 text-lg  cursor-pointer" onClick={handleCityRequest}> ⟳ </span>
             </div> 
           }

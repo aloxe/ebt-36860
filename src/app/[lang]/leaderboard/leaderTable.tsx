@@ -1,7 +1,6 @@
 import Spinner from "@/components/common/spinner";
 import { useTranslation } from '@/i18n'
-import moment from "moment";
-import 'moment/min/locales';
+import { formatDate } from '@/helpers/time'
 
 export const UNIT = {
   score: "",
@@ -21,7 +20,6 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
 
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
-  moment.locale(lang === 'en' ? 'en-gb' : lang);
   const isMain = type === "score"
 
   return (
@@ -60,7 +58,7 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
             <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
             {(ICON as any)[type]} {(p as any)[type] && Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format((p as any)[type]) || "‒"} {t((UNIT as any)[type])}
             <div className="text-right text-xs whitespace-nowrap truncate">
-              {!!p.date && (<i>{moment(p.date).format('LL')}</i>)}           
+              {!!p.date && (<i>{formatDate(lang, "LL", p.date)}</i>)}           
             </div>
             </a>
 
