@@ -1,17 +1,14 @@
 'use client'
 import { useAuth } from "@/context/authcontext";
-import Spinner from "@/components/common/spinner";
-import moment from "moment";
-import 'moment/min/locales';
 import PostToForum from "@/components/common/postToForum";
 import { compareAlt, comparePop, compareScore, compareSurf } from "@/helpers/strings";
+import { formatDate } from "@/helpers/time";
 
 
 const  Resultats = ({ players, lang, allCommunes }: {players: User[], lang: string, allCommunes: Commune[]}) => {
   const { isAdmin } = useAuth()
   const now = Date.now();
-  moment.locale('fr-fr');
-  ;
+
   const allCommunesPop: number[] = allCommunes.map(el => el.population || 0)
   const allPop = allCommunesPop.reduce((buf, a) => buf + a)
 
@@ -21,35 +18,35 @@ const  Resultats = ({ players, lang, allCommunes }: {players: User[], lang: stri
   let BBCode1 = ""
   players && players.sort( compareScore ).map((p,i) => {
     if (p.score) {
-      BBCode1 += `${i+1}. ${p.my_flag} ${p.username}: …………… ${Intl.NumberFormat("fr").format(p.score)} communes soit ${(p.score * 100 / allCommunes.length).toFixed(3)}%   [size=85](${moment(p.date).format('MM-YYYY')})[/size]\n`
+      BBCode1 += `${i+1}. ${p.my_flag} ${p.username}: …………… ${Intl.NumberFormat("fr").format(p.score)} communes soit ${(p.score * 100 / allCommunes.length).toFixed(3)}%   [size=85](${formatDate(lang, 'MM-YYYY', p.date)})[/size]\n`
     }   
   });
 
   let BBCode2 = ""
   players && players.sort( comparePop ).map((p,i) => {
     if (p.pop) {
-      BBCode2 += `${i+1}. ${p.my_flag} ${p.username}: …………… ${Intl.NumberFormat("fr").format(p.pop)} habitants soit ${(p.pop * 100 / allPop).toFixed(2)}%   [size=85](${moment(p.date).format('MM-YYYY')})[/size]\n`
+      BBCode2 += `${i+1}. ${p.my_flag} ${p.username}: …………… ${Intl.NumberFormat("fr").format(p.pop)} habitants soit ${(p.pop * 100 / allPop).toFixed(2)}%   [size=85](${formatDate(lang, 'MM-YYYY', p.date)})[/size]\n`
     }   
   });
 
   let BBCode3 = ""
   players && players.sort( compareSurf ).map((p,i) => {
     if (p.surf) {
-      BBCode3 += `${i+1}. ${p.my_flag} ${p.username}: ……… ${Intl.NumberFormat("fr").format(p.surf *100)} hectares soit ${(p.surf * 100 / allSurface).toFixed(0)}%   [size=85](${moment(p.date).format('MM-YYYY')})[/size]\n`
+      BBCode3 += `${i+1}. ${p.my_flag} ${p.username}: ……… ${Intl.NumberFormat("fr").format(p.surf *100)} hectares soit ${(p.surf * 100 / allSurface).toFixed(0)}%   [size=85](${formatDate(lang, 'MM-YYYY', p.date)})[/size]\n`
     }   
   });
 
   let BBCode4 = ""
   players && players.sort( compareAlt ).map((p,i) => {
     if (p.alt) {
-      BBCode4 += `${i+1}. ${p.my_flag} ${p.username}: ……… ${Intl.NumberFormat("fr").format(p.alt)} m.   [size=85](${moment(p.date).format('MM-YYYY')})[/size]\n`
+      BBCode4 += `${i+1}. ${p.my_flag} ${p.username}: ……… ${Intl.NumberFormat("fr").format(p.alt)} m.   [size=85](${formatDate(lang, 'MM-YYYY', p.date)})[/size]\n`
     }   
   });
 
   if (!isAdmin) return <></>
 
   const BBCode = `
-  [size=150][color=indigo][b]Classement officiel au ${moment(now).format('LL')}[/b][/color][/size]  
+  [size=150][color=indigo][b]Classement officiel au ${formatDate(lang, 'LL', now)}[/b][/color][/size]  
 
 [size=120][color=blue]Classement par communes :[/color][/size]
 
