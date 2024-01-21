@@ -139,6 +139,24 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     }
   });
 
+    visitedCities.map((city) => {
+      // check same name + postcode (if dep ≠ postcode)
+      var foundCommune = communes.find((commune) =>  sansAccent(city.city) == sansAccent(commune.nom)
+      && commune.codesPostaux && hasSamePostcode(city.postcodes, commune.codesPostaux))
+      if (foundCommune?.chefLieu) {
+        // chefLieu of commune is the real commune
+        // we found a former commune or commune déléguée
+        // we will return the chek lieu "commune actuelle" instead
+        foundCommune = getCommuneFromCode(foundCommune.chefLieu, communes)
+      }
+      if (foundCommune) {
+        city.code = foundCommune.code
+        city.commune = foundCommune.nom
+        // we add departement from official commune
+        // as the postcode might not be right
+        city.departement = foundCommune.departement
+      }
+    });
   visitedCities.map(function (city) {
     if (!city.code) {
       // check name included + postcode
