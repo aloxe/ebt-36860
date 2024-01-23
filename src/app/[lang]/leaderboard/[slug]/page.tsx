@@ -18,7 +18,6 @@ const LeaderAlt = async ({ params: { lang, slug } }: { params: { lang: string, s
   const { t } = await useTranslation(lang, 'leaderboard')
 
   const type = Object.keys(SLUG).filter(k => (SLUG as any)[k] === slug).toString()
-
   const players = await getAllPlayersSorted(type)
 
   return (
