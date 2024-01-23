@@ -61,6 +61,7 @@ interface Commune {
     "departement"?: { code: string, nom: string; };
     "region"?: { code: string, nom: string; };
     "altitude"?: number;
+    "rangChefLieu"?: number;
   }
 
   interface CommuneWithData {
