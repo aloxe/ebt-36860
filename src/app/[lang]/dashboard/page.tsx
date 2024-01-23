@@ -57,7 +57,7 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
             callback={handleToForum}
       />}
       { username && visited && !isList && <TitleButton
-            label={t('see-list-location')}
+            label={t('see-list-locations')}
             href={"#list"}
             callback={handleToList}
       />}

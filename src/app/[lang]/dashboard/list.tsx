@@ -18,8 +18,7 @@ const ListLocations = ({ lang, user, visited }: {lang: string, user: User, visit
             <tr>
               <th colSpan={3}>
                 <h2>
-                  liste locations
-                  {/* {t('list-municipalities', {"username": username})} */}
+                  {t('list-locations')}
                 </h2>
               </th>
             </tr>
@@ -33,7 +32,6 @@ const ListLocations = ({ lang, user, visited }: {lang: string, user: User, visit
                   <>{departement.nom} ({departement.code})</>}
                   <div className="float-right font-thin">
                     {visitedCommunes.filter((commune) => (commune?.departement === departement.code)).length} {t('municipality', {count: visitedCommunes.filter((commune) => (commune?.departement === departement.code)).length})} 
-                    {/* {visitedPrefectures.length && visitedPrefectures.includes(departement.chefLieu) ? " (🏛️)" : ""} */}
                   </div>
                 </th>
               </tr>
@@ -69,11 +67,6 @@ const ListLocations = ({ lang, user, visited }: {lang: string, user: User, visit
           ))}
         </table>
     </div>
-    {/* essai liste brute */}
-    {/* <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-4 m-5">
-      {allCommuneNames.map((name, index) => <span key={index}>{name}</span>)}
-      {visitedCommunes.map((code, index) => <span key={index}>{getName(code) || <b>→ {code} ←</b>} </span>)}
-    </div> */}
   </>
   )
 }
