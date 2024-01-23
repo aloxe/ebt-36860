@@ -7,6 +7,9 @@
     "rank": "rank",
     "name": "name",
     "score": "score",
+    "pop": "population",
+    "surf": "surface",
+    "alt": "altitude",
     "hab.": "inhab.",
     "km²": "km²",
     "m.": "M."
