@@ -113,8 +113,8 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
           { step === 1 && <><br/><br/><Spinner /> {t('loading-locations')}</>}
           { cities && step > 1 && 
             <>
-              <div>🌍 : {t('locations-worldwide', {cities: cities.length})}</div>
-              {citiesInFrance && !visited && <div>🇫🇷 : {t('locations-in-france', {cities: citiesInFrance})}</div>}
+              <div>🌍 : {t('locations-worldwide', {count: cities.length})}</div>
+              {citiesInFrance && !visited && <div>🇫🇷 : {t('locations-in-france', {count: citiesInFrance})}</div>}
               {citiesInFrance === 0 && <div>🇫🇷 : {t('didnt-reccord-in-France')}</div>}
             </>
           }
@@ -130,7 +130,7 @@ const CitiesView = ({ lang, user }: DashboardProps) => {
             </div>
             {visited && visited.unknowns.length > 0 &&
             <>
-              <br/>{t("have-unidentified", {number: visited.unknowns.length})}<br/>
+              <br/>{t("have-unidentified", {count: visited.unknowns.length})}<br/>
               <Link href="#unknown">{t('identify-municipality')}</Link> {t('to-increase-your-score')}</>}
             </>
           }
