@@ -1,14 +1,16 @@
-
 {
   "leaderboard": "Classement général",
-  "municipalities": "communes",
   "population": "population",
-  "surface": "superficie",
   "altitude": "altitude",
   "rank": "rang",
   "name": "nom",
   "score": "score",
+  "pop": "population",
+  "surface": "superficie",
+  "surf": "superficie",
+  "alt": "altitude",
   "hab.": "hab.",
   "km²": "km²",
-  "m.": "m."
+  "m.": "m.",
+  "municipalities": "communes"
 }

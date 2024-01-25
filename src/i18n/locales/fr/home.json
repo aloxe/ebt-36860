@@ -1,4 +1,9 @@
 {
-    "current-leaders": "Les champions",
-    "players-forum": "Le forum Eurobilltracker"
-  }
+  "players-forum": "Le forum d'Eurobilltracker",
+  "current-leaders": "Les champions",
+  "how-to-play": "Comment jouer ?",
+  "record-your-euro-banknotes": "Enregistré vos euro-billets",
+  "register-on": "Inscrivez-vous sur",
+  "travel-to-france-find-euros": "Voyagez en France et trouvez des billets à chaque déplacement",
+  "generate-your-map-here": "Dessinez votre carte ici"
+}
