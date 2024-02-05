@@ -15,7 +15,7 @@
   "unidentified-location_other": "lieux non identifiés",
   "finding-french-communes": "recherche des communes françaises",
   "your-locations": "Vos lieux\n",
-  "have-unidentified": "Vous avez {{number}} $t(unidentified-location, {\"count\": {{number}})",
+  "have-unidentified": "Vous avez {{count}} lieu inconnu",
   "have-unidentified_other": "vous avez {{count}} lieux inconnus",
   "admin-page": "Page d'admin",
   "identify-municipality": "retrouvez les communes correspondantes",
