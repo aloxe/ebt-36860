@@ -3,10 +3,12 @@ import { GeoJSON, MapContainer, Pane, TileLayer, useMap } from 'react-leaflet';
 // import { GeoJSON as GeoJsonTypes } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 import './map.css';
+import { LatLngExpression } from 'leaflet';
 
 type MyMapComponent = {
   departements: string[];
-  dataCommunes:Feature[];
+  dataCommunes: Feature[];
+  dptPolygons?: Feature[];
   showDep: boolean;
   showCom: boolean;
   tiles?: string;
@@ -52,20 +54,23 @@ function ChangeZoom({allowScrollZoom}: {allowScrollZoom: boolean}) {
   return null;
 }
 
-export function MyMapComponent({ departements, dataCommunes, showDep, showCom, tiles, allowScrollZoom }: MyMapComponent) {
+export function MyMapComponent({ departements, dataCommunes, showDep, showCom, tiles, allowScrollZoom, dptPolygons }: MyMapComponent) {
   // TODO make an enum for tiles
   const isCarto = tiles === "carto";
-  const deptLayer : {data:FeatureCollection, style?:any} = {
-    data: require("@/data/departements.geojson"),
-  }
+  const isUniqueDpt = departements.length === 1 && departements[0] === "single";
+  const deptLocation = dptPolygons && [dptPolygons[0].geometry.coordinates[0][0][1], dptPolygons[0].geometry.coordinates[0][0][0]] as LatLngExpression;
 
+  const deptLayer : {data:FeatureCollection, style?:any} = isUniqueDpt ?
+  { data: dptPolygons } :
+  { data: require("@/data/departements.geojson"), }
+  
   deptLayer.style = (feature: Feature) => {
     return {
       fillColor: departements?.includes(feature.properties.code) ? "Salmon" : 'transparent', 
       dashArray: "3",
       fillOpacity: 0.1,
       color: 'black', 
-      weight: 1,
+      weight: isUniqueDpt ? 2 : 1,
       opacity: 1
     };
   };
@@ -89,8 +94,8 @@ export function MyMapComponent({ departements, dataCommunes, showDep, showCom, t
   return (
     <>
     <MapContainer
-      center={[46.449, 2.867]}
-      zoom={6}
+      center={isUniqueDpt ? deptLocation : [46.449, 2.867]}
+      zoom={isUniqueDpt ? 9 : 6}
       scrollWheelZoom={allowScrollZoom}
       placeholder={<p>carte de France</p>}
     >
