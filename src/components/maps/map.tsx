@@ -1,9 +1,9 @@
 'use client'
 import { GeoJSON, MapContainer, Pane, TileLayer, useMap } from 'react-leaflet';
+import { LatLngExpression } from 'leaflet';
 // import { GeoJSON as GeoJsonTypes } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 import './map.css';
-import { LatLngExpression } from 'leaflet';
 
 type MyMapComponent = {
   departements: string[];
