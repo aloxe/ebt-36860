@@ -1,0 +1,6 @@
+/* overriding styles */
+
+.dropdown-dept .dropdown .overflow-scroll {
+    max-height: 120px;
+}
+

@@ -1,11 +1,14 @@
 'use client'
 import dynamic from 'next/dynamic';
 import Spinner from "@/components/common/spinner";
+import '@/components/maps/usermap.css';
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from '@/i18n/client'
 import { useAuth } from "@/context/authcontext";
 import { fetchPolygons } from "@/helpers/maputils";
 import { FullScreenButton } from "@/components/stats/fullScreenButton";
+import { Dropdown } from '@/components/common/dropdown';
+
 
 // necessary to avoid server rendering of this part
 const DynamicMyMapComponent = dynamic(() =>
@@ -22,6 +25,16 @@ export function UserMapView({ lang, user }: DashboardProps) {
   const [showCom, setShowCom] = useState<boolean>(false);
   const [ disabled, setDisabled ] = useState<boolean>(true);
   const [ fullscreen, setFullscreen ] = useState<boolean>(false);
+
+  const dropdownDepartements = () => {
+    const departements: Departement[] = require('@etalab/decoupage-administratif/data/departements.json')
+    departements.map((item:any) => {
+      item.label = `${item.nom} (${item.code.substring(0,2)})`,
+      item.url = item.code,
+      item.action = null
+    })
+    return (<Dropdown label={t('all')} array={departements} />)
+  }
 
   const handlefetchData = useCallback( async () => {
     const communesToDisplay = await fetchPolygons(user.id, communes, departements, true)
@@ -56,19 +69,6 @@ export function UserMapView({ lang, user }: DashboardProps) {
       
       ">
         <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
-        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]
-        ">
-        <label 
-          className="inline-block pl-[0.15rem] hover:cursor-pointer"
-          htmlFor='dep'>
-          <input 
-          className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-            id='dep' value='dep' type="checkbox" checked={showDep} 
-            onChange={() => setShowDep(!showDep)} /> {t('district', {count: 2})}
-        </label>
-        </div>
-
-        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
         group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]">
           
           <label
@@ -83,6 +83,19 @@ export function UserMapView({ lang, user }: DashboardProps) {
              /> {t('municipality', {count: mapPolygons?.length})} {!disabled && mapPolygons && `(${mapPolygons.length})`}
           </label> 
           {disabled && <Spinner />}
+        </div>
+        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]
+        ">
+        <label 
+          className="inline-block pl-[0.15rem] hover:cursor-pointer"
+          htmlFor='dep'>
+          <input 
+          className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            id='dep' value='dep' type="checkbox" checked={showDep} 
+            onChange={() => setShowDep(!showDep)} /> {t('district', {count: 2})}
+        </label>
+        {fullscreen && <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem] group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem] z-1000 dropdown-dept">{dropdownDepartements()}</div>}
         </div>
       </div>
       <div className="w-full h-90 overflow-hidden text-center">
