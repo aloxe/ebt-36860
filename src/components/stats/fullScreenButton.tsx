@@ -23,8 +23,6 @@ export const FullScreenButton = ({allowScrollZoom}: {allowScrollZoom:any}) => {
 
     event.currentTarget.children[0].className = isFull ? "" : "hidden"
     event.currentTarget.children[1].className = isFull ? "hidden" : ""
-    console.log("handleClick tout");
-    
     allowScrollZoom()
   }
 
