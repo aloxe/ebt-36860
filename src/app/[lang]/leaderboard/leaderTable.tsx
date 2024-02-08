@@ -30,7 +30,7 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
           <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{t("rank")}</th>
           <th className="px-3 md:px-6 py-2">{t("name")}</th>
           <th className="px-3 md:px-6 py-2">{t(type)}</th>
-          <th className="px-3 md:px-6 py-2">{isMain && t("data")}</th>
+          <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{isMain && t("data")}</th>
           {/* <th className="whitespace-nowrap px-6 py-4">map</th> */}
         </tr>
       </thead>
@@ -64,7 +64,7 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
 
           </td>
           <td className="h-full">
-            {isMain && <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell py-0 ${p.count && "cursor-pointer"} sm:flex sm:justify-between`}>
+            {isMain && <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell py-0 ${p.count && "cursor-pointer"} sm:flex sm:justify-between hidden sm:table-cell`}>
               {p.pop && <>👥: {Intl.NumberFormat(lang).format(p.pop)} ha.</>}<br/>
               {p.surf && <>📐: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.surf)} km²</>}<br/>
               {p.alt && <>⛰️: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.alt)} m.</>}
