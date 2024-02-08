@@ -100,26 +100,28 @@ export function DeptMapView({ lang, user }: DashboardProps) {
     setFullscreen(!fullscreen)
   }
 
+  const canShow = mapPolygons && departement && dptPolygons
   return (
     <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
         <h2>{user.username} map</h2>
         <FullScreenButton allowScrollZoom={allowScrollZoom} />
       </div>
-      <div className="md:flex md:justify-around text-center bg-white
+      <div className="md:flex md:justify-around
       group-[.fullscreen]:text-xs group-[.fullscreen]:absolute group-[.fullscreen]:top-[96px] group-[.fullscreen]:left-[58px] group-[.fullscreen]:z-[550] group-[.fullscreen]:text-left
       ">
         <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
-        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]">
-        {<div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem] group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem] z-1000 dropdown-dept">{dropdownDepartements()}</div>}
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem] dropdown-dept">
+          {<div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem] group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem] z-1000">{dropdownDepartements()}</div>}
         </div>
       </div>
       <div className="w-full h-90 overflow-hidden text-center">
         {/* adding key to allow loading of a new map instance */}
-        {mapPolygons && departement && dptPolygons && (
+        {canShow && (
           <DynamicMyMapComponent key={departement} departements={["single"]} dataCommunes={mapPolygons} showDep={true} showCom={true} allowScrollZoom={fullscreen} dptPolygons={dptPolygons}/>
         )}
-        {!departement && <div className='mt-12'><Spinner /></div>}
+        {!canShow && departement && <div className='mt-12 relative'><Spinner /></div>}
+        {!departement && <div className='mt-12 relative'>pick département</div>}
       </div>
     </div>
     )
