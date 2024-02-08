@@ -43,5 +43,7 @@
   "commune-already": "commune déjà sauvegardée, sauvegarde impossible",
   "network-error": "erreur réseau, sauvegarde impossible",
   "saved": "sauvegardé",
-  "user-data": "les données de {{username}}"
+  "user-data": "les données de {{username}}",
+  "map-a-district": "Cartographiez un département",
+  "map-district": "Carte du {{district}} pour {{username}}"
 }

@@ -35,7 +35,7 @@ export default function Dashboard({ params: { lang } }: { params: { lang: string
   if (!user) {
     return (
       <div className="md:table border-spacing-x-4">
-       <h3>You need to log in to see this page…</h3>
+       <h3>{t('please-login')}</h3>
       </div>
     )
   }
