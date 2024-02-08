@@ -76,6 +76,9 @@ const Login = ({ lang }: {lang: string}) => {
               <div className="py-1">
                 <a href={`/${lang}/dashboard/`} className="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem" >{t("your-dashboard")}</a>
               </div>
+              <div className="py-1">
+                <a href={`/${lang}/dashboard/departement/`} className="text-gray-700 flex justify-between w-full px-4 py-2 text-sm leading-5 text-left" role="menuitem" >{t("explore-district")}</a>
+              </div>
             </div>
           </div>
         </div>

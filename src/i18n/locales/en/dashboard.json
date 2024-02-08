@@ -41,6 +41,8 @@
     "commune-already": "commune already saved, can't save",
     "network-error": "network error, didn't save",
     "saved": "saved",
-    "user-data": "current data from {{username}}"
+    "user-data": "current data from {{username}}",
+    "map-a-district": "Map a district",
+    "map-district": "Map of {{district}} for {{username}}"
 }
 

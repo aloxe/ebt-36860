@@ -7,6 +7,7 @@
     "translations": "Translations",
     "translations-": "Translations:",
     "your-dashboard": "Your dashboard",
+    "explore-district": "Explore district",
     "login": "Login",
     "use-your-credentials": "Use your eurobilltracker.com credentials",
     "email": "Email",
@@ -24,5 +25,6 @@
     "district": "district",
     "district_other": "districts",
     "hq": "préfecture",
-    "hq_other": "préfectures"
+    "hq_other": "préfectures",
+    "please-login": "You need to log in to see this page…"
   }
