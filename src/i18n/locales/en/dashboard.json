@@ -1,6 +1,8 @@
 {
     "dashboard": "{{username}}’s dashboard",
-    "admin-page": "Admin page",
+    "admin-pages": "Admin:",
+    "admin-users": "users",
+    "admin-scores": "rankings",
     "load-locations": "Load your locations from EBT",
     "loading-locations": "loading locations from eurobilltracker",
     "your-locations": "Your locations",
