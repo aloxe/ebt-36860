@@ -46,7 +46,7 @@ const  Resultats = ({ players, lang, allCommunes }: {players: User[], lang: stri
   if (!isAdmin) return <></>
 
   const BBCode = `
-  [size=150][color=indigo][b]Classement officiel au ${formatDate(lang, 'LL', now)}[/b][/color][/size]  
+  [size=150][color=indigo][b]Classement officiel au ${formatDate(lang, 'LL', now)}[/b][/color][/size]
 
 [size=120][color=blue]Classement par communes :[/color][/size]
 

@@ -35,7 +35,6 @@ const  UserList = ({ players }: {players: User[]}) => {
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
         <tr className="bg-sky-200">
-          <th className="px-3 md:px-6 py-4 text-center">num</th>
           <th className="px-3 md:px-6 py-2 text-center">name</th>
           <th className="px-3 md:px-6 py-2 text-center">geo</th>
           <th className="px-3 md:px-6 py-2 text-center">▥</th>
@@ -50,13 +49,11 @@ const  UserList = ({ players }: {players: User[]}) => {
         {players && players.map((p) => (
         <tr className="h-1 bg-slate-100 border-b dark:border-neutral-500 text-md hover:bg-amber-50"
         key={p.id}>
-          <td>
-          {p.id}<br />
-          </td>
-          <td>
-          <>{p.my_flag} {p.username}</><br/>
-          <div className="font-thin text-sm">{formatDate('en', 'DD/MM/YYYY HH:mm', p.date)}</div>
-          <span className="text-xs">{p.sessionid ? p.sessionid : p.username }</span>
+          <td className="pl-3">
+            <b>{p.id}</b><br />
+            <>{p.my_flag} {p.username}</><br/>
+            <div className="font-thin text-sm">{formatDate('en', 'DD/MM/YYYY HH:mm', p.date)}</div>
+          {/* <span className="text-xs">{p.sessionid ? p.sessionid : p.username }</span> */}
           </td>
 
           <td>
