@@ -56,19 +56,6 @@ export function UserMapView({ lang, user }: DashboardProps) {
       
       ">
         <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
-        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]
-        ">
-        <label 
-          className="inline-block pl-[0.15rem] hover:cursor-pointer"
-          htmlFor='dep'>
-          <input 
-          className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-            id='dep' value='dep' type="checkbox" checked={showDep} 
-            onChange={() => setShowDep(!showDep)} /> {t('district', {count: 2})}
-        </label>
-        </div>
-
-        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
         group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]">
           
           <label
@@ -83,6 +70,18 @@ export function UserMapView({ lang, user }: DashboardProps) {
              /> {t('municipality', {count: mapPolygons?.length})} {!disabled && mapPolygons && `(${mapPolygons.length})`}
           </label> 
           {disabled && <Spinner />}
+        </div>
+        <div className="my-[0.125rem] inline-block min-h-[1.5rem] pl-[1.5rem]
+        group-[.fullscreen]:block group-[.fullscreen]:pl-[0.125rem]
+        ">
+        <label 
+          className="inline-block pl-[0.15rem] hover:cursor-pointer"
+          htmlFor='dep'>
+          <input 
+          className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+            id='dep' value='dep' type="checkbox" checked={showDep} 
+            onChange={() => setShowDep(!showDep)} /> {t('district', {count: 2})}
+        </label>
         </div>
       </div>
       <div className="w-full h-90 overflow-hidden text-center">

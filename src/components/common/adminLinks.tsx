@@ -12,9 +12,11 @@ function AdminLinks({ lang }: { lang: string }) {
   return (
     <div className="block w-full">
         {!isAdmin && !isTrans && <></>}
-        {isAdmin && <><Link href={`/${lang}/dashboard/admin`}>{t('admin-page')}</Link> | </>}
+        {isAdmin && <b>{t('admin-pages')} </b>}
+        {isAdmin && <><Link href={`/${lang}/dashboard/admin`}>{t('admin-users')}</Link> · </>}
+        {isAdmin && <><Link href={`/${lang}/dashboard/admin/forum`}>{t('admin-scores')}</Link> | </>}
         {isTrans && (<>
-        {t('translations-')} {isTransLangs.map((transLang: string) => (
+        <b>{t('translations-')}</b> {isTransLangs.map((transLang: string) => (
         <span key={transLang} > <Link href={`/${lang}/dashboard/translations/${transLang}`}>{transLang}</Link> |</span>
         ))}
       </>)}

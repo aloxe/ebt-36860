@@ -15,9 +15,11 @@
   "unidentified-location_other": "lieux non identifiés",
   "finding-french-communes": "recherche des communes françaises",
   "your-locations": "Vos lieux\n",
-  "have-unidentified": "Vous avez {{number}} $t(unidentified-location, {\"count\": {{number}})",
+  "have-unidentified": "Vous avez {{count}} lieu inconnu",
   "have-unidentified_other": "vous avez {{count}} lieux inconnus",
-  "admin-page": "Page d'admin",
+  "admin-pages": "Admin :",
+  "admin-users": "utilisateurs",
+  "admin-scores": "classement",
   "identify-municipality": "retrouvez les communes correspondantes",
   "to-increase-your-score": "pour améliorer votre score",
   "see-map-share": "Voir la carte et partagez sur le forum",
@@ -43,5 +45,7 @@
   "commune-already": "commune déjà sauvegardée, sauvegarde impossible",
   "network-error": "erreur réseau, sauvegarde impossible",
   "saved": "sauvegardé",
-  "user-data": "les données de {{username}}"
+  "user-data": "les données de {{username}}",
+  "map-a-district": "Cartographiez un département",
+  "map-district": "Carte du {{district}} pour {{username}}"
 }

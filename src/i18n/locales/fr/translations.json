@@ -20,9 +20,11 @@
   "password": "mot de passe",
   "use-your-credentials": "Utilisez vos identifiants eurobilltracker.com",
   "your-dashboard": "Tableau de bord",
+  "explore-district": "Département complet",
   "translations-": "Traductions :",
   "translations": "Traductions",
   "sign-out": "Déconnexion",
   "signed-in-as": "Connecté",
-  "current-leaders": "Les champions"
+  "current-leaders": "Les champions",
+  "please-login": "Identifiez-vous pour voir cette page…"
 }

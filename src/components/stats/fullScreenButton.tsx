@@ -11,28 +11,28 @@ export const FullScreenButton = ({allowScrollZoom}: {allowScrollZoom:any}) => {
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const isFull = event.currentTarget.children[0].className === "hidden";
-  /* @ts-ignore */
-  event.currentTarget.parentNode.parentNode.className = isFull ?
-  defaultClass : fullScreenClass;
-  /* @ts-ignore */
-  event.currentTarget.parentNode.parentNode.className = isFull ?
-  defaultClass : fullScreenClass;
-  /* @ts-ignore */
-  event.currentTarget.parentNode.className = isFull ?
-  defaultTitleClass : fullScreenTitleClass;
+    /* @ts-ignore */
+    event.currentTarget.parentNode.parentNode.className = isFull ?
+    defaultClass : fullScreenClass;
+    /* @ts-ignore */
+    event.currentTarget.parentNode.parentNode.className = isFull ?
+    defaultClass : fullScreenClass;
+    /* @ts-ignore */
+    event.currentTarget.parentNode.className = isFull ?
+    defaultTitleClass : fullScreenTitleClass;
 
-  event.currentTarget.children[0].className = isFull ? "" : "hidden"
-  event.currentTarget.children[1].className = isFull ? "hidden" : ""
-  allowScrollZoom()
+    event.currentTarget.children[0].className = isFull ? "" : "hidden"
+    event.currentTarget.children[1].className = isFull ? "hidden" : ""
+    allowScrollZoom()
   }
 
-  return (
+return (
     <>
       <div id="screenchange" className="text-right text-stone-400 text-sm cursor-pointer"
         /* @ts-ignore */
         onClick={handleClick}
       >
-        <div className=""><FullScreen height="30px" width="40px" fill="rgb(146 64 14)" isFull={false}/></div>
+        <div className=""><FullScreen height="30px" width="40px" fill="rgb(146 64 14)" /></div>
         <div className="hidden"><NormalScreen height="30px" width="40px" fill="rgb(146 64 14)"  /></div>
       </div> 
     </>

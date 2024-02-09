@@ -1,0 +1,22 @@
+/* overriding styles */
+
+.dropdown-dept  {
+    position: absolute;
+    background: transparent;
+    z-index: 1000;
+    width: 200px;
+}
+
+.dropdown-dept .dropdown > button {
+    background: white;
+    height: 30px;
+}
+
+.dropdown-dept .dropdown button {
+    font-size: 0.75rem
+}
+
+.dropdown-dept .dropdown .overflow-scroll {
+    max-height: 150px;
+}
+

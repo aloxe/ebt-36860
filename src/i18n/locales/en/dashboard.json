@@ -1,6 +1,8 @@
 {
     "dashboard": "{{username}}’s dashboard",
-    "admin-page": "Admin page",
+    "admin-pages": "Admin:",
+    "admin-users": "users",
+    "admin-scores": "rankings",
     "load-locations": "Load your locations from EBT",
     "loading-locations": "loading locations from eurobilltracker",
     "your-locations": "Your locations",
@@ -41,6 +43,8 @@
     "commune-already": "commune already saved, can't save",
     "network-error": "network error, didn't save",
     "saved": "saved",
-    "user-data": "current data from {{username}}"
+    "user-data": "current data from {{username}}",
+    "map-a-district": "Map a district",
+    "map-district": "Map of {{district}} for {{username}}"
 }
 
