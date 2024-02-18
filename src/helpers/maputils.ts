@@ -37,15 +37,17 @@ export const makeUserPolygons = async (communes: string[], departements: string[
   });
 }
 
-export const fetchPolygons = async (userId: string, communes: string[], departements: string[], isNew: boolean = false) => {
+export const fetchPolygons = async (userId: string, communes: string[], departements: string[]) => {
   const canSave = communes.length <= MAX_POLYGONS
   let communesToDisplay = canSave ? await getPolygons(userId) : null;
-  if (!communesToDisplay) {
-    communesToDisplay = await makeUserPolygons(communes, departements)
-    canSave && savePolygons(userId, communesToDisplay)
-    return communesToDisplay
-  } else {
+  if (communesToDisplay) {
     communesToDisplay = JSON.parse(communesToDisplay.polygons)
-    return communesToDisplay
+    if (communesToDisplay.length === communes.length) {
+      // return saved polygons only if not new
+      return communesToDisplay
+    }
   }
+  communesToDisplay = await makeUserPolygons(communes, departements)
+  canSave && savePolygons(userId, communesToDisplay)
+  return communesToDisplay
 }
