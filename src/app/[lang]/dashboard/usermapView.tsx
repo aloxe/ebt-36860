@@ -24,7 +24,7 @@ export function UserMapView({ lang, user }: DashboardProps) {
   const [ fullscreen, setFullscreen ] = useState<boolean>(false);
 
   const handlefetchData = useCallback( async () => {
-    const communesToDisplay = await fetchPolygons(user.id, communes, departements, true)
+    const communesToDisplay = await fetchPolygons(user.id, communes, departements)
     setMapPolygons(communesToDisplay)
     setPolygons(communesToDisplay)
     setDisabled(false);
