@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { isJson } from "./strings";
 
 export const MAX_POLYGONS = 1000
 
@@ -75,7 +74,7 @@ export const getEBTlocation = async () => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/locations`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -94,7 +93,7 @@ export const saveEBTlocation = async (newLocation) => {
   // api bellow writting to DB EBT locations (see route.js)
   const response = await fetch(`/api/locations/?${requestDetail}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -105,18 +104,18 @@ export const getTranslations = async (lang, ns) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/translations${lang ? '/'+lang : ''}${ns ? '/'+ns : ''}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
 
   const dataresult = await response?.json();
-  console.log("dataresult", dataresult);
+  error.log("dataresult", dataresult);
   return dataresult;
 }
 
 export const saveTranslation = async (ns, key, lang, string) => {
   if (!string) {
-    console.log('saveTranslation Error :-S', key);
+    error.log('saveTranslation Error :-S', key);
     return null;
   };
   
@@ -130,12 +129,12 @@ export const saveTranslation = async (ns, key, lang, string) => {
       .then(
         response => {
           if (response.status !== 200) {
-            console.log("problème ", response.status);
+            error.log("problème ", response.status);
           }
           return response;
         })
       .catch(function (err) {
-        console.log('Fetch Error :-S', err);
+        error.log('Fetch Error :-S', err);
         return null;
       });
 }
@@ -148,11 +147,11 @@ export const getPlayerRole = async (userId) => {
   };
   const response = await fetch(`/api/roles`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch roll Error :-S', err);
+      error.log('Fetch roll Error :-S', err);
       return null;
     });
   if (!response) {
-    console.log('Fetch role no result Error :-S');
+    error.log('Fetch role no result Error :-S');
     return undefined;
   }
   return await response?.json();
@@ -162,7 +161,7 @@ export const getRoles = async (userId) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/roles/${userId}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -173,7 +172,7 @@ export const getPolygons = async (userId) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/polygons/${userId}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -184,7 +183,7 @@ export const getVisits = async (userId, field) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/visits/${userId}${field ? "/"+field : ""}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -195,7 +194,7 @@ export const getCounts = async (userId, field) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/counts/${userId}${field ? "/"+field : ""}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -206,7 +205,7 @@ export const getUser = async (userId) => {
   const requestOptions = { method: 'GET' };
   const response = await fetch(`/api/users/${userId}`, requestOptions)
     .catch(function (err) {
-      console.log('Fetch Error :-S', err);
+      error.log('Fetch Error :-S', err);
       return null;
     });
   const dataresult = await response?.json();
@@ -224,18 +223,18 @@ export const saveUser = async (dataToSave) => {
       .then(
         response => {
           if (response.status !== 200) {
-            console.log("problème ", response.status);
+            error.log("problème ", response.status);
           }
         })
       .catch(function (err) {
-        console.log('Fetch Error :-S', err);
+        error.log('Fetch Error :-S', err);
         return null;
       });
 }
 
 export const saveVisits = async (userId, isNew, dataToSave) => {
   if (!userId) {
-    console.log('save Visits Error :-S', dataToSave);
+    error.log('save Visits Error :-S', dataToSave);
     return null;
   };
 
@@ -250,18 +249,18 @@ export const saveVisits = async (userId, isNew, dataToSave) => {
       .then(
         response => {
           if (response.status !== 200) {
-            console.log("problème ", response.status);
+            error.log("problème ", response.status);
           }
         })
       .catch(function (err) {
-        console.log('Fetch Error :-S', err);
+        error.log('Fetch Error :-S', err);
         return null;
       });
 }
 
 export const saveCounts = async (userId, isNew, dataToSave) => {
   if (!userId) {
-    console.log('save Counts Error :-S', dataToSave);
+    error.log('save Counts Error :-S', dataToSave);
     return null;
   };
 
@@ -275,11 +274,11 @@ export const saveCounts = async (userId, isNew, dataToSave) => {
   .then(
     response => {
       if (response.status !== 200) {
-        console.log("problème ", response.status);
+        error.log("problème ", response.status);
       }
     })
   .catch(function (err) {
-    console.log('Fetch Error :-S', err);
+    error.log('Fetch Error :-S', err);
     return null;
   });
 }
@@ -287,7 +286,7 @@ export const saveCounts = async (userId, isNew, dataToSave) => {
 
 export const savePolygons = async (userId, dataToSave) => {
   if (!userId) {
-    console.log('save Polygons Error :-S', dataToSave);
+    error.log('save Polygons Error :-S', dataToSave);
     return null;
   };
 
@@ -308,11 +307,11 @@ export const savePolygons = async (userId, dataToSave) => {
   .then(
     response => {
       if (response.status !== 200) {
-        console.log("problème ", response.status);
+        error.log("problème ", response.status);
       }
     })
   .catch(function (err) {
-    console.log('Fetch Error :-S', err);
+    error.log('Fetch Error :-S', err);
     return null;
   });
 }

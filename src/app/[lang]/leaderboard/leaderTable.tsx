@@ -27,11 +27,10 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
     <table className="min-w-full text-left text-md font-light">
       <thead className="border-b font-medium dark:border-neutral-500">
         <tr className="bg-sky-200">
-          <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{t("rank")}</th>
+          <th className="px-3 md:px-6 py-2 hidden md:table-cell">{t("rank")}</th>
           <th className="px-3 md:px-6 py-2">{t("name")}</th>
           <th className="px-3 md:px-6 py-2">{t(type)}</th>
           <th className="px-3 md:px-6 py-2 hidden sm:table-cell">{isMain && t("data")}</th>
-          {/* <th className="whitespace-nowrap px-6 py-4">map</th> */}
         </tr>
       </thead>
       <tbody>
@@ -42,16 +41,17 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
         <tr className={`bg-slate-100 border-b dark:border-neutral-500 text-md ${p.count ? " hover:bg-amber-50" : "opacity-60 border-stone-800"}`} 
         key={p.id}>
 
-          <td className="hidden sm:table-cell">
+          <td className="hidden md:table-cell">
             <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell ${p.count && "cursor-pointer"}`}>
               { index + 1 }
             </a>
           </td>
           <td className="h-full">
             <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} 
-            className={`fill-cell ${p.count && "text-blue-900 underline cursor-pointer"}`}>
+            className={`fill-cell ${p.count && "cursor-pointer"}`}>
 
-            {<>{p.my_flag} {p.username}</>}
+            {<><span className="md:hidden">{ index + 1 }</span><br/>
+            <span className="text-blue-900 underline">{p.my_flag} {p.username}</span></>}
             </a>
           </td>
           <td className="h-full">
@@ -63,15 +63,13 @@ const LeaderTable = async ({ players, lang, type }: {players: User[], lang: stri
             </a>
 
           </td>
-          <td className="h-full">
-            {isMain && <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell py-0 ${p.count && "cursor-pointer"} sm:flex sm:justify-between hidden sm:table-cell`}>
+          <td className="h-full hidden sm:flex">
+            {isMain && <a href={p.count ? `/${lang}/stats/${p.id}` : undefined} className={`fill-cell py-0 ${p.count && "cursor-pointer"}  sm:justify-between`}>
               {p.pop && <>👥: {Intl.NumberFormat(lang).format(p.pop)} ha.</>}<br/>
               {p.surf && <>📐: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.surf)} km²</>}<br/>
               {p.alt && <>⛰️: {Intl.NumberFormat(lang, {maximumFractionDigits: 0}).format(p.alt)} m.</>}
             </a>}
           </td>
-          {/* <td className="whitespace-nowrap px-6 py-4 w-2">carte</td> */}
-          {/* </a> */}
         </tr>
         ))}
       </tbody>
