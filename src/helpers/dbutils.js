@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { isJson } from "./strings";
 
 export const MAX_POLYGONS = 1000
 
