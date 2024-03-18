@@ -3,6 +3,8 @@ import Resultats from "./resultats";
 import { fetchAllComplete } from "@/helpers/cityutils";
 import AdminLinks from "@/components/common/adminLinks";
 
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+export const revalidate = 600
 
 const Forum = async ({ params: { lang } }: { params: { lang: string } }) => {
   const players = await getAllPlayers()
