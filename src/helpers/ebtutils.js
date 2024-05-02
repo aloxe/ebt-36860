@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // server side
 
 export const getPublicUser = async (id) => {
@@ -6,7 +8,7 @@ export const getPublicUser = async (id) => {
       cache: 'force-cache'
     };
 
-    const response = await fetch(`https://api.eurobilltracker.com/?m=globalstats_profile_user&v=1&user_id=${id}`, requestOptions)
+    const response = await fetch(`/api/eurobilltracker/?m=globalstats_profile_user&v=1&user_id=${id}`, requestOptions)
       .catch(function (err) {
         console.log('get User Error :-S', err);
         return null;
@@ -19,39 +21,16 @@ export const getPublicUser = async (id) => {
   
   // client side
 
-  function getRequestBody(body) {
-  var bodyArray = [];
-  for (var property in body) {
-    var encodedKey = encodeURIComponent(property);
-    var encodedValue = encodeURIComponent(body[property]);
-    bodyArray.push(encodedKey + "=" + encodedValue);
-  }
-  return bodyArray.join("&");
-}
-
 export const EBTlogin = async (login, password) => {
-  const params = {
-  'my_email': login,
-  'my_password': password
-  };
-
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    },
-    body: getRequestBody(params)
-  };
-
-  // &PHPSESSID=123456789
-  const response   = await fetch('/api/eurobilltracker/?m=login&v=2', requestOptions)
-    .catch(function (err) {
-      console.log('Fetch Error :-S', err);
-      return null;
-    });
-
-  const loginUser = await response?.json();
-  if (loginUser) return loginUser
+  const { data } = await axios.post('/api/eurobilltracker/?m=login&v=2', {
+    'my_email': login,
+    'my_password': password
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      }
+  })
+  if (data) return data
   else return null
 }
 
