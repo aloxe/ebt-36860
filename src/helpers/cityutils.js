@@ -1,5 +1,5 @@
 import { getPostcodes } from "@/helpers/ebtutils";
-import { sansAccent } from "@/helpers/strings";
+import { sansAccent, sansTiret } from "@/helpers/strings";
 
 // API calls such as:
 // curl 'https://geo.api.gouv.fr/communes?nom=Versailles&fields=code,nom,surface,population,codesPostaux,codeDepartement,codeRegion,siren,codeEpci,epci,departement,region,centre,contour,zone'
@@ -106,8 +106,9 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
   visitedCities.map((city) => {
     if (!city.code) {
+      // console.log(city.city + " » " + sansTiret(city.city));
       // check same name no diacritics + dept
-      var foundCommune = communes.find((commune) => sansAccent(city.city) == sansAccent(commune.nom)
+      var foundCommune = communes.find((commune) => sansTiret(sansAccent(city.city)) == sansTiret(sansAccent(commune.nom))
         && getDepartement(city.postcodes[0]) === commune.departement)
       if (foundCommune?.chefLieu) {
         foundCommune = getCommuneFromCode(foundCommune.chefLieu, communes)
