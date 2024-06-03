@@ -10,6 +10,11 @@ export function sansAccent(str) {
   return str.toLowerCase();
 }
 
+export function sansTiret(str) {
+  if (!str) return null;
+  return str.toLowerCase().replace("-", " ");
+}
+
 export function addSauPluriel(value) {
   return value && value > 1 ? "s" : "";
 }
