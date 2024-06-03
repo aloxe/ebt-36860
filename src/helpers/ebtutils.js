@@ -8,7 +8,7 @@ export const getPublicUser = async (id) => {
       cache: 'force-cache'
     };
 
-    const response = await fetch(`/api/eurobilltracker/?m=globalstats_profile_user&v=1&user_id=${id}`, requestOptions)
+    const response = await fetch(`https://api.eurobilltracker.com/?m=globalstats_profile_user&v=1&user_id=${id}`, requestOptions)
       .catch(function (err) {
         console.log('get User Error :-S', err);
         return null;

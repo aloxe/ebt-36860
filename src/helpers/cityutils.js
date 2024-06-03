@@ -106,7 +106,6 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 
   visitedCities.map((city) => {
     if (!city.code) {
-      // console.log(city.city + " » " + sansTiret(city.city));
       // check same name no diacritics + dept
       var foundCommune = communes.find((commune) => sansTiret(sansAccent(city.city)) == sansTiret(sansAccent(commune.nom))
         && getDepartement(city.postcodes[0]) === commune.departement)
@@ -124,7 +123,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
     visitedCities.map((city) => {
       if (!city.code) {
         // check same name + postcode (if dep ≠ postcode)
-        var foundCommune = communes.find((commune) =>  sansAccent(city.city) == sansAccent(commune.nom)
+        var foundCommune = communes.find((commune) =>  sansTiret(sansAccent(city.city)) == sansTiret(sansAccent(commune.nom))
         && commune.codesPostaux && hasSamePostcode(city.postcodes, commune.codesPostaux))
         if (foundCommune?.chefLieu) {
           // chefLieu of commune is the real commune
@@ -144,7 +143,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
   visitedCities.map(function (city) {
     if (!city.code) {
       // check name included + postcode
-      var possibleCommunes = communes.filter((commune) => commune.nom.includes(city.city)
+      var possibleCommunes = communes.filter((commune) => sansAccent(commune.nom).includes(sansTiret(sansAccent(city.city)))
         && (commune.codesPostaux && commune.codesPostaux?.includes(city.top_zipcode) || hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
         )
       if (possibleCommunes?.length === 1) {
