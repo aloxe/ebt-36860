@@ -20,13 +20,13 @@ export function Unknowns() {
     const DropDownRowSpan = event?.currentTarget.parentNode?.parentNode?.parentNode?.childNodes[0]?.childNodes[0]?.childNodes[0]
 
     const newname = event.currentTarget.childNodes[0].nodeValue
-    const newcode = event.currentTarget.id 
+    const newcode = event.currentTarget.id
 
     // writte name instead of choose
     if (DropDownRowSpan) DropDownRowSpan.nodeValue = newname;
 
     // add name and code in hidden input values
-    // @ts-ignore 
+    // @ts-ignore
     const communeEl = myform?.commune;
     if (communeEl) communeEl.setAttribute("value", newname || "")
     // @ts-ignore
@@ -39,7 +39,7 @@ export function Unknowns() {
     const saveButton = myform?.save;
     saveButton?.removeAttribute('disabled')
 
-    // @ts-ignore clean error 
+    // @ts-ignore clean error
     const error = myform?.error
     if (error) error.innerHTML = ""
   }
@@ -77,7 +77,7 @@ export function Unknowns() {
           } else {
             city.code = code
             city.commune = commune
-            city.possible = undefined 
+            city.possible = undefined
             delete city.possible
             const newEBTlocation:any = {
               "code_postal": city.top_zipcode,
@@ -104,7 +104,7 @@ export function Unknowns() {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>Unknown commune you visited</h2>
           {myVisited?.date && <div className="text-right text-stone-400 text-sm">
@@ -126,15 +126,18 @@ export function Unknowns() {
                 <input type="hidden" value="" name="code"  id="code" />
                 <input type="hidden" value="" name="commune" id="commune" />
                 </div>
-                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-2 xs:hidden block">
+                <div className="sm:table-cell px-6 min-w-max whitespace-nowrap align-top pt-2 hidden">
                   is in
                 </div>
                 <div className="table-cell float-left">
                   {dropdownCommunes(city.possible || [])}
                   <br/><span id="error" className="error float-left"></span>
                 </div>
-                <div className="table-cell ">
-                  <button className="btn btn-primary h-[40px] max-w-min mx-auto py-0 px-4" id="save" disabled>Save</button>
+                <div className="table-cell">
+                  <button className="btn max-w-min mx-auto m-5 p-0 sm:btn-primary sm:px-4 sm:h-[40px]" id="save" disabled>
+                    <span className="sm:hidden">💾</span>
+                    <span className="hidden sm:inline-block">Save</span>
+                  </button>
                 </div>
             </form>
           })}

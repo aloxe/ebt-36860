@@ -8,8 +8,8 @@ async function JeuCommunes({user, visited}: DetailsProps) {
 
   const inseeAltitude = require('@/data/correspondance-code-insee-altitude-2013.json')
   const visitedCommunes = allCommunes.filter(c => visited.communes.includes(c.code) ).map(c => ({
-    code: c.code, 
-    nom: c.nom, 
+    code: c.code,
+    nom: c.nom,
     population: c.population || 0,
     surface: c.surface ? c.surface / 100 : 0,
     // @ts-ignore
@@ -52,10 +52,10 @@ const minAlt = visitedCommunes.reduce((prev, current) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
-          <h2 className="mb-3 text-lg font-semibold text-center">
-            {user.username} score in ▤ 36680 communes ▥
+          <h2>
+            {user.username} score in <span className="whitespace-nowrap">▤ 36680 communes ▥</span>
           </h2>
         </div>
         <div className="text-left text-lg font-bold mb-4">

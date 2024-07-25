@@ -8,13 +8,13 @@ const Faq = async () => {
         <h1>Travel in France, collect euros and map your your trips</h1>
       </div>
 
-      <div className="group bg-white rounded-lg border border-blue-200 text-left  sm:p-4 sm:m-4 xs:p-2 xs:m-2">
-        <h2 className="text-blue-900 text-lg mb-3">What is Eurobilltracker?</h2>
+      <div className="group bg-white rounded-lg border border-blue-200 text-left  p-2 m-2 sm:p-4 sm:m-4">
+        <h2>What is Eurobilltracker?</h2>
         <p className="mb-4">
           Eurobilltracker is a website that allows you to record euro bank note serial numbers. If someone else finds the same bank note you will be able to follow where your banknotes go after you spend them.
         </p>
 
-        <h2 className="text-blue-900 text-lg mb-3">What is the purpose of Eurobilltracker?</h2>
+        <h2>What is the purpose of Eurobilltracker?</h2>
         <p className="mb-4">
           Tracking bank notes is usless, meaningless and futile, therefore this is essencial. Thouthands are tracking banknotes all over the world, whereever they go. Eurobilltracker helps them connect and if lucky, they will perform a <i>hit</i>, when someone find a note that wall already tracked on Eurobilltracker.
         </p>
@@ -22,7 +22,7 @@ const Faq = async () => {
            Want to try by yourself? <a href="https://en.eurobilltracker.com/?referer=31378">Just register</a> and start track your euros now!
         </p>
 
-        <h2 className="text-blue-900 text-lg mb-3">What is te site ▤ 36680 ▥ about?</h2>
+        <h2>What is te site ▤ 36680 ▥ about?</h2>
         <p className="mb-4">
           36680 Helps you track all locations you visited based on the euros you tracked on Eurobilltracker.
         </p>
@@ -33,7 +33,7 @@ const Faq = async () => {
           When you log in with your Eurobilltracker credentials, we will help you gather all locations you visited in France and see which districts, municipalities and regions you visited. It will count them for you and draw nice maps so you can effectivly see where you&apos;ve been.
         </p>
 
-        <h2 className="text-blue-900 text-lg mb-3">What is the ranking on ▤ 36680 ▥?</h2>
+        <h2>What is the ranking on ▤ 36680 ▥?</h2>
         <p className="mb-4">
           Visiting 36680 municipalities and find euros in each of them is quite a challenge. This has started as a game for Eurobilltraker users <a href="https://forum.eurobilltracker.com/viewtopic.php?f=34&t=7171">launched by TedX on Eurobilltracker forum</a>. This game also counts population and surface for all players. The main ranking counts the number of visited municipalities. This is the ranking you see on <b>▤ 36680 ▥</b>.
         </p>

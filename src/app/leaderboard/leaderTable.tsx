@@ -18,7 +18,7 @@ const LeaderTable = ({ players }: {players: DbUser[]}) => {
         <tr><td><Spinner /></td></tr>
         }
         {players && players.map( async (p, index) => (
-        <tr className={`h-1 bg-slate-100 border-b dark:border-neutral-500 text-md ${!!p.country ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`} 
+        <tr className={`h-1 bg-slate-100 border-b dark:border-neutral-500 text-md ${!!p.country ? " hover:bg-amber-50" : "opacity-70 border-stone-800"}`}
         key={p.user_id}>
 
           <td className="hidden sm:table-cell">
@@ -27,7 +27,7 @@ const LeaderTable = ({ players }: {players: DbUser[]}) => {
             </a>
           </td>
           <td className="h-full">
-            <a href={!!p.country ? `/stats/${p.user_id}` : undefined} 
+            <a href={!!p.country ? `/stats/${p.user_id}` : undefined}
             className={`fill-cell ${!!p.country && "text-blue-900 underline cursor-pointer"}`}>
 
             {!!p.country && <>{await getUserFlag(p.country)} {p.username}</>}
@@ -38,7 +38,7 @@ const LeaderTable = ({ players }: {players: DbUser[]}) => {
           <td className="h-full">
             <a href={!!p.country ? `/stats/${p.user_id}` : undefined} className={`fill-cell ${!!p.country && "cursor-pointer"} sm:flex sm:justify-between`}>
               {p.score}
-              <div className="text-right text-xs ">
+              <div className="text-right text-xs whitespace-nowrap truncate">
                 {!!p.country && formatDate(p.content ? JSON.parse(p.content).date : p.date)}
                 {!p.country && !!p.date && (<i>{formatDate(p.date)}</i>)}
               </div>

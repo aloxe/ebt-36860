@@ -63,18 +63,18 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
   }, [visited])
 
   return (
-    <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+        <div className="bg-white rounded-lg border border-blue-200 text-left text-blue-900 p-2 m-2 sm:p-4 sm:m-4">
       <div className="flex justify-between">
         <h2>Your map</h2>
       </div>
-      <div className="flex justify-around">
+      <div className="md:flex md:justify-around">
         <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
-        <label 
+        <label
           className="inline-block pl-[0.15rem] hover:cursor-pointer"
           htmlFor='dep'>
-          <input 
+          <input
           className="form-check-input h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-            id='dep' value='dep' type="checkbox" checked={showDep} 
+            id='dep' value='dep' type="checkbox" checked={showDep}
             onChange={() => setShowDep(!showDep)} /> départements
         </label>
         </div>
@@ -90,7 +90,7 @@ const fetchPolygonsPerRegion = async (codeRegion:string) => {
           <label
             className={!disabled ? "inline-block pl-[0.15rem] hover:cursor-pointer mr-2" : "inline-block pl-[0.15rem] hover:cursor-pointer opacity-30  mr-2"}
             htmlFor="com"> communes {!disabled && polygons && `(${polygons.length})`}
-          </label> 
+          </label>
           {disabled && <Spinner />}
         </div>
       </div>

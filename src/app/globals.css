@@ -27,10 +27,7 @@ body {
 }
 
 h2 {
-  font-weight: 600;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  color: #15141A;;
+  @apply text-amber-800 text-xl font-bold font-sans mb-3
 }
 
 a {
@@ -71,11 +68,11 @@ li {
   .form-input:disabled {
     @apply bg-slate-50 text-slate-500 border-slate-200 shadow-none
   }
-  
+
   .form-input:invalid {
     @apply border-pink-500 text-pink-600
   }
-  
+
   .form-input:invalid {
     @apply border-pink-500 ring-pink-500
   }

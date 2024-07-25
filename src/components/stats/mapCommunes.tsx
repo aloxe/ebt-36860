@@ -6,9 +6,9 @@ async function MapCommunes({user, visited}: DetailsProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-blue-200 text-left text-black sm:p-4 sm:m-4 xs:p-2 xs:m-2">
+      <div className="bg-white rounded-lg border border-blue-200 text-left text-black p-2 m-2 sm:p-4 sm:m-4">
         <div className="">
-          <h2 className="mb-3 text-lg font-semibold text-center">
+          <h2>
             ▤ {user.username} communes  map ▥
           </h2>
         </div>
