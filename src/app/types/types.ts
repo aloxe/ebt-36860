@@ -14,7 +14,7 @@ interface User {
   "email"?: string
   "date"?: string | Date
   "content"?: string;
-  "visited"?: Visited;
+  "visited"?: { content: Visited | string }
 }
 
 interface DbUser {
@@ -23,10 +23,11 @@ interface DbUser {
   "username"?: string
   "country"?: string
   "content"?: string
-  "polygon"?: string
+  "polygons"?: string
   "visited"?: Visited
   "date"?: string | Date
   "score"?: number
+  "flag"?: string
 }
 
 interface Visited {
