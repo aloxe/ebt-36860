@@ -5,6 +5,7 @@ import { useAuth } from "@/context/authcontext";
 import { refreshUser } from "@/helpers/ebtutils";
 import { getNewPlayers } from "@/helpers/leaderutils";
 import { formatDate, getUserFlag } from "@/helpers/strings";
+import Link from "next/link";
 import { useState } from "react";
 
 const  AdminPage = ({ players }: {players: DbUser[]}) => {
@@ -34,7 +35,7 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
         <tr className="h-1 bg-slate-100 border-b dark:border-neutral-500 text-md hover:bg-amber-50"
         key={p.user_id}>
           <td>
-          {index} ‒ {p.user_id}<br /><>{p.flag} {p.username}</><br/>
+          {index} ‒ {p.user_id}<br /><>{p.flag} {p.username}</><br/>
           {formatDate(p.date)}
 
           </td>
@@ -45,8 +46,10 @@ const  AdminPage = ({ players }: {players: DbUser[]}) => {
           </td>
           <td>
 
-          unknown: {p.visited?.unknown?.toString()}<br/>
+          {p.visited?.unknown && p.visited?.unknown > 0 && <>
+            <Link href={{ pathname: 'unknowns', query: { user_id: JSON.stringify(p.user_id) } }} >unknown: {p.visited?.unknown?.toString()}</Link><br/></>}
           Carte: {p.polygons === "{}" ? "☐" : "☑"}<br/>
+
           </td>
         </tr>
         ))}
