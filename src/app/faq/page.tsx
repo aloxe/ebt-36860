@@ -1,4 +1,5 @@
 import TitleButton from "@/components/common/titleButton";
+import Link from "next/link";
 
 const Faq = async () => {
 
@@ -42,6 +43,16 @@ const Faq = async () => {
         </p>
         <p className="mb-4">
           This is fun and challenging! Why don&apos;t you start today.
+        </p>
+
+        <h2>How can I report a bug or ask for a new feature?</h2>
+        <p className="mb-4">
+          Just contact the author (see bellow) and you&apos;ll soon get feedback.
+        </p>
+
+        <h2>How can I contact you?</h2>
+        <p className="mb-4">
+          The best way to comment on this app is to do it <Link href="https://forum.eurobilltracker.com/viewtopic.php?t=57328">on the eurobilltraker forum</Link> on the dedicated thread. You can also contact the author <Link href="https://alix.guillard.fr/">from his home page</Link>.
         </p>
       </div>
 

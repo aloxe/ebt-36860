@@ -6,6 +6,7 @@ import { useAuth } from "@/context/authcontext";
 import { addPostcodes, matchCommunes } from "@/helpers/cityutils";
 import { getEBTlocation } from "@/helpers/dbutils";
 import { getCities } from "@/helpers/ebtutils";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 export function Cities() {
@@ -62,7 +63,7 @@ export function Cities() {
       callback={handleCityRequest}
       />}
       { step > 0 &&
-            <div className="group bg-white rounded-lg border border-blue-200 text-left  p-2 m-2 sm:p-4 sm:m-4">
+      <div className="group bg-white rounded-lg border border-blue-200 text-left  p-2 m-2 sm:p-4 sm:m-4">
         <div className="flex justify-between">
           <h2>Your locations</h2>
           { step > 2 && <div className="text-right text-stone-400 text-sm">{date}
@@ -86,7 +87,9 @@ export function Cities() {
                 <ScoreCard icon="🇫🇷" score={visited?.departements?.length} label="département" />
                 <ScoreCard icon="🏛️" score={visited?.prefectures?.length} label="préfecture" />
               </div>
-              {visited.unknown > 0 && <><br/>you have {visited.unknown} unidentified locations</>}
+              {visited.unknown > 0 && <>
+              <br/>you have {visited.unknown} unidentified locations. <br/>
+              <Link href="#unknown">Identify their municipality</Link> to increase your score.</>}
             </>}
         </div>
       </div>
