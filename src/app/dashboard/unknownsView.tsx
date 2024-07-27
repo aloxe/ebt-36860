@@ -1,6 +1,5 @@
 'use client'
 import { Dropdown } from "@/components/common/dropdown";
-import { useAuth } from "@/context/authcontext";
 import { refreshVisited } from "@/helpers/cityutils";
 import { saveEBTlocation } from "@/helpers/dbutils";
 import { useMemo } from "react";
@@ -8,7 +7,7 @@ import { useMemo } from "react";
 interface UnknownsViewProps {
     visited: Visited,
     user: User,
-    saveVisited: (visited: Visited)=> void
+    saveVisited: any
 }
 
 export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
@@ -90,7 +89,7 @@ export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
               "code_commune": city.code,
               "nom_ebt": city.city,
               "nom_commune": city.commune,
-              "ref_user": user.id
+              "ref_user": user?.username || user?.id || user
             };
             const response = await saveEBTlocation(newEBTlocation)
             if (!response) {
@@ -105,7 +104,6 @@ export function UnknownsView({visited, user, saveVisited}: UnknownsViewProps) {
       // visitedCities has changed we need to update all visited
       const myFreshVisited= await refreshVisited(myVisited.visitedCities)
       saveVisited(myFreshVisited)
-    //   setVisited(myFreshVisited)
       // TODO do we still use storage for Visited?
   }
 

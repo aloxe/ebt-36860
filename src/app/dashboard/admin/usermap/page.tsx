@@ -1,14 +1,14 @@
 'use client'
 import { getPlayerData, savePlayerData } from "@/helpers/dbutils";
 import { useEffect, useState } from "react";
-import { UnknownsView } from "../../unknownsView";
 import Link from "next/link";
+import { UserMapView } from "../../usermapView";
 
 interface UnknownsAdmin {
   searchParams?: { [key: string]: string | undefined };
 }
 
- const UnknownsAdmin = ({searchParams}: UnknownsAdmin) => {
+ const UserMapAdmin = ({searchParams}: UnknownsAdmin) => {
   const [visited, setVisited] = useState<Visited | undefined>(undefined)
   const [user, setUser] = useState<User | undefined>(undefined)
   const user_id = searchParams?.user_id ? searchParams?.user_id.replaceAll("\"", "") : "";
@@ -29,8 +29,8 @@ interface UnknownsAdmin {
     fetchContent()
   }, [user_id])
 
-  const saveVisited = (visited: Visited) => {
-    savePlayerData(user_id, visited)
+  const savePolygons = (polygons: any) => {
+    savePlayerData(user_id, polygons)
   }
 
   return (
@@ -40,14 +40,12 @@ interface UnknownsAdmin {
       Hello <>{user?.username || user}</> {user_id}
       </h1>}
       {user && <div><Link href="/dashboard/admin/">« back to admin</Link></div>}
-    {user && visited && <UnknownsView
-      visited={visited}
-      user={user}
-      saveVisited={saveVisited}
-    />}
+    {user && visited &&
+    <UserMapView visited={visited} user={user} savePolygons={savePolygons} />
+    }
 
 
   </>)
 }
 
-export default UnknownsAdmin;
+export default UserMapAdmin;
