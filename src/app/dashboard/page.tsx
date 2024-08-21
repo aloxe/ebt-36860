@@ -30,11 +30,6 @@ export default function Dashboard() {
       {user?.username && visited?.unknown > 0 && <UnknownsView
         visited={visited}
         user={user}
-        savePolygons={setPolygons}
-      />}
-      {user?.username && visited?.unknown > 0 && <UnknownsView
-        visited={visited}
-        user={user}
         saveVisited={setVisited}
       />}
       </>
