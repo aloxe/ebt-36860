@@ -128,7 +128,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         if (foundCommune?.chefLieu) {
           // chefLieu of commune is the real commune
           // we found a former commune or commune déléguée
-          // we will return the chek lieu "commune actuelle" instead
+          // we will return the chef lieu "commune actuelle" instead
           foundCommune = getCommuneFromCode(foundCommune.chefLieu, communes)
         }
         if (foundCommune) {
@@ -140,6 +140,7 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
         }
       }
     });
+
   visitedCities.map(function (city) {
     if (!city.code) {
       // check name included + postcode
@@ -158,8 +159,8 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
   });
 
   visitedCities.map(function (city) {
-    if (!city.code && city.postcodes?.length == 1) {
-      // check postcode if only one
+    if (!city.code) {
+      // check postcodes
       const samePostcode = communes.filter((commune) => getDepartement(city.postcodes[0]) === commune.departement
         && hasSamePostcode(city.postcodes || [], commune.codesPostaux || []))
       if (samePostcode.length === 1) {
@@ -190,12 +191,13 @@ export const matchCommunes = async (visitedCities, communes, EBTLocations) => {
 }
 
 export const processPostcodes = async (user, citiesArray) => {
+  // creates new city records if a postcode is from amother departement
   const extraCities = []
   const newCities = await Promise.all(citiesArray.map(async (city) => {
     // if there are more postcodes we fetch the others
     if (city.nrlocations > 1) {
       var postcodesArray = await getPostcodes(user, city);
-      // we sort postcodes by departements ins an array
+      // we sort postcodes by departements in an array
       let sort = []
       // if we can't fetch postcodes, stop here
       if (postcodesArray.length <= 0) {
