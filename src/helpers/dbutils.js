@@ -5,6 +5,8 @@ export const MAX_POLYGONS = 1000
 // server side
 
 export const getUsers = async () => {
+  if (!prisma.users) return undefined;
+
   const res = await prisma.users.findMany(
     {
     select: {
