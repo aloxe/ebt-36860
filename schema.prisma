@@ -1,4 +1,6 @@
 // schema.prisma
+// https://www.prisma.io/docs/orm/prisma-schema/overview/generators#1-configure-the-prisma-client-generator-in-schemaprisma
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
