@@ -88,7 +88,7 @@ const Login = ({ lang }: {lang: string}) => {
   return (
     <div className="flex items-center justify-center">
       <div className=" relative inline-block text-left dropdown">
-        <button className="inline-flex justify-center w-full px-4 py-2 text-md md:text-lg font-medium leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
+        <button className="inline-flex justify-center w-full px-4 py-2 text-md font-medium leading-5 text-gray-700 transition duration-150 ease-in-out focus:outline-none focus:bg-sky-100 active:text-gray-800"
           type="button" aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
             <span>{t("login")}</span>
           <svg className="w-5 h-5 ml-2 -mr-1" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
@@ -107,7 +107,7 @@ const Login = ({ lang }: {lang: string}) => {
                   <label className="form-label">{t("password")}</label>
                   <input name="password" type="password" className="form-input" />
                 </div>
-                <button disabled={false} className="btn btn-primary rounded-lg text-lg font-medium">
+                <button disabled={false} className="btn btn-primary rounded-lg font-medium">
                   {false && <span className="spinner-border spinner-border-sm me-1"></span>}
                   {t("login")}
                 </button>
