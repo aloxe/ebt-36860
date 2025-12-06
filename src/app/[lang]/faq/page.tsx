@@ -1,9 +1,12 @@
+import { use } from 'react';
 import TitleButton from "@/components/common/titleButton";
 import Link from "next/link";
 import { useTranslation } from '@/i18n'
 
-const Faq = async ({ params: { lang } }: { params: { lang: string}}) => {
-  /* eslint-disable react-hooks/rules-of-hooks */
+type Params = Promise<{ lang: string }>
+
+const Faq = async ({ params }: { params: Params }) => {
+  const { lang } = use(params); 
   const { t } = await useTranslation(lang, 'faq')
 
   return (

@@ -1,3 +1,4 @@
+import { use } from 'react';
 import { getAllPlayersSorted } from "@/helpers/leaderutils";
 import LeaderTable from "./leaderTable";
 import { useTranslation } from '@/i18n'
@@ -6,8 +7,10 @@ import LeaderMenu from "./menu";
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const revalidate = 600
 
-const LeaderBoard = async ({ params: { lang } }: { params: { lang: string}}) => {
-  /* eslint-disable react-hooks/rules-of-hooks */
+type Params = Promise<{ lang: string }>
+
+const LeaderBoard = async ({ params }: { params: Params }) => {
+  const { lang } = use(params); 
   const { t } = await useTranslation(lang, 'leaderboard')
   const players = await getAllPlayersSorted("score")
   

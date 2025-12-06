@@ -1,3 +1,4 @@
+import { use } from 'react';
 import { getNewPlayers } from "@/helpers/leaderutils";
 import UserList from "./userList";
 import AdminLinks from "@/components/common/adminLinks";
@@ -5,7 +6,10 @@ import AdminLinks from "@/components/common/adminLinks";
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const revalidate = 600
 
-const Admin = async ({ params: { lang } }: { params: { lang: string } }) => {
+type Params = Promise<{ lang: string }>
+
+const Admin = async ({ params }: { params: Params }) => {
+  const { lang } = use(params); 
   const players = await getNewPlayers()
 
   return (

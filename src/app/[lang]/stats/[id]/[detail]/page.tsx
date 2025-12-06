@@ -1,3 +1,4 @@
+import { use } from 'react';
 import StatJeuCommunes from "@/app/[lang]/stats/[id]/[detail]/statJeuCommunes";
 import JeuPrefectures from "@/components/common/jeuPrefectures";
 import ListeCommunes from "@/components/stats/listeCommunes";
@@ -9,9 +10,10 @@ import StatsMenu from "@/app/[lang]/stats/[id]/menu";
 import StatsHeader from "@/app/[lang]/stats/[id]/header";
 import { useTranslation } from '@/i18n'
 
-const UserDataDetail = async ({ params }: { params: { lang: string, id: string, detail: string } }) => {
-  const { lang, id, detail } = params;
-  /* eslint-disable react-hooks/rules-of-hooks */
+type Params = Promise<{ lang: string, id: string, detail: string }>
+
+const UserDataDetail = async ({ params }: { params: Params }) => {
+  const { lang, id, detail } = use(params); 
   const { t } = await useTranslation(lang, 'stats')
   const publicUser = await getPublicUser(id);
   const visits = await getVisitsServer(id, "fr");
