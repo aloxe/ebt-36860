@@ -1,4 +1,5 @@
 'use client'
+import { use } from 'react';
 import { useAuth } from "@/context/authcontext";
 import UserDetails from "./userdetails";
 import { useTranslation } from '@/i18n/client'
@@ -12,8 +13,8 @@ const TitleButton = dynamic(() => import('@/components/common/titleButton'))
 const ForumMenu = dynamic(() => import('./menu'))
 const UnknownsView = dynamic(() => import('./unknownsView'))
 
-export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
-  /* eslint-disable react-hooks/rules-of-hooks */
+export default function Dashboard({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = use(params); 
   const { t } = useTranslation(lang, 'dashboard')
   const { visited, setVisited, user } = useAuth();
   const username = user ? user.username : "";
