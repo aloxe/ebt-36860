@@ -24,21 +24,21 @@ export default function RootLayout({
   params: { lang: string}
 }) {
   return (
-    <html lang={lang} dir={dir(lang)}>
-      <head>
-        <link href="/favicon.ico" rel="icon"></link>
-      </head>
-      <AuthProvider>
-        <body>
-          <Header lang={lang}/>
-          <main className="flex flex-col mt-12 p-2 pb-6 md:p-8">
-            {children}
-          </main>
-          <Footer lang={lang} />
-          {/* allow safari users to log in https://itnext.io/fixing-focus-for-safari-b5916fef1064 */}
-          <script type="text/javascript" src="/js/polyfill-focus.js" async />
-        </body>
-      </AuthProvider>
-    </html>
+    <AuthProvider>
+      <html lang={lang} dir={dir(lang)}>
+          <head>
+            <link href="/favicon.ico" rel="icon"></link>
+          </head>
+          <body>
+            <Header lang={lang}/>
+            <main className="flex flex-col mt-12 p-2 pb-6 md:p-8">
+              {children}
+            </main>
+            <Footer lang={lang} />
+            {/* allow safari users to log in https://itnext.io/fixing-focus-for-safari-b5916fef1064 */}
+            <script type="text/javascript" src="/js/polyfill-focus.js" async />
+          </body>
+      </html>
+    </AuthProvider>
   )
 }
