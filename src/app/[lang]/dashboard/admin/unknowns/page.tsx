@@ -1,12 +1,9 @@
 'use client'
-import { use, Suspense } from "react";
+import { Suspense } from "react";
 import AdminLinks from "@/components/common/adminLinks";
 import UserUnknowns from "./userUnknowns";
 
-type Params = Promise<{ lang: string }>
-
-const UnknownsAdmin = ({ params }: { params: Params }) => {
-  const { lang } = use(params); 
+const UnknownsAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
 
   return (
     <>

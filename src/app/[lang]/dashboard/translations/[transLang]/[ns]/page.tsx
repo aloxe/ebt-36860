@@ -1,5 +1,4 @@
 'use client'
-import { use } from 'react';
 import { useAuth } from "@/context/authcontext";
 import { getTranslations, saveTranslation } from "@/helpers/dbutils";
 import { SyntheticEvent, useEffect, useState } from "react";
@@ -17,10 +16,9 @@ interface KeyboardEvent<T = Element> extends SyntheticEvent {
   target: EventTarget & T;
 }
 
-type Params = Promise<{ lang: string, transLang: string, ns: string }>
-
-const TranslationsAdmin = ({ params }: { params: Params }) => {
-  const { lang,transLang, ns } = use(params); 
+const TranslationsAdmin = ({ params }: { params: { lang: string, transLang: string, ns: string } }) => {
+  const { lang, transLang, ns } = params;
+  /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const { isTrans, isAdmin } = useAuth()
   const [dbTranslations, setDbTranslations] = useState(null)

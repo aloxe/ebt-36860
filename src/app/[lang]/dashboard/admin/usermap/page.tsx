@@ -1,14 +1,11 @@
 'use client'
-import { use } from 'react';
 import { UserMapView } from "@/app/[lang]/dashboard/usermapView";
 import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
 import { useEffect, useState } from "react";
 
-type Params = Promise<{ lang: string, searchParams?: { [key: string]: string }}>
-
-export default function UserMapAdmin({ params }: { params: Params }) {
-  const { lang, searchParams } = use(params); 
+export default function UserMapAdmin({ params: { lang }, searchParams }: { params: { lang: string }, searchParams?: { [key: string]: string } }) {
+  /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = useTranslation(lang, 'dashboard')
   const [user, setUser] = useState<User | undefined>(undefined);
 

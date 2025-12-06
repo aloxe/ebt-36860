@@ -5,11 +5,10 @@ import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
 import { DeptMapView } from "./departementMapView";
 
-type Params = Promise<{ lang: string }>
-
-export default function Dashboard({ params }: { params: Params }) {
+export default function Dashboard({ params }: { params: Promise<{ lang: string }> }) {
+  /* eslint-disable react-hooks/rules-of-hooks */
   const { lang } = use(params); 
-  const { t } = useTranslation(lang, 'dashboard');
+  const { t } = useTranslation(lang, 'dashboard')
   const { user } = useAuth();
   const username = user ? user.username : "";
 

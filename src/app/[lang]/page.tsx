@@ -1,14 +1,10 @@
-import { use } from 'react';
 import LinkButton from "@/components/common/linkButton";
 import TitleButton from "@/components/common/titleButton";
 import { getAllPlayersSorted } from "@/helpers/leaderutils";
 import LeaderTable from "@/app/[lang]/leaderboard/leaderTable";
 import { useTranslation } from '@/i18n'
 
-type Params = Promise<{ lang: string }>
-
-export default async function Home({ params }: { params: Params }) {
-  const { lang } = use(params); 
+export default async function Home({ params: { lang } }: { params: { lang: string}}) {
   const allPlayers = await getAllPlayersSorted("score");
   const players = allPlayers.slice(0,4);
   /* eslint-disable react-hooks/rules-of-hooks */

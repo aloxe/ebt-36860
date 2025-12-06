@@ -1,4 +1,3 @@
-import { use } from 'react';
 import { getAllPlayersSorted } from "@/helpers/leaderutils";
 import LeaderTable from "./../leaderTable";
 import { useTranslation } from '@/i18n'
@@ -14,10 +13,8 @@ const SLUG = {
   alt: "altitude"
 }
 
-type Params = Promise<{ lang: string, slug: string }>
-
-const LeaderAlt = async ({ params }: { params: Params }) => {
-  const { lang, slug } = use(params); 
+const LeaderAlt = async ({ params: { lang, slug } }: { params: { lang: string, slug: string }}) => {
+  /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
 
   const type = Object.keys(SLUG).filter(k => (SLUG as any)[k] === slug).toString()

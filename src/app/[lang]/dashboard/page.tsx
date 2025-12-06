@@ -13,11 +13,9 @@ const TitleButton = dynamic(() => import('@/components/common/titleButton'))
 const ForumMenu = dynamic(() => import('./menu'))
 const UnknownsView = dynamic(() => import('./unknownsView'))
 
-type Params = Promise<{ lang: string }>
-
-export default function Dashboard({ params }: { params: Params }) {
+export default function Dashboard({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = use(params); 
-  const { t } = useTranslation(lang, 'dashboard');
+  const { t } = useTranslation(lang, 'dashboard')
   const { visited, setVisited, user } = useAuth();
   const username = user ? user.username : "";
   const [isForum, setIsForum] = useState<boolean>(false);

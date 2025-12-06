@@ -1,4 +1,3 @@
-import { use } from 'react';
 import { getAllPlayers } from "@/helpers/leaderutils";
 import Resultats from "./resultats";
 import { fetchAllComplete } from "@/helpers/cityutils";
@@ -7,11 +6,9 @@ import AdminLinks from "@/components/common/adminLinks";
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const revalidate = 600
 
-type Params = Promise<{ lang: string }>
+const Forum = async ({ params: { lang } }: { params: { lang: string } }) => {
+  const players = await getAllPlayers()
 
-const Forum = async ({ params }: { params: Params }) => {
-  const { lang } = use(params); 
-  const players = await getAllPlayers();
   const allCommunesWithDomTom: Commune[] = await fetchAllComplete();
   const allCommunes = allCommunesWithDomTom.filter(el => el.zone === "metro")
 
