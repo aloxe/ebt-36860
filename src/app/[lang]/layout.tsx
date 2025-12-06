@@ -1,3 +1,4 @@
+import { use } from 'react';
 import type { Metadata } from 'next';
 import { dir } from 'i18next'
 import { languages } from '@/i18n/settings'
@@ -18,11 +19,12 @@ export async function generateStaticParams() {
 
 export default function RootLayout({
   children,
-  params: { lang },
+  params
 }: {
   children: React.ReactNode,
-  params: { lang: string}
+  params: Promise<{ lang: string }>
 }) {
+  const { lang } = use(params)
   return (
     <html lang={lang} dir={dir(lang)}>
       <head>

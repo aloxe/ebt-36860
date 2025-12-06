@@ -6,7 +6,8 @@ import AdminLinks from "@/components/common/adminLinks";
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const revalidate = 600
 
-const Forum = async ({ params: { lang } }: { params: { lang: string } }) => {
+const Forum = async ({ params }: { params: { lang: string } }) => {
+  const { lang  } = await params;
   const players = await getAllPlayers()
 
   const allCommunesWithDomTom: Commune[] = await fetchAllComplete();
