@@ -1,8 +1,9 @@
-import { Suspense } from "react";
+import { use, Suspense } from "react";
 import AdminLinks from "@/components/common/adminLinks";
 import UserCites from "./userCities";
 
-const CitesAdmin = ({ params: { lang } }: { params: { lang: string } }) => {
+const CitesAdmin = ({ params }: { params: Promise<{ lang: string }> }) => {
+  const { lang } = use(params)
 
   return (
     <>

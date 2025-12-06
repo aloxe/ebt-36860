@@ -1,12 +1,13 @@
 'use client'
+import { use } from 'react';
 import { useAuth } from "@/context/authcontext";
 import { useTranslation } from '@/i18n/client'
 import AdminLinks from "@/components/common/adminLinks";
-import UserDetails from "../userdetails";
 import { DeptMapView } from "./departementMapView";
 
-export default function Dashboard({ params: { lang } }: { params: { lang: string } }) {
+export default function Dashboard({ params }: { params: Promise<{ lang: string }> }) {
   /* eslint-disable react-hooks/rules-of-hooks */
+  const { lang } = use(params); 
   const { t } = useTranslation(lang, 'dashboard')
   const { user } = useAuth();
   const username = user ? user.username : "";

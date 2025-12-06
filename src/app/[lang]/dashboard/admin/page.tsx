@@ -5,7 +5,8 @@ import AdminLinks from "@/components/common/adminLinks";
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const revalidate = 600
 
-const Admin = async ({ params: { lang } }: { params: { lang: string } }) => {
+const Admin = async ({ params }: { params: { lang: string } }) => {
+  const { lang } = await params;  
   const players = await getNewPlayers()
 
   return (

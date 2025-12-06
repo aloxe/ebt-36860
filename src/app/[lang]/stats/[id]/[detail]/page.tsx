@@ -10,7 +10,7 @@ import StatsHeader from "@/app/[lang]/stats/[id]/header";
 import { useTranslation } from '@/i18n'
 
 const UserDataDetail = async ({ params }: { params: { lang: string, id: string, detail: string } }) => {
-  const { lang, id, detail } = params;
+  const { lang, id, detail } = await params;
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'stats')
   const publicUser = await getPublicUser(id);

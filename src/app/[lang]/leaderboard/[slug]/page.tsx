@@ -13,7 +13,8 @@ const SLUG = {
   alt: "altitude"
 }
 
-const LeaderAlt = async ({ params: { lang, slug } }: { params: { lang: string, slug: string }}) => {
+const LeaderAlt = async ({ params }: { params: { lang: string, slug: string }}) => {
+  const { lang, slug  } = await params;
   /* eslint-disable react-hooks/rules-of-hooks */
   const { t } = await useTranslation(lang, 'leaderboard')
 

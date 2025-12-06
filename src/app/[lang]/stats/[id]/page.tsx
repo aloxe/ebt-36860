@@ -5,7 +5,7 @@ import { getCountsServer } from "@/helpers/dbutils";
 import { getPublicUser } from "@/helpers/ebtutils";
 
 const UserData = async ({ params }: { params: { lang: string, id: string } }) => {
-  const { lang, id } = params;
+  const { lang, id } = await params;
   const publicUser = await getPublicUser(id);
   const counts = await getCountsServer(id, "date,communes,departements,prefectures,count");
 
