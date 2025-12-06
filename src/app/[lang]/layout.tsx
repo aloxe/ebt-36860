@@ -27,9 +27,9 @@ export default function RootLayout({
   const { lang } = use(params)
   return (
     <html lang={lang} dir={dir(lang)}>
-      <head>
-        <link href="/favicon.ico" rel="icon"></link>
-      </head>
+        <head>
+          <link href="/favicon.ico" rel="icon"></link>
+        </head>
       <AuthProvider>
         <body>
           <Header lang={lang}/>
