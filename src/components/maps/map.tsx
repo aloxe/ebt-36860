@@ -21,18 +21,18 @@ type Feature = GeoJsonTypes.Feature
 type FeatureCollection = GeoJsonTypes.FeatureCollection
 
 // TILES :
+// TODO isolate API key
 const CartoDB_VoyagerOnlyLabels = {
-    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png?key=cb1_2ifo_1_22d80ad0cca14da6c7346d09',
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     pane: 'labels',
     maxZoom: 19
 }
 
 const CartoDB_VoyagerNoLabels = {
-  url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',
+  url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png?key=cb1_2ifo_1_22d80ad0cca14da6c7346d09',
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-
 }
 // TODO allow tile choice
 const OSM = { 
